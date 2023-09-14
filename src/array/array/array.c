@@ -18,5 +18,6 @@ CHashObject * newCHashObject(){
 }
 
 void CHashArray_append(CHashArray *self, CHashAny *element){
-    
+
+
 }

@@ -1,4 +1,7 @@
 
+typedef CHashAny CHashArray;
+typedef CHashAny CHashObject;
+
 typedef struct privateCHashArray{
     long size;
     CHashAny *elements;
