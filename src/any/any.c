@@ -18,6 +18,20 @@ ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool * privateCHash
     return element;
 }
 
+long CHash_get_size(ChashArray_OR_CHashObject_OR_CHashString *element){
+
+    if(element->type == CHASH_STRING){
+        return (long)strlen(CHash_get_string(element));
+    }
+    if(element->type == CHASH_ARRAY || element->type == CHASH_OBJECT){
+        privateCHashArray *casted = (privateCHashArray*)(element->value);
+        return casted->size;
+    }
+
+    return -1;
+
+}
+
 int CHash_set_item_value(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool *value){
 
     if(element->type == PRIVATE_CHASH_ARRAY_ITEM){

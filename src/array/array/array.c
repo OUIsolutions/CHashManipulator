@@ -42,19 +42,7 @@ int CHash_append(ChashArray_OR_CHashObject *array, CHashAny *element){
     return 0;
 }
 
-long CHash_get_size(ChashArray_OR_CHashObject *element){
 
-    if(element->type == CHASH_STRING){
-        return (long)strlen(CHash_get_string(element));
-    }
-    if(element->type == CHASH_ARRAY || element->type == CHASH_OBJECT){
-        privateCHashArray *casted = (privateCHashArray*)(element->value);
-        return casted->size;
-    }
-
-    return -1;
-
-}
 void private_CHashArray_print(CHashArray *array){
     privateCHashArray  *self = (privateCHashArray*)(array->value);
     for(int i = 0 ; i < self->size;i++){
