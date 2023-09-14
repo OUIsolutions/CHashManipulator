@@ -11,9 +11,13 @@ CHashArray  * create_array(){
     CHashArrayItem  *a1 = CHashArray_new_item(element);
     CHash_set_item_value(a1, newCHashLong(2444));
 
+    long value = CHash_get_long(a1);
 
     CHash_append(element, newCHashString("aaaaaaaa"));
     CHash_append(element, newCHashLong(20));
+
+    
+
     CHash_append(element, newCHashLong(43));
 
 
