@@ -1,7 +1,7 @@
 #include "src/one.h"
 
 CHashObject * teste(){
-    privateCHashAny * t = malloc(sizeof(privateCHashAny));
+    CHashAny * t = malloc(sizeof(CHashAny));
     t->type = 2;
     t->value = strdup("aaaaaaaaaa");
     return t;

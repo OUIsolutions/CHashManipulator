@@ -1,11 +1,17 @@
 
-typedef struct privateChashArray{
+typedef struct privateCHashArray{
     long size;
-    privateCHashAny *elements;
-}privateChashArray;
+    CHashAny *elements;
+}privateCHashArray;
+
+privateCHashArray * privateChashArray_new();
+
+CHashArray  * newCHashArray();
+
+CHashObject * newCHashObject();
 
 
-
+void CHashArray_append(CHashArray *self, CHashArrayItem *element);
 
 
 
