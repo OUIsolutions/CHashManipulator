@@ -23,6 +23,7 @@ CHashArray  * create_array(){
 
 int main(){
     CHashArray * element = create_array();
+    long size = CHash_get_size(element);
     CHashPrint(element);
 
 
