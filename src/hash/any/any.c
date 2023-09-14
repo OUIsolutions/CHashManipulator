@@ -10,6 +10,11 @@ CHashAny * privateCHashAny_new(int type, void *value){
 }
 
 ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool * privateCHashAny_get_primitive(CHashAny *element){
+    
+    if(!element){
+        return privateCHashAny_new(CHASH_NULL,NULL);
+    }
+    
     if(element->type ==PRIVATE_CHASH_ARRAY_ITEM){
         privateCHashArrayItem *casted = (privateCHashArrayItem*)(element->value);
         return casted->value;
@@ -34,6 +39,7 @@ long CHash_get_size(ChashArray_OR_CHashObject_OR_CHashString *element){
 }
 
 int CHash_set_item_value(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool *value){
+
 
     if(element->type == PRIVATE_CHASH_ARRAY_ITEM){
         privateCHashArrayItem *casted = (privateCHashArrayItem*)(element->value);

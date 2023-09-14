@@ -9,9 +9,7 @@ CHashArray  * create_array(){
 
 
     CHashArrayItem  * t = CHash_get_item_from_position(element,-1);
-    CHash_set_item_value(t, newCHashLong(20));
-
-    
+    CHash_set_item_value(t,NULL);
 
 
 
