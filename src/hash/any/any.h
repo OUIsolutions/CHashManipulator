@@ -1,7 +1,8 @@
 
 
 enum {
-    CHASH_UNDEFINED,
+    CHASH_NOT_EXIST,
+    CHASH_NULL,
     CHASH_OBJECT,
     CHASH_ARRAY,
     CHASH_LONG,

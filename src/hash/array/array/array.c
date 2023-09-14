@@ -41,7 +41,31 @@ int CHash_append(ChashArray_OR_CHashObject *array, CHashAny *element){
     self->size+=1;
     return 0;
 }
+CHashArrayItem_OR_CHashKeyVal  *CHash_get_item_from_position(ChashArray_OR_CHashObject *array,long position){
 
+
+    long size = CHash_get_size(array);
+    long converted_position = position;
+
+
+    if(position < 0){
+        converted_position = size + position;
+    }
+
+    if(converted_position < 0){
+        converted_position = 0;
+    }
+
+    if(converted_position >=size){
+        CHashArray * new_element = CHashArray_new_item(array);
+        return new_element;
+    }
+
+    privateCHashArray  *self = (privateCHashArray*)(array->value);
+    return self->elements[converted_position];
+
+
+}
 
 void private_CHashArray_print(CHashArray *array){
     privateCHashArray  *self = (privateCHashArray*)(array->value);
@@ -51,6 +75,8 @@ void private_CHashArray_print(CHashArray *array){
         CHashPrint(raw);
     }
 }
+
+
 CHashArrayItem * CHashArray_new_item(CHashArray *array){
     CHashArrayItem *new_element  = privateCHashAny_new(
             PRIVATE_CHASH_ARRAY_ITEM,
