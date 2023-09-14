@@ -56,6 +56,7 @@ CHashArrayItem_OR_CHashKeyVal  *CHash_get_item_from_position(ChashArray_OR_CHash
         converted_position = 0;
     }
 
+
     if(converted_position >=size){
         CHashArray * new_element = CHashArray_new_item(array);
         return new_element;
