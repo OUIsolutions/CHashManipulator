@@ -9,7 +9,7 @@ CHashAny * privateCHashAny_new(int type, void *value){
     return self;
 }
 
-ChashPrimitive * privateCHashAny_get_primitive(CHashAny *element){
+CHashPrimitive * privateCHashAny_get_primitive(CHashAny *element){
     if(element->type ==PRIVATE_CHASH_ARRAY_ITEM){
         privateCHashArrayItem *casted = (privateCHashArrayItem*)(element->value);
         return casted->value;
@@ -29,6 +29,7 @@ int CHash_set_value(CHashArrayItem_OR_CHashKeyVal *element, CHashAny *value){
 
     return -1;
 }
+
 
 
 long CHash_get_size(CHashArray *element){

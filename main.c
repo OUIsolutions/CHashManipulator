@@ -12,9 +12,9 @@ CHashArray  * create_array(){
     CHash_set_value(a1, newCHashLong(2444));
 
 
-    CHashArray_append(element, newCHashString("aaaaaaaa"));
-    CHashArray_append(element, newCHashLong(20));
-    CHashArray_append(element, newCHashLong(43));
+    CHash_append(element, newCHashString("aaaaaaaa"));
+    CHash_append(element, newCHashLong(20));
+    CHash_append(element, newCHashLong(43));
 
 
     return element;

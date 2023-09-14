@@ -12,7 +12,7 @@ CHashArray  * newCHashArray(){
     return privateCHashAny_new(CHASH_ARRAY,self);
 }
 
-int CHashArray_append(CHashArray *array, CHashAny *element){
+int CHash_append(ChashArray_OR_CHashObject *array, CHashAny *element){
 
     privateCHashArray  *self = (privateCHashArray*)(array->value);
     self->elements = realloc(self->elements,(self->size +1) * sizeof(CHashAny**));
@@ -40,7 +40,6 @@ int CHashArray_append(CHashArray *array, CHashAny *element){
     self->size+=1;
     return 0;
 }
-
 void private_CHashArray_print(CHashArray *array){
     privateCHashArray  *self = (privateCHashArray*)(array->value);
     for(int i = 0 ; i < self->size;i++){
@@ -54,7 +53,7 @@ CHashArrayItem * CHashArray_new_item(CHashArray *array){
             PRIVATE_CHASH_ARRAY_ITEM,
             privateCHashArrayItem_new(CHash_get_size(array))
     );
-    CHashArray_append(array, new_element);
+    CHash_append(array, new_element);
     return new_element;
 }
 
