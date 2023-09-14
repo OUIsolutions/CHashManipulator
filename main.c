@@ -8,12 +8,10 @@ CHashArray  * create_array(){
     CHashArray * element = newCHashArray();
 
 
-    CHash_append(element, newCHashString("aaaaaaaa"));
-    CHash_append(element, newCHashLong(20));
-    CHash_append(element, newCHashLong(43));
+    CHashArrayItem  * t = CHash_get_item_from_position(element,-1);
+    CHash_set_item_value(t, newCHashLong(20));
 
 
-    CHash_get_item_from_position(element,-2);
 
 
 
