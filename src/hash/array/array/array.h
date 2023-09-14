@@ -13,7 +13,7 @@ CHashArray  * newCHashArray();
 void private_CHashArray_print(CHashArray *array);
 
 
-int CHash_append_value_to_Array_OR_Object(ChashArray_OR_CHashObject *array, CHashAny *element);
+int CHashArray_append(ChashArray_OR_CHashObject *array, CHashAny *element);
 
 CHashArrayItem_OR_CHashKeyVal  *CHash_get_item_from_position(ChashArray_OR_CHashObject *array,long position);
 

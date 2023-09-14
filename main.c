@@ -7,12 +7,11 @@ CHashArray  * create_array(){
 
     CHashArray * element = newCHashArray();
 
+    CHashArray_append(element, newCHashString("aaaaaaaaaa"));
+    CHashArray_append(element, newCHashString("aaaaaaaaaa"));
+    CHashArray_append(element, newCHashString("aaaaaaaaaa"));
 
-    CHash_append_value_to_Array_OR_Object(element, newCHashString("aaaaaaaaaa"));
-    CHash_append_value_to_Array_OR_Object(element, newCHashString("aaaaaaaaaa"));
-    CHash_append_value_to_Array_OR_Object(element, newCHashString("aaaaaaaaaa"));
 
-    
     CHashArrayItem  *t3 = CHashArray_new_item(element);
 
 
