@@ -12,15 +12,49 @@ CHashArray  * newCHashArray(){
     return privateCHashAny_new(CHASH_ARRAY,self);
 }
 
-CHashArrayItem * CHashArray_new_item(CHashArray *self){
-    privateCHashArray  *casted_self = (privateCHashArray*)(self->value);
-    casted_self->elements = realloc(casted_self->elements,(casted_self->size +1) * sizeof(CHashAny**));
+int CHashArray_append(CHashArray *array, CHashAny *element){
+
+    privateCHashArray  *self = (privateCHashArray*)(array->value);
+    self->elements = realloc(self->elements,(self->size +1) * sizeof(CHashAny**));
+
+    if(element->type == PRIVATE_CHASH_ARRAY_ITEM || element->type == PRIVATE_CHASH_KEY_VAL){
+
+        if(element->type == PRIVATE_CHASH_ARRAY_ITEM){
+            privateCHashArrayItem   *casted = (privateCHashArrayItem*)element->value;
+            casted->position = self->size;
+        }
+
+        self->elements[self->size] = element;
+    }
+
+    else{
+        CHashArrayItem *new_element  = privateCHashAny_new(
+                PRIVATE_CHASH_ARRAY_ITEM,
+                privateCHashArrayItem_new(self->size)
+        );
+        CHash_set_value(new_element, element);
+        self->elements[self->size] = new_element;
+    }
+
+
+    self->size+=1;
+    return 0;
+}
+
+void private_CHashArray_print(CHashArray *array){
+    privateCHashArray  *self = (privateCHashArray*)(array->value);
+    for(int i = 0 ; i < self->size;i++){
+        CHashAny *current = self->elements[i];
+        ChashPrimitive *raw = privateCHashAny_get_primitive(current);
+        CHashPrint(raw);
+    }
+}
+CHashArrayItem * CHashArray_new_item(CHashArray *array){
     CHashArrayItem *new_element  = privateCHashAny_new(
-        PRIVATE_CHASH_ARRAY_ITEM,
-        privateCHashArrayItem_new(casted_self->size)
+            PRIVATE_CHASH_ARRAY_ITEM,
+            privateCHashArrayItem_new(CHash_get_size(array))
     );
-    casted_self->elements[casted_self->size] = new_element;
-    casted_self->size+=1;
+    CHashArray_append(array, new_element);
     return new_element;
 }
 

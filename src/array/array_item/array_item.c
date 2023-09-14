@@ -6,3 +6,4 @@ privateCHashArrayItem * privateCHashArrayItem_new(long position){
     self->position = position;
     return self;
 }
+

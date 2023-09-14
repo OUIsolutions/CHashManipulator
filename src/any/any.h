@@ -16,12 +16,19 @@ typedef struct CHashAny{
     int type;
     void *value;
 }CHashAny;
+typedef  CHashAny ChashPrimitive;
 
 CHashAny * privateCHashAny_new(int type, void *value);
 
-CHashAny * privateCHashAny_get_value_from_keyvall_or_array_item(CHashAny *element);
+ChashPrimitive * privateCHashAny_get_primitive(CHashAny *element);
 
-void CHash_set(CHashAny *element,CHashAny *value);
+typedef CHashAny CHashArrayItem_OR_CHashKeyVal;
+
+int CHash_set_value(CHashArrayItem_OR_CHashKeyVal *element, CHashAny *value);
+
+void CHashPrint(CHashAny *element);
+
+long CHash_get_size(CHashAny *self);
 
 
 

@@ -1,6 +1,6 @@
 
 typedef CHashAny CHashLong;
 
-long CHashGetLong(CHashAny *element);
+long CHash_get_long(CHashAny *element);
 
 CHashLong * newCHashLong(long value);

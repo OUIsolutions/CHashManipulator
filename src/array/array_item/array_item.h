@@ -8,3 +8,4 @@ typedef struct privateCHashArrayItem{
 }privateCHashArrayItem;
 
 privateCHashArrayItem * privateCHashArrayItem_new(long position);
+

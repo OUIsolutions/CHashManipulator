@@ -11,8 +11,9 @@ privateCHashArray * privateChashArray_new();
 
 CHashArray  * newCHashArray();
 
-
-CHashArrayItem * CHashArray_new_item(CHashArray *self);
-
+int CHashArray_append(CHashArray *array, CHashAny *element);
 
 
+void private_CHashArray_print(CHashArray *array);
+
+CHashArrayItem * CHashArray_new_item(CHashArray *array);
