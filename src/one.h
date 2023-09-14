@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef LibName
-#define LibName
+#ifndef CHashManipulator
+#define CHashManipulator
 #include "imports.h"
 #include "declaration.h"
 #include "definition.h"

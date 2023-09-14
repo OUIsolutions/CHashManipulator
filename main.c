@@ -1,5 +1,4 @@
-#include "LibName.h"
-#include "teste.c"
+#include "src/one.h"
 
 int main(){
 
