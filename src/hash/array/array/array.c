@@ -41,6 +41,7 @@ int CHash_append(ChashArray_OR_CHashObject *array, CHashAny *element){
     self->size+=1;
     return 0;
 }
+
 CHashArrayItem_OR_CHashKeyVal  *CHash_get_item_from_position(ChashArray_OR_CHashObject *array,long position){
 
 
