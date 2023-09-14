@@ -23,6 +23,7 @@ long CHash_get_size(ChashArray_OR_CHashObject_OR_CHashString *element){
     if(element->type == CHASH_STRING){
         return (long)strlen(CHash_get_string(element));
     }
+
     if(element->type == CHASH_ARRAY || element->type == CHASH_OBJECT){
         privateCHashArray *casted = (privateCHashArray*)(element->value);
         return casted->size;

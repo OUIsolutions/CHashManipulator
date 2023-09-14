@@ -1,6 +1,6 @@
 
 
-char * CHash_get_string(CHashAny *element){
+char * CHash_get_string(CHashArrayItem_OR_CHashKeyVal *element){
     CHashAny * raw = privateCHashAny_get_primitive(element);
     if(raw->type != CHASH_STRING){
         return 0;
@@ -11,4 +11,5 @@ char * CHash_get_string(CHashAny *element){
 CHashString * newCHashString(char *value){
     return privateCHashAny_new(CHASH_STRING, strdup(value));
 }
+
 

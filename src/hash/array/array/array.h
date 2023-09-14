@@ -10,10 +10,10 @@ privateCHashArray * privateChashArray_new();
 
 CHashArray  * newCHashArray();
 
+void private_CHashArray_print(CHashArray *array);
+
 
 int CHash_append(ChashArray_OR_CHashObject *array, CHashAny *element);
 
-
-void private_CHashArray_print(CHashArray *array);
-
 CHashArrayItem * CHashArray_new_item(CHashArray *array);
+
