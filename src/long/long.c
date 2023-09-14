@@ -1,8 +1,13 @@
 
 
 long CHashGetLong(CHashAny *element){
-    return *(long*)element->value;
+    CHashAny * raw = privateCHashAny_get_value_from_keyvall_or_array_item(element);
+    if(raw->type != CHASH_LONG){
+        return 0;
+    }
+    return *(long*)raw->value;
 }
+
 
 
 CHashLong * newCHashLong(long value){

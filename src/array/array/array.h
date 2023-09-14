@@ -4,17 +4,15 @@ typedef CHashAny CHashObject;
 
 typedef struct privateCHashArray{
     long size;
-    CHashAny *elements;
+    CHashArrayItem **elements;
 }privateCHashArray;
 
 privateCHashArray * privateChashArray_new();
 
 CHashArray  * newCHashArray();
 
-CHashObject * newCHashObject();
 
-
-void CHashArray_append(CHashArray *self, CHashArrayItem *element);
+CHashArrayItem * CHashArray_new_item(CHashArray *self);
 
 
 
