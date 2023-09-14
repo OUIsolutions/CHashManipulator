@@ -18,7 +18,7 @@ ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool * privateCHash
     return element;
 }
 
-int CHash_set_value(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool *value){
+int CHash_set_item_value(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool *value){
 
     if(element->type == PRIVATE_CHASH_ARRAY_ITEM){
         privateCHashArrayItem *casted = (privateCHashArrayItem*)(element->value);

@@ -30,7 +30,7 @@ CHashAny * privateCHashAny_new(int type, void *value);
 
 ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool * privateCHashAny_get_primitive(CHashAny *element);
 
-int CHash_set_value(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool *value);
+int CHash_set_item_value(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool *value);
 
 
 void CHashPrint(CHashAny *element);
