@@ -9,10 +9,10 @@ CHashArray  * create_array(){
 
 
     CHashArrayItem  *t1  = CHashArray_new_item(element);
-    CHash_set_item_value(t1, newCHashString("aaaaaaaaaa"));
-
+    CHash_set_value_to_ArrayItem_OR_KeyVal(t1, newCHashString("aaaaaaaaaa"));
     CHashArrayItem  *t2 = CHashArray_new_item(element);
-    CHash_set_item_value(t2, newCHashString("aaaaaaaaaa"));
+    CHash_set_value_to_ArrayItem_OR_KeyVal(t2, newCHashString("aaaaaaaaaa"));
+
 
     CHashArrayItem  *t3 = CHashArray_new_item(element);
 

@@ -33,7 +33,7 @@ int CHash_append(ChashArray_OR_CHashObject *array, CHashAny *element){
                 PRIVATE_CHASH_ARRAY_ITEM,
                 privateCHashArrayItem_new(self->size)
         );
-        CHash_set_item_value(new_element, element);
+        CHash_set_value_to_ArrayItem_OR_KeyVal(new_element, element);
         self->elements[self->size] = new_element;
     }
 

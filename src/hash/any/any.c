@@ -40,7 +40,7 @@ long CHash_get_size(ChashArray_OR_CHashObject_OR_CHashString *element){
 
 }
 
-int CHash_set_item_value(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL *value){
+int CHash_set_value_to_ArrayItem_OR_KeyVal(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL *value){
 
 
     if(element->type == PRIVATE_CHASH_ARRAY_ITEM){
