@@ -9,11 +9,13 @@ CHashAny * privateCHashAny_new(int type, void *value){
     return self;
 }
 
-ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool * privateCHashAny_get_primitive(CHashAny *element){
+ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL * privateCHashAny_get_primitive(CHashAny *element){
     
     if(!element){
-        return privateCHashAny_new(CHASH_NULL,NULL);
+        return privateCHashAny_new(CHASH_NULL, NULL);
     }
+
+
     
     if(element->type ==PRIVATE_CHASH_ARRAY_ITEM){
         privateCHashArrayItem *casted = (privateCHashArrayItem*)(element->value);
@@ -38,7 +40,7 @@ long CHash_get_size(ChashArray_OR_CHashObject_OR_CHashString *element){
 
 }
 
-int CHash_set_item_value(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool *value){
+int CHash_set_item_value(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL *value){
 
 
     if(element->type == PRIVATE_CHASH_ARRAY_ITEM){
@@ -65,6 +67,13 @@ void CHashPrint(CHashAny *element){
         char *value = CHash_get_string_from_item(element);
         printf("%s\n",value);
     }
+
+
+    if(element->type == CHASH_NULL){
+        printf("null\n");
+    }
+
+    
 
     if(element->type == CHASH_ARRAY){
         private_CHashArray_print(element);
