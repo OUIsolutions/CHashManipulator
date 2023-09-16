@@ -8,3 +8,6 @@ CHashArrayItem * private_newCHashArrayItem(long position){
     return self;
 }
 
+int CHashArrayItem_set(CHashArrayItem *self,CHashAny *element){
+    self->value = element;
+}

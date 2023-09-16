@@ -9,10 +9,8 @@ typedef struct CHashArray{
 
 CHashArray  * newCHashArray();
 
-void private_CHashArray_print(CHashArray *array);
+int CHashArray_append(CHashArray *self, CHashAny *element);
 
-int CHashArray_append(CHashArray *array, CHashAny *element);
-
-CHashArrayItem_OR_CHashKeyVal  *CHashArray_get(ChashArray_OR_CHashObject *iterable, long position);
+CHashArrayItem *CHashArray_get(CHashArray  *self, long position);
 
 

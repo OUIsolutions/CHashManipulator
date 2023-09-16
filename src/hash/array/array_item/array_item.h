@@ -9,3 +9,4 @@ typedef struct CHashArrayItem{
 
 CHashArrayItem * private_newCHashArrayItem(long position);
 
+int CHashArrayItem_set(CHashArrayItem *self,CHashAny *element);
