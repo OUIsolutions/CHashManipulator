@@ -1,10 +1,11 @@
 
 
-typedef struct privateCHashArrayItem{
+typedef struct CHashArrayItem{
     long position;
     CHashAny *value;
 
-}privateCHashArrayItem;
+}CHashArrayItem;
 
-privateCHashArrayItem * privateCHashArrayItem_new(long position);
+
+CHashArrayItem * private_newCHashArrayItem(long position);
 

@@ -1,10 +1,10 @@
 
 
-privateCHashArrayItem * privateCHashArrayItem_new(long position){
-    privateCHashArrayItem * self = (privateCHashArrayItem*) malloc(sizeof (privateCHashArrayItem));
-    *self = (privateCHashArrayItem){0};
+CHashArrayItem * private_newCHashArrayItem(long position){
+    CHashArrayItem * self = (CHashArrayItem*) malloc(sizeof (CHashArrayItem));
+    *self = (CHashArrayItem){0};
     self->position = position;
-    self->value = privateCHashAny_new(CHASH_NULL,NULL);
+    self->value = private_newCHashAny(CHASH_NULL, NULL);
     return self;
 }
 

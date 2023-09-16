@@ -1,7 +1,7 @@
 
 
 CHashObject * newCHashObject(){
-    privateCHashArray  *self = privateChashArray_new();
+    CHashArray  *self = privateChashArray_new();
     return privateCHashAny_new(CHASH_OBJECT,self);
 }
 

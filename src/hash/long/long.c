@@ -15,6 +15,6 @@ long CHash_get_long(CHashArrayItem_OR_CHashKeyVal *element){
 CHashLong * newCHashLong(long value){
     long *value_p = malloc(sizeof (long ));
     *value_p = value;
-    return privateCHashAny_new(CHASH_LONG,value_p);
+    return private_newCHashAny(CHASH_LONG, value_p);
 }
 

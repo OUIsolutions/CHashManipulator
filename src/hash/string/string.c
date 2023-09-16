@@ -9,7 +9,7 @@ char * CHash_get_string(CHashArrayItem_OR_CHashKeyVal *element){
 }
 
 CHashString * newCHashString(char *value){
-    return privateCHashAny_new(CHASH_STRING, strdup(value));
+    return private_newCHashAny(CHASH_STRING, strdup(value));
 }
 
 

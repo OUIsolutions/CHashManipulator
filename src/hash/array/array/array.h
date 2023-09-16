@@ -1,19 +1,18 @@
 
 
 
-typedef struct privateCHashArray{
+typedef struct CHashArray{
     long size;
     CHashArrayItem **elements;
-}privateCHashArray;
+}CHashArray;
 
-privateCHashArray * privateChashArray_new();
 
 CHashArray  * newCHashArray();
 
 void private_CHashArray_print(CHashArray *array);
 
-int CHash_append(CHashArray *iterable, CHashAny *element);
+int CHashArray_append(CHashArray *array, CHashAny *element);
 
-CHashArrayItem_OR_CHashKeyVal  *CHash_get_from_index(ChashArray_OR_CHashObject *iterable, long position);
+CHashArrayItem_OR_CHashKeyVal  *CHashArray_get(ChashArray_OR_CHashObject *iterable, long position);
 
 
