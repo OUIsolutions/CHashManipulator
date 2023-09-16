@@ -6,6 +6,6 @@ typedef struct privateCHashKeyVal{
 
 }privateCHashKeyVal;
 
-privateCHashKeyVal * privateCHashKeyVal_new(char *key);
+privateCHashKeyVal * privateCHashKeyVal_new(const char *key);
 
 char * CHash_get_key(CHashKeyVal *keyval);

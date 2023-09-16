@@ -28,7 +28,7 @@ ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL * priv
 long CHash_get_size(ChashArray_OR_CHashObject_OR_CHashString *element){
 
     if(element->type == CHASH_STRING){
-        return (long)strlen(CHash_get_string_from_item(element));
+        return (long)strlen(CHash_get_string(element));
     }
 
     if(element->type == CHASH_ARRAY || element->type == CHASH_OBJECT){
@@ -59,12 +59,12 @@ int CHash_set(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_O
 
 void CHashPrint(CHashAny *element){
     if(element->type == CHASH_LONG){
-        long value = CHash_get_long_from_item(element);
+        long value = CHash_get_long(element);
         printf("%ld\n",value);
     }
 
     if(element->type == CHASH_STRING){
-        char *value = CHash_get_string_from_item(element);
+        char *value = CHash_get_string(element);
         printf("%s\n",value);
     }
 

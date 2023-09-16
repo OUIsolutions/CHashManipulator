@@ -1,11 +1,13 @@
 
 
-long CHash_get_long_from_item(CHashArrayItem_OR_CHashKeyVal *element){
+long CHash_get_long(CHashArrayItem_OR_CHashKeyVal *element){
     CHashAny * raw = privateCHashAny_get_primitive(element);
     if(raw->type != CHASH_LONG){
         return 0;
     }
+
     return *(long*)raw->value;
+
 }
 
 

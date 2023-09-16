@@ -1,6 +1,6 @@
 
 
-privateCHashKeyVal * privateCHashKeyVal_new(char *key){
+privateCHashKeyVal * privateCHashKeyVal_new(const char *key){
     privateCHashKeyVal * self = (privateCHashKeyVal*) malloc(sizeof (privateCHashKeyVal));
     *self = (privateCHashKeyVal){0};
     self->key = strdup(key);

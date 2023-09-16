@@ -15,7 +15,11 @@ CHashKeyVal * CHashObject_get_by_key(CHashObject * object, const char *key){
                 return element;
             }
         }
-    }
-
+    }CHashKeyVal * new_element = privateCHashAny_new(
+            PRIVATE_CHASH_KEY_VAL,
+            privateCHashKeyVal_new(key)
+            );
+    CHash_append(object, new_element);
+    return new_element;
 
 }
