@@ -14,6 +14,7 @@ CHashArray  * create_array(){
         int type = CHash_get_type(current);
         if(type == CHASH_STRING){
             char *value = CHash_get_string(current);
+            
         }
 
     }
