@@ -76,15 +76,6 @@ CHashArrayItem_OR_CHashKeyVal  *CHash_get_from_index(ChashArray_OR_CHashObject *
 
 }
 
-void private_CHashArray_print(CHashArray *array){
-    privateCHashArray  *self = (privateCHashArray*)(array->value);
-    for(int i = 0 ; i < self->size;i++){
-        CHashAny *current = self->elements[i];
-        ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL *raw = privateCHashAny_get_primitive(current);
-        CHashPrint(raw);
-    }
-
-}
 
 
 

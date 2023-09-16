@@ -9,26 +9,28 @@ CHashAny * privateCHashAny_new(int type, void *value){
     return self;
 }
 
-ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL * privateCHashAny_get_primitive(CHashAny *element){
-    
+
+CHashAny * privateCHashAny_get_primitive(CHashAny *element){
     if(!element){
         return privateCHashAny_new(CHASH_NULL, NULL);
     }
 
-
-    
     if(element->raw_type == PRIVATE_CHASH_ARRAY_ITEM){
         privateCHashArrayItem *casted = (privateCHashArrayItem*)(element->value);
+        return casted->value;
+    }
+    if(element->raw_type == PRIVATE_CHASH_KEY_VAL){
+        privateCHashKeyVal *casted = (privateCHashKeyVal*)(element->value);
         return casted->value;
     }
 
     return element;
 }
 
-long CHash_get_size(ChashArray_OR_CHashObject_OR_CHashString *element){
+long CHash_get_size(CHashIterable *element){
 
     if(element->raw_type == CHASH_STRING){
-        return (long)strlen(CHash_get_string(element));
+        return (long)strlen(CHash_toString(element));
     }
 
     if(element->raw_type == CHASH_ARRAY || element->raw_type == CHASH_OBJECT){
@@ -40,51 +42,17 @@ long CHash_get_size(ChashArray_OR_CHashObject_OR_CHashString *element){
 
 }
 int  CHash_get_type(CHashAny *element){
-    if(element->raw_type == PRIVATE_CHASH_KEY_VAL || element->raw_type == PRIVATE_CHASH_ARRAY_ITEM){
-        CHashAny  *raw = privateCHashAny_get_primitive(element);
-        return raw->raw_type;
-    }
-    return element->raw_type;
-
+    CHashAny  *raw = privateCHashAny_get_primitive(element);
+    return raw->raw_type;
 }
 
-int CHash_set(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL *value){
+int CHash_set(CHashAny *element, CHashAny *value){
 
-
-    if(element->raw_type == PRIVATE_CHASH_ARRAY_ITEM){
-        privateCHashArrayItem *casted = (privateCHashArrayItem*)(element->value);
-        casted->value = privateCHashAny_get_primitive(value);
-        return 0;
-    }
-
-
+    CHashAny  *raw = privateCHashAny_get_primitive(element);
+    raw->value = value;
     return -1;
 }
 
 
 
 
-
-void CHashPrint(CHashAny *element){
-    if(element->raw_type == CHASH_LONG){
-        long value = CHash_get_long(element);
-        printf("%ld\n",value);
-    }
-
-    if(element->raw_type == CHASH_STRING){
-        char *value = CHash_get_string(element);
-        printf("%s\n",value);
-    }
-
-
-    if(element->raw_type == CHASH_NULL){
-        printf("null\n");
-    }
-
-    
-
-    if(element->raw_type == CHASH_ARRAY){
-        private_CHashArray_print(element);
-    }
-
-}

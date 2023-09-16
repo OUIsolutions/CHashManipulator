@@ -1,5 +1,5 @@
 
 
-char * CHash_get_string(CHashArrayItem_OR_CHashKeyVal *element);
+char * CHash_toString(CHashAny *element);
 
-CHashString * newCHashString(char *value);
+CHashAny * newCHashString(char *value);
