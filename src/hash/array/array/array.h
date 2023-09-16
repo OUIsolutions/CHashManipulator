@@ -13,9 +13,9 @@ CHashArray  * newCHashArray();
 void private_CHashArray_print(CHashArray *array);
 
 
-int CHashArray_append(ChashArray_OR_CHashObject *array, CHashAny *element);
+int CHash_append(CHashArray *iterable, CHashAny *element);
 
-CHashArrayItem_OR_CHashKeyVal  *CHash_get_item_from_position(ChashArray_OR_CHashObject *array,long position);
+CHashArrayItem_OR_CHashKeyVal  *CHash_get_from_index(ChashArray_OR_CHashObject *iterable, long position);
 
 
 CHashArrayItem * CHashArray_new_item(CHashArray *array);

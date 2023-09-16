@@ -23,7 +23,9 @@ typedef CHashAny ChashArray_OR_CHashObject;
 typedef CHashAny CHashArrayItem_OR_CHashKeyVal;
 typedef CHashAny ChashArray_OR_CHashObject_OR_CHashString;
 typedef CHashAny CHashArray;
+typedef CHashAny CHashArrayItem;
 typedef CHashAny CHashObject;
+typedef CHashAny CHashKeyVal;
 typedef CHashAny CHashString;
 
 CHashAny * privateCHashAny_new(int type, void *value);
@@ -32,7 +34,7 @@ ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL * priv
 
 long CHash_get_size(ChashArray_OR_CHashObject_OR_CHashString *self);
 
-int CHash_set_value_to_ArrayItem_OR_KeyVal(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL *value);
+int CHash_set(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL *value);
 
 
 void CHashPrint(CHashAny *element);

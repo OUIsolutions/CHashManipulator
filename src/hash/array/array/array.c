@@ -12,9 +12,9 @@ CHashArray  * newCHashArray(){
     return privateCHashAny_new(CHASH_ARRAY,self);
 }
 
-int CHashArray_append(CHashArray *array, CHashAny *element){
+int CHash_append(ChashArray_OR_CHashObject *iterable, CHashAny *element){
 
-    privateCHashArray  *self = (privateCHashArray*)(array->value);
+    privateCHashArray  *self = (privateCHashArray*)(iterable->value);
     self->elements = realloc(self->elements,(self->size +1) * sizeof(CHashAny**));
 
     if(element->type == PRIVATE_CHASH_ARRAY_ITEM || element->type == PRIVATE_CHASH_KEY_VAL){
@@ -33,7 +33,7 @@ int CHashArray_append(CHashArray *array, CHashAny *element){
                 PRIVATE_CHASH_ARRAY_ITEM,
                 privateCHashArrayItem_new(self->size)
         );
-        CHash_set_value_to_ArrayItem_OR_KeyVal(new_element, element);
+        CHash_set(new_element, element);
         self->elements[self->size] = new_element;
     }
 
@@ -42,10 +42,10 @@ int CHashArray_append(CHashArray *array, CHashAny *element){
     return 0;
 }
 
-CHashArrayItem_OR_CHashKeyVal  *CHash_get_item_from_position(ChashArray_OR_CHashObject *array,long position){
+CHashArrayItem_OR_CHashKeyVal  *CHash_get_from_index(ChashArray_OR_CHashObject *iterable, long position){
 
 
-    long size = CHash_get_size(array);
+    long size = CHash_get_size(iterable);
     long converted_position = position;
 
 
@@ -59,11 +59,11 @@ CHashArrayItem_OR_CHashKeyVal  *CHash_get_item_from_position(ChashArray_OR_CHash
 
 
     if(converted_position >=size){
-        CHashArray * new_element = CHashArray_new_item(array);
+        CHashArray * new_element = CHashArray_new_item(iterable);
         return new_element;
     }
 
-    privateCHashArray  *self = (privateCHashArray*)(array->value);
+    privateCHashArray  *self = (privateCHashArray*)(iterable->value);
     return self->elements[converted_position];
 
 
@@ -85,7 +85,7 @@ CHashArrayItem * CHashArray_new_item(CHashArray *array){
             PRIVATE_CHASH_ARRAY_ITEM,
             privateCHashArrayItem_new(CHash_get_size(array))
     );
-    CHashArray_append(array, new_element);
+    CHash_append(array, new_element);
     return new_element;
 }
 
