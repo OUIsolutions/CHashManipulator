@@ -10,7 +10,7 @@ privateCHashKeyVal * privateCHashKeyVal_new(const char *key){
 
 
 char * CHash_get_key(CHashKeyVal *keyval){
-    if(keyval->type != PRIVATE_CHASH_KEY_VAL){
+    if(keyval->raw_type != PRIVATE_CHASH_KEY_VAL){
         return NULL;
     }
     privateCHashKeyVal  *element = (privateCHashKeyVal*)keyval->value;
