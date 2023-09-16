@@ -12,7 +12,7 @@ CHashAny * privateCHashAny_new(int type, void *value){
 
 CHashAny * privateCHashAny_get_primitive(CHashAny *element){
     if(!element){
-        return privateCHashAny_new(CHASH_NULL, NULL);
+        return NULL;
     }
 
     if(element->raw_type == PRIVATE_CHASH_ARRAY_ITEM){
@@ -29,6 +29,9 @@ CHashAny * privateCHashAny_get_primitive(CHashAny *element){
 
 long CHash_get_size(CHashIterable *element){
 
+    if(!element){
+        return -1;
+    }
     if(element->raw_type == CHASH_STRING){
         return (long)strlen(CHash_toString(element));
     }
@@ -43,14 +46,21 @@ long CHash_get_size(CHashIterable *element){
 }
 int  CHash_get_type(CHashAny *element){
     CHashAny  *raw = privateCHashAny_get_primitive(element);
+    if(!raw){
+        return -1;
+    }
     return raw->raw_type;
 }
 
 int CHash_set(CHashAny *element, CHashAny *value){
 
     CHashAny  *raw = privateCHashAny_get_primitive(element);
+    if(!raw){
+        return -1;
+    }
     raw->value = value;
-    return -1;
+    return 0;
+
 }
 
 

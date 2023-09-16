@@ -30,8 +30,7 @@ long CHash_get_size(CHashIterable *element);
 
 int CHash_get_type(CHashAny *element);
 
-int CHash_set(CHashArrayItem_OR_CHashKeyVal *element, ChashArray_OR_CHashOject_OR_CHashLong_OR_CHashString_OR_CHashBool_OR_NULL *value);
-
+int CHash_set(CHashAny *element, CHashAny *value);
 
 
 

@@ -8,7 +8,7 @@ CHashObject * newCHashObject(){
 CHashKeyVal * CHashObject_get_by_key(CHashObject * object, const char *key){
     long size = CHash_get_size(object);
     for(int i = 0; i < size; i ++){
-        CHashKeyVal  *element = CHash_get_from_index(object,i);
+        CHashKeyVal  *element = privateCHashArray_get_at_index(object, i);
         char *current_key = CHash_get_key(element);
         if(current_key){
             if(strcmp(current_key,key) ==0){
@@ -19,7 +19,7 @@ CHashKeyVal * CHashObject_get_by_key(CHashObject * object, const char *key){
             PRIVATE_CHASH_KEY_VAL,
             privateCHashKeyVal_new(key)
             );
-    CHash_append(object, new_element);
+    privateCHashArray_append(object, new_element);
     return new_element;
 
 }
