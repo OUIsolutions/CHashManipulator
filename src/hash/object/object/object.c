@@ -46,7 +46,6 @@ CHashAny * CHashObject_get_by_key(CHashObject * object, const char *key){
     if(current){
         return current;
     }
-
     //if not exist create an new key and returns it
     privateCHashArray  *self = (privateCHashArray*)(object->value);
     self->elements = realloc(self->elements,(self->size +1) * sizeof(CHashAny**));
