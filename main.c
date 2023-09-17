@@ -23,6 +23,7 @@ CHashArray  * create(){
 
 int main(){
 
-
+    CHashArray *e = create();
+    CHash_print(e);
 
 }

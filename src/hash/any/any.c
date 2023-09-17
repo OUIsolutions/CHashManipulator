@@ -55,6 +55,12 @@ int  CHash_get_type(CHashAny *element){
     return raw->raw_type;
 }
 
+void CHash_print(CHashAny *element){
+    char * value = CHash_dumps_to_json_string(element);
+    printf("%s",value);
+    free(value);
+
+}
 int CHash_set(CHashAny *element, CHashAny *value){
 
 

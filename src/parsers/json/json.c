@@ -4,7 +4,6 @@ cJSON * privateCHash_dumps_json_object(CHashObject * object){
 }
 
 cJSON * privateCHash_dumps_json_array(CHashArray * array){
-
     long size = CHash_get_size(array);
     cJSON *element = cJSON_CreateArray();
     for(int i = 0; i < size; i++){
@@ -32,6 +31,9 @@ cJSON * privateCHash_dumps_to_json_element(CHashAny *element){
         long value  = CHash_toLong(element);
         return cJSON_CreateNumber((double)value);
     }
+
+    return cJSON_CreateNull();
+
 }
 
 char * CHash_dumps_to_json_string(CHashAny * element){

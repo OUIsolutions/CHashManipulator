@@ -29,6 +29,8 @@ long CHash_get_size(CHashIterable *element);
 
 int CHash_get_type(CHashAny *element);
 
+void CHash_print(CHashAny *element);
+
 int CHash_set(CHashAny *element, CHashAny *value);
 
 
