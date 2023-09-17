@@ -1,6 +1,13 @@
 
 cJSON * privateCHash_dumps_json_object(CHashObject * object){
-    return cJSON_CreateObject();
+    long size = object->size;
+    cJSON * element = cJSON_CreateObject();
+    for(int i = 0; i < size; i++){
+        CHashArray *current  = CHashObject_get_by_index(object, i);
+        cJSON *current_json = privateCHash_dumps_to_json_element(current);
+        cJSON_AddItemToObject(element,current->key,current_json);
+    }
+    return element;
 }
 
 cJSON * privateCHash_dumps_json_array(CHashArray * array){
@@ -17,7 +24,9 @@ cJSON * privateCHash_dumps_json_array(CHashArray * array){
 
 cJSON * privateCHash_dumps_to_json_element(CHash *element){
     int type = element->type;
-
+    if(type == CHASH_OBJECT){
+        return privateCHash_dumps_json_object(element);
+    }
     if(type == CHASH_ARRAY){
         return privateCHash_dumps_json_array(element);
     }

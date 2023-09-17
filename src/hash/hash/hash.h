@@ -22,7 +22,9 @@ typedef struct CHash{
 }CHash;
 
 enum{
+    CHASH_NULL,
     CHASH_ARRAY,
+    CHASH_OBJECT,
     CHASH_LONG,
     CHASH_STRING
 };
