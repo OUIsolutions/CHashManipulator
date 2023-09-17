@@ -40,7 +40,7 @@ CHashAny * privateCHashObject_get_by_key(CHashObject * object, const char *key){
 }
 
 
-CHashAny * CHashObject_get_by_key(CHashObject * object, const char *key){
+CHashAny * CHashObject_get(CHashObject * object, const char *key){
 
     CHashAny * current = privateCHashObject_get_by_key(object,key);
     if(current){
