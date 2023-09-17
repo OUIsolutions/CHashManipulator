@@ -2,3 +2,4 @@
 #include "long/long.c"
 #include "string/string.c"
 #include "array/array.c"
+#include "object/object.c"

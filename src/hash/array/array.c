@@ -7,6 +7,7 @@ CHashArray * newCHashArray(){
     self->size = 0;
     return self;
 }
+
 void CHashArray_append(CHashArray *self,CHash *element){
 
     self->sub_elements = (CHash**) realloc(
