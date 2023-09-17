@@ -28,7 +28,7 @@ int CHashObject_set(CHashObject * object,const char *key, CHashAny *element){
 CHashAny * privateCHashObject_get_by_key(CHashObject * object, const char *key){
     long size = CHash_get_size(object);
     for(int i = 0; i < size; i ++){
-        CHashAny  *element = CHashArray_get_at_index(object, i);
+        CHashAny  *element = CHashArray_get(object, i);
         char *current_key = CHash_get_key(element);
         if(current_key){
             if(strcmp(current_key,key) ==0){

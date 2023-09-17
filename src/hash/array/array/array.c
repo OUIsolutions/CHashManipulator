@@ -31,7 +31,7 @@ int CHashArray_append(CHashArray *array, CHashAny *element){
     return 0;
 }
 
-CHashAny * CHashArray_get_at_index(CHashArray *array, long position){
+CHashAny * CHashArray_get(CHashArray *array, long position){
 
     CHashAny *raw = privateCHashAny_get_primitive(array);
 
