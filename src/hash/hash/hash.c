@@ -14,8 +14,6 @@ void CHash_print(CHash *self){
 void CHash_free(CHash *self){
 
     if(self->reference_type == PRIVATE_CHASH_KEYVAL){
-        printf("pegou aqui\n");
-
         free(self->key);
     }
 
@@ -29,7 +27,8 @@ void CHash_free(CHash *self){
             CHash * current = self->sub_elements[i];
             CHash_free(current);
         }
-        //free(self->sub_elements);
+        free(self->sub_elements);
+
     }
 
     free(self);

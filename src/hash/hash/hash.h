@@ -5,10 +5,11 @@ typedef struct CHash{
     int reference_type;
     struct CHash *father;
     //these is the reference system
+    long size;
+
     union {
         long index;
         char * key;
-        long size;
     };
     //these is the values sysstem
     union {
