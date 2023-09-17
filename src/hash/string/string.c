@@ -5,7 +5,7 @@
 
 
 char * CHash_toString(CHashArray *element){
-    if(element->type != CHASH_LONG){
+    if(element->type != CHASH_STRING){
         return NULL;
     }
     return element->value_string;

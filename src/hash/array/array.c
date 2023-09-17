@@ -14,11 +14,10 @@ void CHashArray_append(CHashArray *self,CHash *element){
             (self->size +1) * sizeof(CHash**)
     );
     element->reference_type = PRIVATE_CHASH_ARRAY_ITEM;
+    element->father = self;
     element->index = self->size;
     self->sub_elements[self->size]= element;
-
     self->size+=1;
-
 
 }
 

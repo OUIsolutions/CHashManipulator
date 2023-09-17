@@ -36,3 +36,5 @@ typedef CHash CHashObject;
 
 
 CHash * privatenewChash_raw();
+
+void CHash_print(CHash *self);
