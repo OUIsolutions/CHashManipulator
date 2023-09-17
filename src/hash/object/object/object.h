@@ -2,6 +2,7 @@
 
 CHashObject * newCHashObject();
 
-CHashObject  * CHash_get_object();
 
-CHashKeyVal * CHash_get_by_key(CHashObject * object, const char *key);
+int CHashObject_set(CHashObject * object,const char *key, CHashAny *element);
+CHashAny * privateCHashObject_get_by_key(CHashObject * object, const char *key);
+CHashAny * CHashObject_get_by_key(CHashObject * object, const char *key);

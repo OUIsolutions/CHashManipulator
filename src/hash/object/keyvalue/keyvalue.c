@@ -9,7 +9,8 @@ privateCHashKeyVal * privateCHashKeyVal_new(const char *key){
 }
 
 
-char * CHash_get_key(CHashKeyVal *keyval){
+
+char * CHash_get_key(CHashAny *keyval){
     if(keyval->raw_type != PRIVATE_CHASH_KEY_VAL){
         return NULL;
     }

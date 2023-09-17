@@ -1,6 +1,6 @@
 
 
-long CHash_get_long(CHashArrayItem_OR_CHashKeyVal *element){
+long CHash_toLong(CHashAny *element){
     CHashAny * raw = privateCHashAny_get_primitive(element);
     if(raw->raw_type != CHASH_LONG){
         return 0;

@@ -21,7 +21,6 @@ typedef CHashAny CHashIterable;
 typedef CHashAny CHashArray;
 typedef CHashAny CHashObject;
 
-
 CHashAny * privateCHashAny_new(int type, void *value);
 
 CHashAny * privateCHashAny_get_primitive(CHashAny *element);
