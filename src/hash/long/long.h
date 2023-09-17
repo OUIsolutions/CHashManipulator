@@ -1,7 +1,5 @@
 
-typedef CHashAny CHashLong;
 
-long CHash_toLong(CHashAny *element);
+long CHash_toLong(CHash *element);
 
-
-CHashLong * newCHashLong(long value);
+CHash * newCHashLong(long value);

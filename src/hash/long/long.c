@@ -1,20 +1,16 @@
 
 
-long CHash_toLong(CHashAny *element){
-    CHashAny * raw = privateCHashAny_get_primitive(element);
-    if(raw->raw_type != CHASH_LONG){
-        return 0;
+long CHash_toLong(CHash *element){
+    if(element->type != CHASH_LONG){
+        return -1;
     }
-
-    return *(long*)raw->value;
-
+    return element->value_long;
 }
 
-
-
-CHashLong * newCHashLong(long value){
-    long *value_p = malloc(sizeof (long ));
-    *value_p = value;
-    return privateCHashAny_new(CHASH_LONG,value_p);
+CHash * newCHashLong(long value){
+    CHash * self =  privatenewChash_raw();
+    self->type = CHASH_ARRAY;
+    self->value_long = value;
+    return self;
 }
 
