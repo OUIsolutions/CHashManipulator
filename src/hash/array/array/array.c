@@ -17,13 +17,15 @@ int CHashArray_append(CHashArray *array, CHashAny *element){
 
     privateCHashArray  *self = (privateCHashArray*)(array->value);
     self->elements = realloc(self->elements,(self->size +1) * sizeof(CHashAny**));
+    privateCHashArrayItem * new_element = privateCHashArrayItem_new(self->size);
+    new_element->value = element;
 
-    CHashAny *new_element  = privateCHashAny_new(
+    CHashAny *new_element_any  = privateCHashAny_new(
             PRIVATE_CHASH_ARRAY_ITEM,
-            privateCHashArrayItem_new(self->size)
+                new_element
     );
-    CHash_set(new_element, element);
-    self->elements[self->size] = new_element;
+
+    self->elements[self->size] = new_element_any;
 
     self->size+=1;
     return 0;
@@ -31,7 +33,9 @@ int CHashArray_append(CHashArray *array, CHashAny *element){
 
 CHashAny * CHashArray_get_at_index(CHashArray *array, long position){
 
-    long size = CHash_get_size(array);
+    CHashAny *raw = privateCHashAny_get_primitive(array);
+
+    long size = CHash_get_size(raw);
     long converted_position = position;
 
 
@@ -49,11 +53,11 @@ CHashAny * CHashArray_get_at_index(CHashArray *array, long position){
                 PRIVATE_CHASH_ARRAY_ITEM,
                 privateCHashArrayItem_new(size)
         );
-        CHashArray_append(array, new_element);
+        CHashArray_append(raw, new_element);
         return new_element;
     }
 
-    privateCHashArray  *self = (privateCHashArray*)(array->value);
+    privateCHashArray  *self = (privateCHashArray*)(raw->value);
     return self->elements[converted_position];
 }
 
