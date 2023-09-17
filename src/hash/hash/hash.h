@@ -23,7 +23,8 @@ typedef struct CHash{
 
 enum{
     CHASH_ARRAY,
-    CHASH_LONG
+    CHASH_LONG,
+    CHASH_STRING
 };
 enum {
     PRIVATE_CHASH_ARRAY_ITEM,

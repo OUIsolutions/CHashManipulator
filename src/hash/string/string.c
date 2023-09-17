@@ -1,21 +1,19 @@
 
 
-char * CHash_toString(CHashAny *element){
 
 
-    CHashAny * raw = privateCHashAny_get_primitive(element);
-    if(!raw){
+
+
+char * CHash_toString(CHashArray *element){
+    if(element->type != CHASH_LONG){
         return NULL;
     }
-
-    if(raw->raw_type != CHASH_STRING){
-        return NULL;
-    }
-    return (char*)raw->value;
+    return element->value_string;
 }
 
-CHashAny * newCHashString(char *value){
-    return privateCHashAny_new(CHASH_STRING, strdup(value));
+CHash * newCHashString(char *value){
+    CHash * self =  privatenewChash_raw();
+    self->type = CHASH_STRING;
+    self->value_string = value;
+    return self;
 }
-
-

@@ -22,7 +22,6 @@ void CHashArray_append(CHashArray *self,CHash *element){
 
 }
 
-CHash * CHashArray_get(CHashArray *self, long position){
-
-    
+CHash * CHashArray_get(CHashArray *self, long index){
+    return self->sub_elements[index];
 }
