@@ -1,0 +1,5 @@
+
+
+CHashObject* newCHashObject(){
+
+}
