@@ -6,12 +6,10 @@
 
 
 CHash  * create(){
-    CHashArray  *t = newCHashArray();
-    CHashArray_append(t, newCHashString("aaaa"));
+    CHashArray  *t = newCHashObject();
 
-    CHashArray_append(t, newCHashLong(20));
-    CHashArray_append(t, newCHashString("aaaa"));
-    CHashArray_append(t, newCHashString("aaaa"));
+    CHashObject_set(t,"a", newCHashString("aaaa"));
+    CHashObject_set(t,"b", newCHashString("aaaa"));
 
     return t;
 }
