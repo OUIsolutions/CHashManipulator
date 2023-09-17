@@ -12,9 +12,9 @@ RECONSTRUCT = False
 
 #-----------------------------Lib---------------------------------------------------
 # Its the starter point of your lib
-STARTER = 'CRequest/one.h'
+STARTER = 'src/one.h'
 #is the final name of your lib
-OUTPUT = 'CRequest.h'
+OUTPUT = 'CHashManipulator.h'
 #These its the name of the output zip of your lib
 USE_VALGRIND = True
 
