@@ -360,11 +360,14 @@ typedef struct CHash{
 }CHash;
 
 enum{
+    CHASH_NULL,
     CHASH_ARRAY,
+    CHASH_OBJECT,
     CHASH_LONG,
     CHASH_STRING
 };
 enum {
+    PRIVATE_CHASH_NOT_A_REFERENCE,
     PRIVATE_CHASH_ARRAY_ITEM,
     PRIVATE_CHASH_KEYVAL
 };
@@ -375,6 +378,7 @@ typedef CHash CHashObject;
 
 CHash * privatenewChash_raw();
 
+void CHash_print(CHash *self);
 
 
 
@@ -399,6 +403,33 @@ void CHashArray_append(CHashArray *self,CHash *element);
 
 CHash * CHashArray_get(CHashArray *self, long position);
 
+
+
+
+
+
+CHashObject* newCHashObject();
+
+
+int CHashObject_set(CHashObject * object,const char *key, CHash *element);
+
+CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key);
+
+CHash * CHashObject_get_by_index(CHashObject * self, long index);
+
+CHash * CHashObject_get(CHashObject * self, const char *key);
+
+
+
+
+
+cJSON * privateCHash_dumps_json_object(CHashObject *object);
+
+cJSON * privateCHash_dumps_json_array(CHashArray *object);
+
+cJSON * privateCHash_dumps_to_json_element(CHash *element);
+
+char * CHash_dumps_to_json_string(CHash * element);
 
 
 
@@ -3537,6 +3568,12 @@ CHash * privatenewChash_raw(){
     return self;
 }
 
+void CHash_print(CHash *self){
+    char * result = CHash_dumps_to_json_string(self);
+    printf("%s",result);
+    free(result);
+}
+
 
 
 
@@ -3563,7 +3600,7 @@ CHash * newCHashLong(long value){
 
 
 char * CHash_toString(CHashArray *element){
-    if(element->type != CHASH_LONG){
+    if(element->type != CHASH_STRING){
         return NULL;
     }
     return element->value_string;
@@ -3585,6 +3622,7 @@ CHashArray * newCHashArray(){
     self->size = 0;
     return self;
 }
+
 void CHashArray_append(CHashArray *self,CHash *element){
 
     self->sub_elements = (CHash**) realloc(
@@ -3592,17 +3630,132 @@ void CHashArray_append(CHashArray *self,CHash *element){
             (self->size +1) * sizeof(CHash**)
     );
     element->reference_type = PRIVATE_CHASH_ARRAY_ITEM;
+    element->father = self;
     element->index = self->size;
     self->sub_elements[self->size]= element;
-
     self->size+=1;
-
 
 }
 
 CHash * CHashArray_get(CHashArray *self, long index){
     return self->sub_elements[index];
 }
+
+
+
+CHashObject* newCHashObject(){
+    CHash * self =  privatenewChash_raw();
+    self->type = CHASH_OBJECT;
+    self->sub_elements = malloc(0);
+    self->size = 0;
+    return self;
+}
+
+CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key){
+    for(int i =0;i < self->size; i ++){
+        CHash * current = self->sub_elements[i];
+        if(strcmp(current->key,key)==0){
+            return current;
+        }
+    }
+    return NULL;
+}
+CHash * CHashObject_get_by_index(CHashObject * self, long index){
+    return self->sub_elements[index];
+}
+
+CHash * CHashObject_get(CHashObject * self, const char *key){
+    CHash *element = privateCHashObject_get_by_key(self,key);
+    if(element){
+        return  element;
+    }
+    self->sub_elements = (CHash**) realloc(
+            self->sub_elements,
+            (self->size +1) * sizeof(CHash**)
+    );
+
+    element  =privatenewChash_raw();
+    element->father = self;
+    element->key = strdup(key);
+    element->reference_type  = PRIVATE_CHASH_KEYVAL;
+    self->sub_elements[self->size]=element;
+    self->size+=1;
+}
+
+int CHashObject_set(CHashObject * self,const char *key, CHash *element){
+    CHash *old_element = privateCHashObject_get_by_key(self,key);
+
+    if(old_element){
+        //implement free here
+    }
+
+    self->sub_elements = (CHash**) realloc(
+            self->sub_elements,
+            (self->size +1) * sizeof(CHash**)
+    );
+
+    element->reference_type = PRIVATE_CHASH_KEYVAL;
+    element->father = self;
+    element->key = strdup(key);
+    self->sub_elements[self->size]= element;
+    self->size+=1;
+}
+
+
+
+
+
+cJSON * privateCHash_dumps_json_object(CHashObject * object){
+    long size = object->size;
+    cJSON * element = cJSON_CreateObject();
+    for(int i = 0; i < size; i++){
+        CHashArray *current  = CHashObject_get_by_index(object, i);
+        cJSON *current_json = privateCHash_dumps_to_json_element(current);
+        cJSON_AddItemToObject(element,current->key,current_json);
+    }
+    return element;
+}
+
+cJSON * privateCHash_dumps_json_array(CHashArray * array){
+    long size = array->size;
+    cJSON *element = cJSON_CreateArray();
+    for(int i = 0; i < size; i++){
+        CHashArray *current  = CHashArray_get(array, i);
+        cJSON *current_json = privateCHash_dumps_to_json_element(current);
+        cJSON_AddItemToArray(element,current_json);
+    }
+    return element;
+}
+
+
+cJSON * privateCHash_dumps_to_json_element(CHash *element){
+    int type = element->type;
+    if(type == CHASH_OBJECT){
+        return privateCHash_dumps_json_object(element);
+    }
+    if(type == CHASH_ARRAY){
+        return privateCHash_dumps_json_array(element);
+    }
+    if(type == CHASH_STRING){
+        char *value  = CHash_toString(element);
+        return cJSON_CreateString(value);
+    }
+    if(type == CHASH_LONG){
+        long value  = CHash_toLong(element);
+        return cJSON_CreateNumber((double)value);
+    }
+
+    return cJSON_CreateNull();
+
+}
+
+char * CHash_dumps_to_json_string(CHash * element){
+    cJSON * created = privateCHash_dumps_to_json_element(element);
+    char * result  = cJSON_Print(created);
+    cJSON_Delete(created);
+    return result;
+}
+
 
 
 

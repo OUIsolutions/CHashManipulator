@@ -18,5 +18,5 @@ int main(){
 
     CHashArray *t = create();
     CHash_print(t);
-
+    CHash_free(t);
 }
