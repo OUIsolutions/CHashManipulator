@@ -4,10 +4,10 @@ cJSON * privateCHash_dumps_json_object(CHashObject * object){
 }
 
 cJSON * privateCHash_dumps_json_array(CHashArray * array){
-    long size = CHash_get_size(array);
+    long size = array->size;
     cJSON *element = cJSON_CreateArray();
     for(int i = 0; i < size; i++){
-        CHashAny  *current  = CHashArray_get(array, i);
+        CHashArray *current  = CHashArray_get(array, i);
         cJSON *current_json = privateCHash_dumps_to_json_element(current);
         cJSON_AddItemToArray(element,current_json);
     }
@@ -15,11 +15,9 @@ cJSON * privateCHash_dumps_json_array(CHashArray * array){
 }
 
 
-cJSON * privateCHash_dumps_to_json_element(CHashAny *element){
-    int type = CHash_get_type(element);
-    if(type == CHASH_OBJECT){
-        return privateCHash_dumps_json_object(element);
-    }
+cJSON * privateCHash_dumps_to_json_element(CHash *element){
+    int type = element->type;
+
     if(type == CHASH_ARRAY){
         return privateCHash_dumps_json_array(element);
     }
@@ -36,7 +34,7 @@ cJSON * privateCHash_dumps_to_json_element(CHashAny *element){
 
 }
 
-char * CHash_dumps_to_json_string(CHashAny * element){
+char * CHash_dumps_to_json_string(CHash * element){
     cJSON * created = privateCHash_dumps_to_json_element(element);
     char * result  = cJSON_Print(created);
     cJSON_Delete(created);
