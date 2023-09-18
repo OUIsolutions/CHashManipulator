@@ -13,9 +13,12 @@ CHash  * create(){
     return t;
 }
 
+void test(...){
+
+}
 int main(){
 
     CHashArray *t = create();
     //CHash_print(t);
-    CHash_free(t);
+    CHash_print(t);
 }

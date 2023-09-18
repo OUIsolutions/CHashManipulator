@@ -23,14 +23,15 @@ char *privateCHash_read_file(const char *filename) {
     return buffer;
 }
 
-void privateCHash_write_file(const char *filename, const char *value) {
+int  privateCHash_write_file(const char *filename, const char *value) {
 
     FILE *file = fopen(filename, "w");
 
     if (file == NULL) {
-        return;
+        return 1;
     }
     fputs(value, file);
-    
+
     fclose(file);
+    return 0;
 }

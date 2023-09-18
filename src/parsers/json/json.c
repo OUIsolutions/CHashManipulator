@@ -49,3 +49,14 @@ char * CHash_dumps_to_json_string(CHash * element){
     cJSON_Delete(created);
     return result;
 }
+
+int  CHash_dumps_to_json_file(CHash *element,const char *filename){
+    char *content = CHash_dumps_to_json_string(element);
+    if(!content){
+        return 1;
+    }
+    privateCHash_write_file(filename,content);
+    free(content);
+    return 0;
+
+}
