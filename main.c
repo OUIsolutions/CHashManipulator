@@ -6,16 +6,19 @@
 
 
 CHash  * create(){
-    CHashArray  *t = newCHashObject();
-    CHashObject_set(t,"a", newCHashString("aaaa"));
-    CHashObject_set(t,"b", newCHashString("aaaa"));
+    return newCHashArray(
+            newCHashString("aaa"),
+            newCHashLong(20),
+            newCHashArray(
+                    newCHashString("aaaaaaaaa"),
+                    newCHashLong(20)
+            )
+    );
 
-    return t;
+
 }
 
-void test(...){
 
-}
 int main(){
 
     CHashArray *t = create();

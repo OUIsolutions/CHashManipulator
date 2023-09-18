@@ -1,10 +1,23 @@
 
 
-CHashArray * newCHashArray(){
+CHashArray * privatenewCHashArray(void *sentinel,...){
     CHash * self =  privatenewChash_raw();
     self->type = CHASH_ARRAY;
     self->sub_elements = malloc(0);
     self->size = 0;
+
+    va_list args;
+    va_start(args, sentinel);
+
+    while(true){
+        void * current = va_arg(args,void*);
+        if(!current){
+            break;
+        }
+
+        CHash * current_element = (CHash*)current;
+        CHashArray_append(self,current_element);
+    }
     return self;
 }
 

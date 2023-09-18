@@ -1,7 +1,8 @@
 
 
+#define newCHashArray(...) privatenewCHashArray(NULL,__VA_ARGS__,NULL)
 
-CHashArray * newCHashArray();
+CHashArray * privatenewCHashArray(void *sentinel, ...);
 
 
 void CHashArray_append(CHashArray *self,CHash *element);
