@@ -350,9 +350,9 @@ typedef struct CHash{
     int type;
     int reference_type;
     struct CHash *father;
-    //these is the reference system
     long size;
 
+    //these is the reference system
     union {
         long index;
         char * key;
@@ -373,6 +373,8 @@ enum{
     CHASH_ARRAY,
     CHASH_OBJECT,
     CHASH_LONG,
+    CHASH_DOUBLE,
+    CHASH_BOOL,
     CHASH_STRING
 };
 enum {
@@ -393,11 +395,27 @@ CHashArray * CHash_get_path(CHash *self);
 
 void CHash_free(CHash *self);
 
+CHash * newCHashNULL();
+
 
 
 long CHash_toLong(CHash *element);
 
 CHash * newCHashLong(long value);
+
+
+
+
+double  CHash_toDouble(CHash *element);
+
+CHash * newCHashDouble(double value);
+
+
+
+
+bool CHash_toBool(CHash *element);
+
+CHash * newCHashBool(bool value);
 
 
 
@@ -456,7 +474,23 @@ cJSON * CHash_dump_to_cJSON(CHash *element);
 
 char * CHash_dump_to_json_string(CHash * element);
 
-int  CHash_dumps_to_json_file(CHash *element,const char *filename);
+int  CHash_dump_to_json_file(CHash *element,const char *filename);
+
+//loaders
+
+CHash  * privateCHash_load_json_object(cJSON *element);
+
+CHash  * privateCHash_load_json_array(cJSON *element);
+
+
+CHash * CHash_load_from_cJSON(cJSON *element);
+
+CHash * CHash_load_from_json_strimg(const char *element);
+
+CHash * CHash_load_from_json_file(const char *filename);
+
+
+
 
 
 
@@ -3635,12 +3669,28 @@ CHash * privatenewChash_raw(){
 }
 
 void CHash_print(CHash *self){
-    char * result = CHash_dumps_to_json_string(self);
+    char * result = CHash_dump_to_json_string(self);
     printf("%s",result);
     free(result);
 }
+
 CHashArray * CHash_get_path(CHash *self){
-    
+
+    if(self->reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
+        return  newCHashArray(NULL);
+    }
+
+    CHashArray  *path = CHash_get_path(self->father);
+
+    if(self->reference_type == PRIVATE_CHASH_ARRAY_ITEM){
+        CHashArray_append(path, newCHashLong(self->index));;
+    }
+
+    if(self->reference_type == PRIVATE_CHASH_KEYVAL){
+        CHashArray_append(path, newCHashString(self->key));
+    }
+    return path;
+
 }
 void CHash_free(CHash *self){
 
@@ -3664,6 +3714,9 @@ void CHash_free(CHash *self){
 
     free(self);
 }
+CHash * newCHashNULL(){
+    return privatenewChash_raw();
+}
 
 
 
@@ -3679,6 +3732,42 @@ CHash * newCHashLong(long value){
     CHash * self =  privatenewChash_raw();
     self->type = CHASH_LONG;
     self->value_long = value;
+    return self;
+}
+
+
+
+
+
+double CHash_toDouble(CHash *element){
+    if(element->type != CHASH_BOOL){
+        return -1;
+    }
+    return element->value_double;
+}
+
+CHash * newCHashDouble(double value){
+    CHash * self =  privatenewChash_raw();
+    self->type = CHASH_DOUBLE;
+    self->value_double = value;
+    return self;
+}
+
+
+
+
+
+bool CHash_toBool(CHash *element){
+    if(element->type != CHASH_BOOL){
+        return -1;
+    }
+    return element->value_bool;
+}
+
+CHash * newCHashBool(bool value){
+    CHash * self =  privatenewChash_raw();
+    self->type = CHASH_BOOL;
+    self->value_bool = value;
     return self;
 }
 
@@ -3920,7 +4009,7 @@ cJSON * privateCHash_dumps_json_object(CHashObject * object){
     cJSON * element = cJSON_CreateObject();
     for(int i = 0; i < size; i++){
         CHashArray *current  = CHashObject_get_by_index(object, i);
-        cJSON *current_json = CHash_dumps_to_cJSON(current);
+        cJSON *current_json = CHash_dump_to_cJSON(current);
         cJSON_AddItemToObject(element,current->key,current_json);
     }
     return element;
@@ -3931,7 +4020,7 @@ cJSON * privateCHash_dumps_json_array(CHashArray * array){
     cJSON *element = cJSON_CreateArray();
     for(int i = 0; i < size; i++){
         CHashArray *current  = CHashArray_get(array, i);
-        cJSON *current_json = CHash_dumps_to_cJSON(current);
+        cJSON *current_json = CHash_dump_to_cJSON(current);
         cJSON_AddItemToArray(element,current_json);
     }
     return element;
@@ -3955,19 +4044,20 @@ cJSON * CHash_dump_to_cJSON(CHash *element){
         return cJSON_CreateNumber((double)value);
     }
 
+
     return cJSON_CreateNull();
 
 }
 
 char * CHash_dump_to_json_string(CHash * element){
-    cJSON * created = CHash_dumps_to_cJSON(element);
+    cJSON * created = CHash_dump_to_cJSON(element);
     char * result  = cJSON_Print(created);
     cJSON_Delete(created);
     return result;
 }
 
 int  CHash_dumps_to_json_file(CHash *element,const char *filename){
-    char *content = CHash_dumps_to_json_string(element);
+    char *content = CHash_dump_to_json_string(element);
     if(!content){
         return 1;
     }
@@ -3976,6 +4066,75 @@ int  CHash_dumps_to_json_file(CHash *element,const char *filename){
     return 0;
 
 }
+CHashArray * privateCHash_load_json_object(cJSON *element){
+    int size = cJSON_GetArraySize(element);
+    CHashArray *equivalent = newCHashObject(NULL);
+    for(int i = 0; i < size; i++){
+        cJSON *current = cJSON_GetArrayItem(element,i);
+        char *key = current->string;
+        CHash * value = CHash_load_from_cJSON(current);
+        CHashObject_set(equivalent, key,value);
+    }
+    return equivalent;
+
+}
+
+CHash  * privateCHash_load_json_array(cJSON *element){
+    int size = cJSON_GetArraySize(element);
+    CHashObject *equivalent = newCHashArray(NULL);
+    for(int i = 0; i < size; i++){
+        cJSON *current = cJSON_GetArrayItem(element,i);
+        CHash * value = CHash_load_from_cJSON(current);
+        CHashArray_append(equivalent,value);
+    }
+    return equivalent;
+}
+
+
+CHash * CHash_load_from_cJSON(cJSON *element){
+
+    if(!element){
+        return newCHashNULL();
+    }
+
+    if(element->type == cJSON_Object){
+        return privateCHash_load_json_object(element);
+    }
+
+    if(element->type == cJSON_Array){
+        return privateCHash_load_json_array(element);
+    }
+    if(cJSON_IsBool(element)){
+        bool value = element->valueint;
+        return newCHashBool(value);
+    }
+
+    if(element->type == cJSON_Number){
+        double value = element->valuedouble;
+        long value_long = (long)value;
+        double  rest = value - (double)value_long;
+        if(rest == 0){
+            return newCHashLong(value_long);
+        }
+        return newCHashDouble(value);
+    }
+
+
+
+}
+
+CHash * CHash_load_from_json_strimg(const char *content){
+    cJSON *parsed = cJSON_Parse(content);
+    return CHash_load_from_cJSON(parsed);
+}
+
+CHash * CHash_load_from_json_file(const char *filename){
+    const char *content = privateCHash_read_file(filename);
+    return CHash_load_from_json_strimg(content);
+}
+
+
+
 
 
 

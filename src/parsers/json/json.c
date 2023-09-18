@@ -125,6 +125,7 @@ CHash * CHash_load_from_json_strimg(const char *content){
 
 CHash * CHash_load_from_json_file(const char *filename){
     const char *content = privateCHash_read_file(filename);
+
     return CHash_load_from_json_strimg(content);
 }
 
