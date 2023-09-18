@@ -30,10 +30,13 @@ int main(){
 
     CHashObject *t = create();
 
-    CHashObject_set(t,"aaa", newCHashLong(20),"b", newCHashLong(30));
+    CHashObject_set(t,
+       "name", newCHashLong(20),
+        "b", newCHashLong(30)
+    );
+    CHashObject_set(t,"xxx", newCHashString("sssssss"));
 
 
-
-    //CHash_print(t);
     CHash_print(t);
+    CHash_free(t);
 }

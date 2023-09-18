@@ -10,6 +10,8 @@ int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *elem
 #define CHashObject_set(...) privateCHashObject_set(__VA_ARGS__,NULL)
 int privateCHashObject_set(CHashObject *self ,...);
 
+int CHashObject_delete(CHashObject *self, const char *key);
+
 CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key);
 
 CHash * CHashObject_get_by_index(CHashObject * self, long index);

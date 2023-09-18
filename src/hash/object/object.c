@@ -69,12 +69,31 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
     self->size+=1;
 }
 
-int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
-    CHash *old_element = privateCHashObject_get_by_key(self,key);
+int CHashObject_delete(CHashObject *self, const char *key){
+    bool found = false;
 
-    if(old_element){
-        CHash_free(old_element);
+    for(int i =0;i < self->size; i ++){
+        CHash * current = self->sub_elements[i];
+        if(strcmp(current->key,key)==0){
+            CHash_free(current);
+            found = true;
+            self->size-=1;
+        }
+
+        if(found){
+            self->sub_elements[i] = self->sub_elements[i+1];
+        }
+
     }
+    if(!found){
+        return 1;
+    }
+    return 0;
+
+
+}
+int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
+    CHashObject_delete(self,key);
 
     self->sub_elements = (CHash**) realloc(
             self->sub_elements,
