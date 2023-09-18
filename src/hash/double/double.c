@@ -1,16 +1,16 @@
 
 
 double CHash_toDouble(CHash *element){
-    if(element->type != CHASH_DOUBLE){
+    if(element->private_type != CHASH_DOUBLE){
         return -1;
     }
-    return element->value_double;
+    return element->private_value_double;
 }
 
 CHash * newCHashDouble(double value){
     CHash * self =  privatenewChash_raw();
-    self->type = CHASH_DOUBLE;
-    self->value_double = value;
+    self->private_type = CHASH_DOUBLE;
+    self->private_value_double = value;
     return self;
 }
 

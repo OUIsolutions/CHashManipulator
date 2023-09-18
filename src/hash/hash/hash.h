@@ -1,23 +1,23 @@
 
 typedef struct CHash{
 
-    int type;
-    int reference_type;
-    struct CHash *father;
-    long size;
+    int private_type;
+    int private_reference_type;
+    struct CHash *private_father;
+    long private_size;
 
     //these is the reference system
     union {
-        long index;
-        char * key;
+        long private_index;
+        char * private_key;
     };
     //these is the values sysstem
     union {
-        char * value_string;
-        double value_double;
-        long value_long;
-        bool value_bool;
-        struct CHash **sub_elements;
+        char * private_value_string;
+        double private_value_double;
+        long private_value_long;
+        bool private_value_bool;
+        struct CHash **private_sub_elements;
     };
 
 }CHash;

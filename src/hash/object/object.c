@@ -2,9 +2,9 @@
 
 CHashObject* privatenewCHashObject(void * sentinel, ...){
     CHash * self =  privatenewChash_raw();
-    self->type = CHASH_OBJECT;
-    self->sub_elements = malloc(0);
-    self->size = 0;
+    self->private_type = CHASH_OBJECT;
+    self->private_sub_elements = malloc(0);
+    self->private_size = 0;
 
     va_list args;
     va_start(args, sentinel);
@@ -39,16 +39,16 @@ CHashObject* privatenewCHashObject(void * sentinel, ...){
 }
 
 CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key){
-    for(int i =0;i < self->size; i ++){
-        CHash * current = self->sub_elements[i];
-        if(strcmp(current->key,key)==0){
+    for(int i =0;i < self->private_size; i ++){
+        CHash * current = self->private_sub_elements[i];
+        if(strcmp(current->private_key, key) == 0){
             return current;
         }
     }
     return NULL;
 }
 CHash * CHashObject_get_by_index(CHashObject * self, long index){
-    return self->sub_elements[index];
+    return self->private_sub_elements[index];
 }
 
 CHash * CHashObject_get(CHashObject * self, const char *key){
@@ -56,32 +56,32 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
     if(element){
         return  element;
     }
-    self->sub_elements = (CHash**) realloc(
-            self->sub_elements,
-            (self->size +1) * sizeof(CHash**)
+    self->private_sub_elements = (CHash**) realloc(
+            self->private_sub_elements,
+            (self->private_size + 1) * sizeof(CHash**)
     );
 
     element  =privatenewChash_raw();
-    element->father = self;
-    element->key = strdup(key);
-    element->reference_type  = PRIVATE_CHASH_KEYVAL;
-    self->sub_elements[self->size]=element;
-    self->size+=1;
+    element->private_father = self;
+    element->private_key = strdup(key);
+    element->private_reference_type  = PRIVATE_CHASH_KEYVAL;
+    self->private_sub_elements[self->private_size]=element;
+    self->private_size+=1;
 }
 
 int CHashObject_delete(CHashObject *self, const char *key){
     bool found = false;
 
-    for(int i =0;i < self->size; i ++){
-        CHash * current = self->sub_elements[i];
-        if(strcmp(current->key,key)==0){
+    for(int i =0;i < self->private_size; i ++){
+        CHash * current = self->private_sub_elements[i];
+        if(strcmp(current->private_key, key) == 0){
             CHash_free(current);
             found = true;
-            self->size-=1;
+            self->private_size-=1;
         }
 
         if(found){
-            self->sub_elements[i] = self->sub_elements[i+1];
+            self->private_sub_elements[i] = self->private_sub_elements[i + 1];
         }
 
     }
@@ -95,16 +95,16 @@ int CHashObject_delete(CHashObject *self, const char *key){
 int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     CHashObject_delete(self,key);
 
-    self->sub_elements = (CHash**) realloc(
-            self->sub_elements,
-            (self->size +1) * sizeof(CHash**)
+    self->private_sub_elements = (CHash**) realloc(
+            self->private_sub_elements,
+            (self->private_size + 1) * sizeof(CHash**)
     );
 
-    element->reference_type = PRIVATE_CHASH_KEYVAL;
-    element->father = self;
-    element->key = strdup(key);
-    self->sub_elements[self->size]= element;
-    self->size+=1;
+    element->private_reference_type = PRIVATE_CHASH_KEYVAL;
+    element->private_father = self;
+    element->private_key = strdup(key);
+    self->private_sub_elements[self->private_size]= element;
+    self->private_size+=1;
     return 0;
 }
 
