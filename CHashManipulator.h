@@ -451,10 +451,10 @@ cJSON * privateCHash_dumps_json_object(CHashObject *object);
 
 cJSON * privateCHash_dumps_json_array(CHashArray *object);
 
-cJSON * CHash_dumps_to_cJSON(CHash *element);
+cJSON * CHash_dump_to_cJSON(CHash *element);
 
 
-char * CHash_dumps_to_json_string(CHash * element);
+char * CHash_dump_to_json_string(CHash * element);
 
 int  CHash_dumps_to_json_file(CHash *element,const char *filename);
 
@@ -3938,7 +3938,7 @@ cJSON * privateCHash_dumps_json_array(CHashArray * array){
 }
 
 
-cJSON * CHash_dumps_to_cJSON(CHash *element){
+cJSON * CHash_dump_to_cJSON(CHash *element){
     int type = element->type;
     if(type == CHASH_OBJECT){
         return privateCHash_dumps_json_object(element);
@@ -3959,7 +3959,7 @@ cJSON * CHash_dumps_to_cJSON(CHash *element){
 
 }
 
-char * CHash_dumps_to_json_string(CHash * element){
+char * CHash_dump_to_json_string(CHash * element){
     cJSON * created = CHash_dumps_to_cJSON(element);
     char * result  = cJSON_Print(created);
     cJSON_Delete(created);

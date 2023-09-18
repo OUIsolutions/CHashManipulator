@@ -6,7 +6,7 @@ CHash * privatenewChash_raw(){
 }
 
 void CHash_print(CHash *self){
-    char * result = CHash_dumps_to_json_string(self);
+    char * result = CHash_dump_to_json_string(self);
     printf("%s",result);
     free(result);
 }
@@ -50,4 +50,7 @@ void CHash_free(CHash *self){
 
 
     free(self);
+}
+CHash * newCHashNULL(){
+    return privatenewChash_raw();
 }
