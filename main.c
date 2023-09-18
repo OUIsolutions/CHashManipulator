@@ -21,7 +21,7 @@ int main(){
         "internal", CHash_copy(t)
     );
 
-    CHash_print(t);    
+    CHash_print(t2);    
     CHash_free(t);
     CHash_free(t2);
 

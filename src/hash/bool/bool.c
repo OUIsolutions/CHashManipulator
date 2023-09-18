@@ -2,7 +2,7 @@
 
 bool CHash_toBool(CHash *element){
     if(element->type != CHASH_BOOL){
-        return -1;
+        return false;
     }
     return element->value_bool;
 }
