@@ -47,6 +47,8 @@ void CHash_print(CHash *self);
 
 CHashArray * CHash_get_path(CHash *self);
 
+CHash * CHash_copy(CHash *self);
+
 void CHash_free(CHash *self);
 
 CHash * newCHashNULL();
