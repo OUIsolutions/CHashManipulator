@@ -73,7 +73,7 @@ int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *elem
     CHash *old_element = privateCHashObject_get_by_key(self,key);
 
     if(old_element){
-        //implement free here
+        CHash_free(old_element);
     }
 
     self->sub_elements = (CHash**) realloc(
@@ -86,4 +86,43 @@ int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *elem
     element->key = strdup(key);
     self->sub_elements[self->size]= element;
     self->size+=1;
+    return 0;
+}
+
+int privateCHashObject_set(CHashObject *self ,...){
+
+    va_list args;
+
+    va_start(args, NULL);
+
+    const int GETTING_KEY = 0;
+    const int GETTING_VALUE = 1;
+
+    int state = GETTING_KEY;
+
+    char *key;
+
+    while (true){
+        void * current = va_arg(args,void*);
+        if(!current){
+            break;
+        }
+
+        if(state == GETTING_KEY){
+            key = (char*)current;
+            state = GETTING_VALUE;
+            continue;
+        }
+
+        if(state == GETTING_VALUE){
+            int result = privateCHashObject_set_once(self, key, (CHash *) current);
+            if(result){
+                va_end(args);
+                return result;
+            }
+            state = GETTING_KEY;
+        }
+
+    }
+    va_end(args);
 }
