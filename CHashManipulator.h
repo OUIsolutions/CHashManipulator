@@ -393,6 +393,8 @@ void CHash_print(CHash *self);
 
 CHashArray * CHash_get_path(CHash *self);
 
+CHash * CHash_copy(CHash *self);
+
 void CHash_free(CHash *self);
 
 CHash * newCHashNULL();
@@ -3714,6 +3716,47 @@ void CHash_free(CHash *self){
 
     free(self);
 }
+
+CHash * CHash_copy(CHash *self){
+    CHash *new_element = privatenewChash_raw();
+    //we dont copy references because the idea of an copy itss to externalize scopes
+    new_element->type = self->type;
+    new_element->size = self->size;
+
+    if(self->type == CHASH_STRING){
+        new_element->value_string = strdup(self->value_string);
+    }
+    if(self->type == CHASH_LONG){
+        new_element->value_long = self->value_long;
+    }
+    if(self->type == CHASH_DOUBLE){
+        new_element->value_double = self->value_double;
+    }
+    if(self->type == CHASH_BOOL){
+        new_element->value_bool = self->value_bool;
+    }
+    if(self->type == CHASH_ARRAY ){
+        new_element->sub_elements = malloc(0);
+
+        for(int i =0; i < self->size;i++){
+            CHash * copy = CHash_copy(CHashArray_get(self,i));
+            CHashArray_append(new_element,copy);
+        }
+
+    }
+    if(self->type == CHASH_OBJECT){
+        new_element->sub_elements = malloc(0);
+
+        for(int i =0; i < self->size;i++){
+            CHash  * current = CHashObject_get_by_index(self,i);
+            CHash *copy = CHash_copy(current);
+            CHashObject_set(new_element,current->key,copy);
+        }
+    }
+    return new_element;
+}
+
+
 CHash * newCHashNULL(){
     return privatenewChash_raw();
 }
@@ -4068,13 +4111,15 @@ int  CHash_dumps_to_json_file(CHash *element,const char *filename){
 }
 CHashArray * privateCHash_load_json_object(cJSON *element){
     int size = cJSON_GetArraySize(element);
-    CHashArray *equivalent = newCHashObject(NULL);
+    CHashObject *equivalent = newCHashObject(NULL);
+
     for(int i = 0; i < size; i++){
         cJSON *current = cJSON_GetArrayItem(element,i);
         char *key = current->string;
         CHash * value = CHash_load_from_cJSON(current);
         CHashObject_set(equivalent, key,value);
     }
+
     return equivalent;
 
 }
@@ -4108,6 +4153,9 @@ CHash * CHash_load_from_cJSON(cJSON *element){
         bool value = element->valueint;
         return newCHashBool(value);
     }
+    if(element->type == cJSON_String){
+        return newCHashString(element->valuestring);
+    }
 
     if(element->type == cJSON_Number){
         double value = element->valuedouble;
@@ -4125,12 +4173,17 @@ CHash * CHash_load_from_cJSON(cJSON *element){
 
 CHash * CHash_load_from_json_strimg(const char *content){
     cJSON *parsed = cJSON_Parse(content);
-    return CHash_load_from_cJSON(parsed);
+    CHash *result =CHash_load_from_cJSON(parsed);
+    cJSON_Delete(parsed);
+    return result;
 }
 
 CHash * CHash_load_from_json_file(const char *filename){
-    const char *content = privateCHash_read_file(filename);
-    return CHash_load_from_json_strimg(content);
+    char *content = privateCHash_read_file(filename);
+
+    CHash *result =  CHash_load_from_json_strimg(content);
+    free(content);
+    return result;
 }
 
 
