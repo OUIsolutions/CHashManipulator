@@ -11,4 +11,5 @@ int main(){
 
     CHash * t = CHash_load_from_json_file("a.json");
     CHash_print(t);
+    CHash_free(t);
 }
