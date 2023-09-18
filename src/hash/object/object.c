@@ -1,10 +1,40 @@
 
 
-CHashObject* newCHashObject(){
+CHashObject* privatenewCHashObject(void * sentinel, ...){
     CHash * self =  privatenewChash_raw();
     self->type = CHASH_OBJECT;
     self->sub_elements = malloc(0);
     self->size = 0;
+
+    va_list args;
+    va_start(args, sentinel);
+
+    const int GETTING_KEY = 0;
+    const int GETTING_VALUE = 1;
+
+    int state = GETTING_KEY;
+
+    char *key;
+
+    while (true){
+        void * current = va_arg(args,void*);
+        if(!current){
+            break;
+        }
+
+        if(state == GETTING_KEY){
+            key = (char*)current;
+            state = GETTING_VALUE;
+            continue;
+        }
+
+        if(state == GETTING_VALUE){
+            CHashObject_set(self,key,(CHash*)current);
+            state = GETTING_KEY;
+        }
+
+    }
+
     return self;
 }
 

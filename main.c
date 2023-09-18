@@ -6,12 +6,19 @@
 
 
 CHash  * create(){
-    return newCHashArray(
-            newCHashString("aaa"),
-            newCHashLong(20),
-            newCHashArray(
-                    newCHashString("aaaaaaaaa"),
-                    newCHashLong(20)
+    return newCHashObject(
+            "name", newCHashString("Mateus"),
+            "age", newCHashLong(26),
+            "emails", newCHashArray(
+                    newCHashString("mateusmoutinho01@gmail.com")
+            ),
+            "phones", newCHashArray(
+                    newCHashString("0000"),
+                    newCHashString("00000")
+            ),
+            "address", newCHashArray(
+                    newCHashLong(2121),
+                    newCHashLong(21212)
             )
     );
 

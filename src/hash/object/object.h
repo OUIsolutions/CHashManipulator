@@ -1,7 +1,8 @@
 
 
+#define newCHashObject(...) privatenewCHashObject(NULL,__VA_ARGS__,NULL)
 
-CHashObject* newCHashObject();
+CHashObject* privatenewCHashObject(void * sentinel, ...);
 
 
 int CHashObject_set(CHashObject * object,const char *key, CHash *element);
