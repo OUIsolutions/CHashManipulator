@@ -7,7 +7,7 @@ CHash * privatenewChash_raw(){
 
 void CHash_print(CHash *self){
     char * result = CHash_dump_to_json_string(self);
-    printf("%s",result);
+    printf("%s\n",result);
     free(result);
 }
 

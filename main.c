@@ -4,12 +4,25 @@
 
 
 
-
+CHashObject *create (){
+    return newCHashObject(
+        "age",newCHashLong(26),
+        "name",newCHashString("mateus")
+    );
+}
 
 
 int main(){
 
-    CHash * t = CHash_load_from_json_file("a.json");
-    CHash_print(t);
+    CHashObject *t = create();
+    
+    CHashObject *t2 = newCHashObject(
+        "age",newCHashLong(27),
+        "name", CHash_copy(CHashObject_get(t,"name"))
+    );
+
+    CHash_print(t2);    
     CHash_free(t);
+    CHash_free(t2);
+
 }
