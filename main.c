@@ -28,7 +28,14 @@ CHash  * create(){
 
 int main(){
 
-    CHashArray *t = create();
+    CHashArray *t = newCHashArray(NULL);
+    CHashArray_append(t,
+          newCHashString("aaaaaaaaa0"),
+          newCHashLong(20)
+    );
+
+
+
     //CHash_print(t);
     CHash_print(t);
 }

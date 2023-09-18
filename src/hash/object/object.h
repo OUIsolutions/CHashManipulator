@@ -5,7 +5,7 @@
 CHashObject* privatenewCHashObject(void * sentinel, ...);
 
 
-int CHashObject_set(CHashObject * object,const char *key, CHash *element);
+int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element);
 
 CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key);
 

@@ -29,7 +29,7 @@ CHashObject* privatenewCHashObject(void * sentinel, ...){
         }
 
         if(state == GETTING_VALUE){
-            CHashObject_set(self,key,(CHash*)current);
+            privateCHashObject_set_once(self, key, (CHash *) current);
             state = GETTING_KEY;
         }
 
@@ -69,7 +69,7 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
     self->size+=1;
 }
 
-int CHashObject_set(CHashObject * self,const char *key, CHash *element){
+int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     CHash *old_element = privateCHashObject_get_by_key(self,key);
 
     if(old_element){
