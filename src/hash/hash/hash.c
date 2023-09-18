@@ -10,7 +10,9 @@ void CHash_print(CHash *self){
     printf("%s",result);
     free(result);
 }
-
+CHashArray * CHash_retrive_path(CHash *self){
+    
+}
 void CHash_free(CHash *self){
 
     if(self->reference_type == PRIVATE_CHASH_KEYVAL){

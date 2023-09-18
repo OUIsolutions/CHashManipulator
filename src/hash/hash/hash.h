@@ -43,4 +43,6 @@ CHash * privatenewChash_raw();
 
 void CHash_print(CHash *self);
 
+CHashArray * CHash_retrive_path(CHash *self);
+
 void CHash_free(CHash *self);
