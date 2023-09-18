@@ -28,8 +28,8 @@ void CHash_free(CHash *self){
             CHash_free(current);
         }
         free(self->sub_elements);
-
     }
+
 
     free(self);
 }
