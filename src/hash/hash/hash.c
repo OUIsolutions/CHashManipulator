@@ -75,7 +75,6 @@ CHash * CHash_copy(CHash *self){
 
         for(long i =0; i < self->size;i++){
             CHash * copy = CHash_copy(CHashArray_get(self,i));
-
             CHashArray_append(new_element,copy);
         }
         return new_element;

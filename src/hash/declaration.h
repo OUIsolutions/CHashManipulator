@@ -1,6 +1,6 @@
 #include "hash/hash.h"
-#include "long/long.h"
 #include "double/double.h"
+#include "long/long.h"
 #include "bool/bool.h"
 #include "string/string.h"
 #include "array/array.h"

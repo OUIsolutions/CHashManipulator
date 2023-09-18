@@ -1,7 +1,7 @@
 
 
 double CHash_toDouble(CHash *element){
-    if(element->type != CHASH_BOOL){
+    if(element->type != CHASH_DOUBLE){
         return -1;
     }
     return element->value_double;
