@@ -61,14 +61,48 @@ int  CHash_dumps_to_json_file(CHash *element,const char *filename){
     return 0;
 
 }
+CHashArray * privateCHash_load_json_object(cJSON *element){
+    int size = cJSON_GetArraySize(element);
+    CHashArray *equivalent = newCHashObject(NULL);
+    for(int i = 0; i < size; i++){
+        cJSON *current = cJSON_GetArrayItem(element,i);
+        char *key = current->string;
+        CHash * value = CHash_load_from_cJSON(current);
+        CHashObject_set(equivalent, key,value);
+    }
+    return equivalent;
 
-/*
+}
+
+CHash  * privateCHash_load_json_array(cJSON *element){
+    int size = cJSON_GetArraySize(element);
+    CHashObject *equivalent = newCHashArray(NULL);
+    for(int i = 0; i < size; i++){
+        cJSON *current = cJSON_GetArrayItem(element,i);
+        CHash * value = CHash_load_from_cJSON(current);
+        CHashArray_append(equivalent,value);
+    }
+    return equivalent;
+}
+
+
 CHash * CHash_load_from_cJSON(cJSON *element){
 
     if(!element){
-        return newCHashObject(NULL);
+        return newCHashNULL();
     }
 
+    if(element->type == cJSON_Object){
+        return privateCHash_load_json_object(element);
+    }
+
+    if(element->type == cJSON_Array){
+        return privateCHash_load_json_array(element);
+    }
+
+    if(element->type == cJSON_Number){
+
+    }
 
 
 }
@@ -76,4 +110,3 @@ CHash * CHash_load_from_cJSON(cJSON *element){
 CHash * CHash_load_from_json_strimg(cJSON *element);
 
 CHash * CHash_load_from_json_file(cJSON *element,const char *filename);
-*/
