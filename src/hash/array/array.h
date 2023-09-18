@@ -5,7 +5,7 @@
 CHashArray * privatenewCHashArray(void *sentinel, ...);
 
 
-void CHashArray_append(CHashArray *self,CHash *element);
+void privateCHashArray_append_once(CHashArray *self, CHash *element);
 
 CHash * CHashArray_get(CHashArray *self, long position);
 
