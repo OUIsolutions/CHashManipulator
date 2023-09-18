@@ -27,6 +27,8 @@ enum{
     CHASH_ARRAY,
     CHASH_OBJECT,
     CHASH_LONG,
+    CHASH_DOUBLE,
+    CHASH_BOOL,
     CHASH_STRING
 };
 enum {

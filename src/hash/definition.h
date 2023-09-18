@@ -1,5 +1,7 @@
 #include "hash/hash.c"
 #include "long/long.c"
+#include "double/double.c"
+#include "bool/bool.c"
 #include "string/string.c"
 #include "array/array.c"
 #include "object/object.c"

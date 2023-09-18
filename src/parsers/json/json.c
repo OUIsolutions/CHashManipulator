@@ -99,14 +99,33 @@ CHash * CHash_load_from_cJSON(cJSON *element){
     if(element->type == cJSON_Array){
         return privateCHash_load_json_array(element);
     }
+    if(cJSON_IsBool(element)){
+        bool value = element->valueint;
+        return newCHashBool(value);
+    }
 
     if(element->type == cJSON_Number){
-
+        double value = element->valuedouble;
+        long value_long = (long)value;
+        double  rest = value - (double)value_long;
+        if(rest == 0){
+            return newCHashLong(value_long);
+        }
+        return newCHashDouble(value);
     }
+
 
 
 }
 
-CHash * CHash_load_from_json_strimg(cJSON *element);
+CHash * CHash_load_from_json_strimg(const char *content){
+    cJSON *parsed = cJSON_Parse(content);
+    return CHash_load_from_cJSON(parsed);
+}
 
-CHash * CHash_load_from_json_file(cJSON *element,const char *filename);
+CHash * CHash_load_from_json_file(const char *filename){
+    const char *content = privateCHash_read_file(filename);
+    return CHash_load_from_json_strimg(content);
+}
+
+

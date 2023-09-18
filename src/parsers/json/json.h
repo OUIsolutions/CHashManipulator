@@ -19,9 +19,9 @@ CHash  * privateCHash_load_json_array(cJSON *element);
 
 CHash * CHash_load_from_cJSON(cJSON *element);
 
-CHash * CHash_load_from_json_strimg(cJSON *element);
+CHash * CHash_load_from_json_strimg(const char *element);
 
-CHash * CHash_load_from_json_file(cJSON *element,const char *filename);
+CHash * CHash_load_from_json_file(const char *filename);
 
 
 

@@ -16,4 +16,7 @@ int main(){
     CHash_print(t);
     CHash_free(t);
 
+    double t1 = 2.3;
+    double rest = t1 - (double)(long)t1;
+    printf("%lf",rest);
 }
