@@ -14,15 +14,14 @@ CHashObject *create (){
 
 int main(){
 
-    CHashObject *t = create();
-    
-    CHashObject *t2 = newCHashObject(
-        "age",newCHashLong(27),
-        "internal", CHash_copy(t)
-    );
+    CHashObject *t = newCHashArray(
+            newCHashDouble(21),
+            newCHashString("aaaaaaaa"),
+            newCHashDouble(21)
+            );
 
-    CHash_print(t2);    
+    CHashArray_delete(t,0);
+    CHash_print(t);
     CHash_free(t);
-    CHash_free(t2);
 
 }
