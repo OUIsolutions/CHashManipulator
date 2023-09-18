@@ -10,8 +10,24 @@ void CHash_print(CHash *self){
     printf("%s",result);
     free(result);
 }
-CHashArray * CHash_retrive_path(CHash *self){
-    
+
+CHashArray * CHash_get_path(CHash *self){
+
+    if(self->reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
+        return  newCHashArray(NULL);
+    }
+
+    CHashArray  *path = CHash_get_path(self->father);
+
+    if(self->reference_type == PRIVATE_CHASH_ARRAY_ITEM){
+        CHashArray_append(path, newCHashLong(self->index));;
+    }
+
+    if(self->reference_type == PRIVATE_CHASH_KEYVAL){
+        CHashArray_append(path, newCHashString(self->key));
+    }
+    return path;
+
 }
 void CHash_free(CHash *self){
 

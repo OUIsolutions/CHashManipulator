@@ -28,6 +28,8 @@ SOFTWARE.
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdarg.h>
+
 #include <stdlib.h>
 
 
@@ -337,16 +339,23 @@ CJSON_PUBLIC(void) cJSON_free(void *object);
 
 
 
+char *privateCHash_read_file(const char *filename);
+
+int privateCHash_write_file(const char *filename, const char *value);
+
+
+
 typedef struct CHash{
 
     int type;
     int reference_type;
     struct CHash *father;
     //these is the reference system
+    long size;
+
     union {
         long index;
         char * key;
-        long size;
     };
     //these is the values sysstem
     union {
@@ -380,6 +389,10 @@ CHash * privatenewChash_raw();
 
 void CHash_print(CHash *self);
 
+CHashArray * CHash_get_path(CHash *self);
+
+void CHash_free(CHash *self);
+
 
 
 long CHash_toLong(CHash *element);
@@ -395,11 +408,16 @@ CHash * newCHashString(char *value);
 
 
 
+#define newCHashArray(...) privatenewCHashArray(NULL,__VA_ARGS__,NULL)
 
-CHashArray * newCHashArray();
+CHashArray * privatenewCHashArray(void *sentinel, ...);
 
 
-void CHashArray_append(CHashArray *self,CHash *element);
+void privateCHashArray_append_once(CHashArray *self, CHash *element);
+
+#define CHashArray_append(...) privateCHashArray_append(__VA_ARGS__,NULL)
+void privateCHashArray_append(CHashArray *self, CHashArray *element, ...);
+
 
 CHash * CHashArray_get(CHashArray *self, long position);
 
@@ -407,11 +425,17 @@ CHash * CHashArray_get(CHashArray *self, long position);
 
 
 
+#define newCHashObject(...) privatenewCHashObject(NULL,__VA_ARGS__,NULL)
 
-CHashObject* newCHashObject();
+CHashObject* privatenewCHashObject(void * sentinel, ...);
 
 
-int CHashObject_set(CHashObject * object,const char *key, CHash *element);
+int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element);
+
+#define CHashObject_set(...) privateCHashObject_set(__VA_ARGS__,NULL)
+int privateCHashObject_set(CHashObject *self ,...);
+
+int CHashObject_delete(CHashObject *self, const char *key);
 
 CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key);
 
@@ -427,9 +451,13 @@ cJSON * privateCHash_dumps_json_object(CHashObject *object);
 
 cJSON * privateCHash_dumps_json_array(CHashArray *object);
 
-cJSON * privateCHash_dumps_to_json_element(CHash *element);
+cJSON * CHash_dumps_to_cJSON(CHash *element);
+
 
 char * CHash_dumps_to_json_string(CHash * element);
+
+int  CHash_dumps_to_json_file(CHash *element,const char *filename);
+
 
 
 
@@ -3562,6 +3590,44 @@ CJSON_PUBLIC(void) cJSON_free(void *object)
 
 
 
+
+
+char *privateCHash_read_file(const char *filename) {
+    FILE *file = fopen(filename, "r");
+
+    if (file == NULL) {
+        return NULL;
+    }
+
+    fseek(file, 0, SEEK_END);
+    long file_size = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+
+    char *buffer = (char *)malloc(file_size + 1);
+
+
+    fread(buffer, 1, file_size, file);
+    buffer[file_size] = '\0';
+    fclose(file);
+    return buffer;
+}
+
+int  privateCHash_write_file(const char *filename, const char *value) {
+
+    FILE *file = fopen(filename, "w");
+
+    if (file == NULL) {
+        return 1;
+    }
+    fputs(value, file);
+
+    fclose(file);
+    return 0;
+}
+
+
+
 CHash * privatenewChash_raw(){
     CHash  *self = (CHash*) malloc(sizeof (CHash));
     *self = (CHash){0};
@@ -3572,6 +3638,31 @@ void CHash_print(CHash *self){
     char * result = CHash_dumps_to_json_string(self);
     printf("%s",result);
     free(result);
+}
+CHashArray * CHash_get_path(CHash *self){
+    
+}
+void CHash_free(CHash *self){
+
+    if(self->reference_type == PRIVATE_CHASH_KEYVAL){
+        free(self->key);
+    }
+
+    if(self->type == CHASH_STRING){
+        free(self->value_string);
+    }
+
+    if(self->type == CHASH_OBJECT || self->type == CHASH_ARRAY){
+        long size = self->size;
+        for(int i = 0; i < size; i++){
+            CHash * current = self->sub_elements[i];
+            CHash_free(current);
+        }
+        free(self->sub_elements);
+    }
+
+
+    free(self);
 }
 
 
@@ -3609,21 +3700,12 @@ char * CHash_toString(CHashArray *element){
 CHash * newCHashString(char *value){
     CHash * self =  privatenewChash_raw();
     self->type = CHASH_STRING;
-    self->value_string = value;
+    self->value_string = strdup(value);
     return self;
 }
 
 
-
-CHashArray * newCHashArray(){
-    CHash * self =  privatenewChash_raw();
-    self->type = CHASH_ARRAY;
-    self->sub_elements = malloc(0);
-    self->size = 0;
-    return self;
-}
-
-void CHashArray_append(CHashArray *self,CHash *element){
+void privateCHashArray_append_once(CHashArray *self, CHash *element){
 
     self->sub_elements = (CHash**) realloc(
             self->sub_elements,
@@ -3635,6 +3717,47 @@ void CHashArray_append(CHashArray *self,CHash *element){
     self->sub_elements[self->size]= element;
     self->size+=1;
 
+
+}
+
+CHashArray * privatenewCHashArray(void *sentinel,...){
+    CHash * self =  privatenewChash_raw();
+    self->type = CHASH_ARRAY;
+    self->sub_elements = malloc(0);
+    self->size = 0;
+
+    va_list args;
+    va_start(args, sentinel);
+
+    while(true){
+        void * current = va_arg(args,void*);
+        if(!current){
+            break;
+        }
+
+        CHash * current_element = (CHash*)current;
+        privateCHashArray_append_once(self, current_element);
+    }
+    va_end(args);
+    return self;
+}
+
+void privateCHashArray_append(CHashArray *self, CHashArray *element, ...){
+    privateCHashArray_append_once(self, element);
+
+    va_list args;
+    va_start(args, NULL);
+
+    while(true){
+        void * current = va_arg(args,void*);
+        if(!current){
+            break;
+        }
+        CHash * current_element = (CHash*)current;
+        privateCHashArray_append_once(self, current_element);
+    }
+    va_end(args);
+
 }
 
 CHash * CHashArray_get(CHashArray *self, long index){
@@ -3643,11 +3766,41 @@ CHash * CHashArray_get(CHashArray *self, long index){
 
 
 
-CHashObject* newCHashObject(){
+CHashObject* privatenewCHashObject(void * sentinel, ...){
     CHash * self =  privatenewChash_raw();
     self->type = CHASH_OBJECT;
     self->sub_elements = malloc(0);
     self->size = 0;
+
+    va_list args;
+    va_start(args, sentinel);
+
+    const int GETTING_KEY = 0;
+    const int GETTING_VALUE = 1;
+
+    int state = GETTING_KEY;
+
+    char *key;
+
+    while (true){
+        void * current = va_arg(args,void*);
+        if(!current){
+            break;
+        }
+
+        if(state == GETTING_KEY){
+            key = (char*)current;
+            state = GETTING_VALUE;
+            continue;
+        }
+
+        if(state == GETTING_VALUE){
+            privateCHashObject_set_once(self, key, (CHash *) current);
+            state = GETTING_KEY;
+        }
+
+    }
+
     return self;
 }
 
@@ -3682,12 +3835,31 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
     self->size+=1;
 }
 
-int CHashObject_set(CHashObject * self,const char *key, CHash *element){
-    CHash *old_element = privateCHashObject_get_by_key(self,key);
+int CHashObject_delete(CHashObject *self, const char *key){
+    bool found = false;
 
-    if(old_element){
-        //implement free here
+    for(int i =0;i < self->size; i ++){
+        CHash * current = self->sub_elements[i];
+        if(strcmp(current->key,key)==0){
+            CHash_free(current);
+            found = true;
+            self->size-=1;
+        }
+
+        if(found){
+            self->sub_elements[i] = self->sub_elements[i+1];
+        }
+
     }
+    if(!found){
+        return 1;
+    }
+    return 0;
+
+
+}
+int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
+    CHashObject_delete(self,key);
 
     self->sub_elements = (CHash**) realloc(
             self->sub_elements,
@@ -3699,8 +3871,46 @@ int CHashObject_set(CHashObject * self,const char *key, CHash *element){
     element->key = strdup(key);
     self->sub_elements[self->size]= element;
     self->size+=1;
+    return 0;
 }
 
+int privateCHashObject_set(CHashObject *self ,...){
+
+    va_list args;
+
+    va_start(args, NULL);
+
+    const int GETTING_KEY = 0;
+    const int GETTING_VALUE = 1;
+
+    int state = GETTING_KEY;
+
+    char *key;
+
+    while (true){
+        void * current = va_arg(args,void*);
+        if(!current){
+            break;
+        }
+
+        if(state == GETTING_KEY){
+            key = (char*)current;
+            state = GETTING_VALUE;
+            continue;
+        }
+
+        if(state == GETTING_VALUE){
+            int result = privateCHashObject_set_once(self, key, (CHash *) current);
+            if(result){
+                va_end(args);
+                return result;
+            }
+            state = GETTING_KEY;
+        }
+
+    }
+    va_end(args);
+}
 
 
 
@@ -3710,7 +3920,7 @@ cJSON * privateCHash_dumps_json_object(CHashObject * object){
     cJSON * element = cJSON_CreateObject();
     for(int i = 0; i < size; i++){
         CHashArray *current  = CHashObject_get_by_index(object, i);
-        cJSON *current_json = privateCHash_dumps_to_json_element(current);
+        cJSON *current_json = CHash_dumps_to_cJSON(current);
         cJSON_AddItemToObject(element,current->key,current_json);
     }
     return element;
@@ -3721,14 +3931,14 @@ cJSON * privateCHash_dumps_json_array(CHashArray * array){
     cJSON *element = cJSON_CreateArray();
     for(int i = 0; i < size; i++){
         CHashArray *current  = CHashArray_get(array, i);
-        cJSON *current_json = privateCHash_dumps_to_json_element(current);
+        cJSON *current_json = CHash_dumps_to_cJSON(current);
         cJSON_AddItemToArray(element,current_json);
     }
     return element;
 }
 
 
-cJSON * privateCHash_dumps_to_json_element(CHash *element){
+cJSON * CHash_dumps_to_cJSON(CHash *element){
     int type = element->type;
     if(type == CHASH_OBJECT){
         return privateCHash_dumps_json_object(element);
@@ -3750,12 +3960,22 @@ cJSON * privateCHash_dumps_to_json_element(CHash *element){
 }
 
 char * CHash_dumps_to_json_string(CHash * element){
-    cJSON * created = privateCHash_dumps_to_json_element(element);
+    cJSON * created = CHash_dumps_to_cJSON(element);
     char * result  = cJSON_Print(created);
     cJSON_Delete(created);
     return result;
 }
 
+int  CHash_dumps_to_json_file(CHash *element,const char *filename){
+    char *content = CHash_dumps_to_json_string(element);
+    if(!content){
+        return 1;
+    }
+    privateCHash_write_file(filename,content);
+    free(content);
+    return 0;
+
+}
 
 
 

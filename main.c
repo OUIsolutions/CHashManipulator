@@ -30,13 +30,12 @@ int main(){
 
     CHashObject *t = create();
 
-    CHashObject_set(t,
-       "name", newCHashLong(20),
-        "b", newCHashLong(30)
-    );
-    CHashObject_set(t,"xxx", newCHashString("sssssss"));
+    CHash *adrres = CHashObject_get(t,"phones");
 
+    CHash *first_pthone = CHashArray_get(adrres,1);
 
-    CHash_print(t);
+    CHashArray  * first_phone_path = CHash_get_path(first_pthone);
+    CHash_print(first_phone_path);
+
     CHash_free(t);
 }
