@@ -18,7 +18,7 @@ int main(){
             newCHashDouble(21),
             newCHashString("aaaaaaaa"),
             newCHashDouble(21)
-            );
+    );
 
     CHashArray_delete(t,0);
     CHash_print(t);
