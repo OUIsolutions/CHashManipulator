@@ -14,11 +14,18 @@ CHashObject *create (){
 
 int main(){
 
-    CHashObject *t = create();
+    CHashObject *t = newCHashArray(
+        newCHashDouble(2.4),
+        newCHashLong(2),
+                newCHashDouble(2.4),
+        newCHashDouble(2.4),
+        newCHashString("aaaaaaaaaa")
+
+    );
     
     CHashObject *t2 = newCHashObject(
         "age",newCHashLong(27),
-        "name", CHash_copy(CHashObject_get(t,"name"))
+        "internal", CHash_copy(t)
     );
 
     CHash_print(t2);    
