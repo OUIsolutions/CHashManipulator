@@ -16,6 +16,7 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
         CTextStack_format(formated_key,"#%s#",key);
         CTextStack_self_replace(self->error_mensage,formated_key->rendered_text,value);
         CTextStack_free(formated_key);
+        free(value);
     }
 
     return self;
