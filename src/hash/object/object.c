@@ -39,6 +39,9 @@ CHashObject* privatenewCHashObject(void * sentinel, ...){
 }
 
 CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key){
+    if(Chash_errors(self)){
+        return NULL;
+    }
     for(int i =0;i < self->private_size; i ++){
         CHash * current = self->private_sub_elements[i];
         if(strcmp(current->private_key, key) == 0){
@@ -49,10 +52,17 @@ CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key){
 }
 
 CHash * CHashObject_get_by_index(CHashObject * self, long index){
+    if(Chash_errors(self)){
+        return NULL;
+    }
     return self->private_sub_elements[index];
 }
 
 CHash * CHashObject_get(CHashObject * self, const char *key){
+    if(Chash_errors(self)){
+        return NULL;
+    }
+
     CHash *element = privateCHashObject_get_by_key(self,key);
     if(element){
         return  element;
@@ -73,6 +83,8 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
 }
 
 void  CHashObject_delete(CHashObject *self, const char *key){
+    if(Chash_errors(self)){return;}
+
     bool found = false;
 
     for(int i =0;i < self->private_size; i ++){
@@ -91,6 +103,8 @@ void  CHashObject_delete(CHashObject *self, const char *key){
     
 }
 void  privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
+    if(Chash_errors(self)){return;}
+
     CHashObject_delete(self,key);
 
     self->private_sub_elements = (CHash**) realloc(
@@ -107,6 +121,10 @@ void  privateCHashObject_set_once(CHashObject * self, const char *key, CHash *el
 
 
 CHashArray  * CHashObject_get_keys(CHashObject *self){
+    if(Chash_errors(self)){
+        return NULL;
+    }
+
     CHashArray * keys = newCHashArray(NULL);
     for(int i =0;i < self->private_size; i ++){
         CHash * current = self->private_sub_elements[i];
@@ -116,13 +134,15 @@ CHashArray  * CHashObject_get_keys(CHashObject *self){
 }
 
 char * CHashObject_get_element_key(CHash *element){
-    if(!element){
-        return NULL;
+    if(Chash_errors(element)){
+        return  NULL;
     }
+
     return element->private_key;
 }
 
 void  privateCHashObject_set(CHashObject *self ,...){
+    if(Chash_errors(self)){return;}
 
     va_list args;
 

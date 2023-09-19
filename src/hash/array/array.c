@@ -1,5 +1,6 @@
 
 void privateCHashArray_append_once(CHashArray *self, CHash *element){
+    if(Chash_errors(self)){return;}
 
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,
@@ -7,6 +8,7 @@ void privateCHashArray_append_once(CHashArray *self, CHash *element){
     );
     element->private_reference_type = PRIVATE_CHASH_ARRAY_ITEM;
     element->private_father = self;
+    element->private_error = self->private_error;
     element->private_index = self->private_size;
     self->private_sub_elements[self->private_size]= element;
     self->private_size+=1;
@@ -38,6 +40,8 @@ CHashArray * privatenewCHashArray(void *sentinel,...){
 
 
 void privateCHashArray_append(CHashArray *self, CHashArray *element, ...){
+    if(Chash_errors(self)){return;}
+
     privateCHashArray_append_once(self, element);
 
     va_list args;
@@ -55,6 +59,8 @@ void privateCHashArray_append(CHashArray *self, CHashArray *element, ...){
 
 }
 void CHashArray_delete(CHashArray *self, long index){
+    if(Chash_errors(self)){return;}
+
     CHash  *current = CHashArray_get(self,index);
     CHash_free(current);
     self->private_size-=1;
@@ -65,5 +71,9 @@ void CHashArray_delete(CHashArray *self, long index){
     }
 }
 CHash * CHashArray_get(CHashArray *self, long index){
+    if(Chash_errors(self)){
+        return NULL;
+    }
+
     return self->private_sub_elements[index];
 }

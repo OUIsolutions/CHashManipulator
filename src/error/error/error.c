@@ -1,6 +1,6 @@
 
 
-privateCHashError * privatenewCHashError(CHash *args, int error_code, const char *error_menssage){
+privateCHashError * privatenewCHashError(CHashObject *args, int error_code, const char *error_menssage){
     privateCHashError  *self = (privateCHashError*) malloc(sizeof (privateCHashError));
     self->args = args;
     self->error_code = error_code;
@@ -21,7 +21,32 @@ privateCHashError * privatenewCHashError(CHash *args, int error_code, const char
     return self;
 }
 
+bool Chash_errors(CHash *self){
 
+    if(!self){
+        return true;
+    }
+
+    if(self->private_error){
+        return true;
+    }
+    return false;
+}
+
+void CHash_raise_error(CHash *self, CHashObject *args, int error_code,const char *error_menssage){
+    if(Chash_errors(self)){return;}
+    CHashArray  *path = CHash_get_path(self);
+    CHashObject_set(args,
+         "path",path,
+         "value",self
+    );
+
+    self->private_error = (privateCHashError*) privatenewCHashError(
+        args,
+        error_code,
+        error_menssage
+    );
+}
 void privateCHashError_free(privateCHashError *self){
     CTextStack_free(self->error_mensage);
     CHash_free(self->args);

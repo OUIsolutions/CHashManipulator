@@ -6,13 +6,15 @@ typedef struct privateCHashError{
     CTextStack * error_mensage;
 }privateCHashError;
 
-privateCHashError * privatenewCHashError(CHash *args, int error_code, const char *error_menssage);
+privateCHashError * privatenewCHashError(CHashObject *args, int error_code, const char *error_menssage);
 
 
 void privateCHashError_free(privateCHashError *self);
 
+bool Chash_errors(CHash *self);
 
-void CHash_raise_error(CHash *self, CHash *args, int error_code,const char *error_menssage);
+
+void CHash_raise_error(CHash *self, CHashObject *args, int error_code,const char *error_menssage);
 
 privateCHashError  * CHash_get_error(CHash *self);
 

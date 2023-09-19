@@ -21,7 +21,6 @@ int main(){
             );
 
     char *r = CHash_toString(CHashObject_get(t,"name"));
-    
     privateCHashError  * e = privatenewCHashError(
             newCHashObject("a", newCHashString("aaaaaaa")),
             10,
