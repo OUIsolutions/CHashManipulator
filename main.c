@@ -5,19 +5,20 @@
 
 
 CHashObject *create (){
-
+    
     return newCHashObject(
-
         "a", newCHashObject(
                 "age",newCHashDouble(26),
                 "name",newCHashString("mateus")
             )
+
     );
+
 }
 
 int main(){
 
-    CHashObject *t = newCHashLong(20);
+    CHashObject *t = create();
     
     CHash_free(t);
 
