@@ -397,6 +397,9 @@ CHash * CHash_copy(CHash *self);
 
 void CHash_free(CHash *self);
 
+bool CHash_equals(CHash *element1, CHash *element2);
+
+
 CHash * newCHashNULL();
 
 
@@ -494,6 +497,29 @@ CHash * CHash_load_from_json_file(const char *filename);
 
 
 
+
+
+
+
+
+
+
+typedef struct CHashError{
+    CHash *args;
+    int error_code;
+    char *error_mensage;
+}CHashError;
+
+CHashError * privatenewCHashError(CHash *args, int error_code,const char *error_menssage);
+
+char *CHashError_recreate_error_menssage(CHashError *self,const char *error_menssage);
+
+void CHashError_free(CHashError *error);
+
+
+void CHash_raise_error(CHash *self, CHash *args, int error_code,const char *error_menssage);
+
+CHashError  * CHash_get_error(CHash *self);
 
 
 
@@ -3695,6 +3721,18 @@ CHashArray * CHash_get_path(CHash *self){
     return path;
 
 }
+
+bool CHash_equals(CHash *element1, CHash *element2){
+    char *element1_str = CHash_dump_to_json_string(element1);
+    char *element2_str = CHash_dump_to_json_string(element2);
+
+    bool equal = strcmp(element1_str,element2_str) == 0;
+    free(element1_str);
+    free(element2_str);
+    return equal;
+}
+
+
 void CHash_free(CHash *self){
 
     if(self->private_reference_type == PRIVATE_CHASH_KEYVAL){
@@ -4213,6 +4251,27 @@ CHash * CHash_load_from_json_file(const char *filename){
 
 
 
+
+
+
+
+
+CHashError * privatenewCHashError(CHash *args, int error_code,const char *error_menssage){
+    CHashError  *self = (CHashError*) malloc(sizeof (CHashError));
+    self->args = args;
+    self->error_code = error_code;
+    self->error_mensage = NULL;
+
+}
+
+char *CHashError_recreate_error_menssage(CHashError *self,const char *error_menssage){
+    if(self->error_mensage){
+        free(self->error_mensage);
+    }
+
+
+}
+void CHashError_free(CHashError *error);
 
 
 
