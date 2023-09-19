@@ -4,3 +4,6 @@
 #define cJSON__h
     #include "cJSON/cJSON.c"
 #endif
+#ifndef CTEXTENGINE_H
+#include "CTextEngine/definition.h"
+#endif

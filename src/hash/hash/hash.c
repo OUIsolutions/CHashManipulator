@@ -92,6 +92,7 @@ CHash * CHash_copy(CHash *self){
         return new_element;
 
     }
+
     if(self->private_type == CHASH_OBJECT){
         CHash * new_element  = newCHashObject(NULL);
 

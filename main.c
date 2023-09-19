@@ -3,7 +3,6 @@
 
 
 
-
 CHashObject *create (){
     return newCHashObject(
         "age",newCHashDouble(26),
@@ -24,8 +23,8 @@ int main(){
             newCHashString("aaaaaaaa"),
             newCHashDouble(20)
     );
+
     printf("%d", CHash_equals(t,t2));
-    
     CHash_free(t);
 
 }
