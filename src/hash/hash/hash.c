@@ -2,7 +2,6 @@
 CHash * privatenewChash_raw(){
     CHash  *self = (CHash*) malloc(sizeof (CHash));
     *self = (CHash){0};
-    self->private_first = self;
     return self;
 }
 
