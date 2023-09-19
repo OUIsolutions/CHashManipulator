@@ -15,12 +15,13 @@ CHashObject *create (){
 
 int main(){
 
-    privateCHashError *e = privatenewCHashError(
-        newCHashObject("a",newCHashLong(10)),
-        10,
-        "value of #a#"
-    );
+    CHashObject *t = create();
+    //printf("t: %ld\n",t);
+    CHash *age = CHashObject_get(t,"age");
+    //CHash_raise_error(age,10,"value: #value# at #path# its not correct",NULL);
 
-    privateCHashError_free(e);
+    Chash_errors(t);
+    // printf("error %d\n", Chash_errors(t));
+    CHash_free(t);
 
 }
