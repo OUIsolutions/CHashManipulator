@@ -3,7 +3,7 @@ typedef struct CHash{
 
     int private_type;
     int private_reference_type;
-    void *private_error;
+    void **private_error;
     struct CHash *private_father;
     long private_size;
 

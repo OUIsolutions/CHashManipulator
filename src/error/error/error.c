@@ -21,17 +21,28 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
     return self;
 }
 
-bool Chash_errors(CHash *self){
+privateCHashError * privateCHashError_get_error(CHash *self){
+    if(!self->private_error){
+        return NULL;
+    }
+    void * error = &self->private_error;
+    if(!error){
+        return NULL;
+    }
+    return (privateCHashError*)error;
+}
 
+bool Chash_errors(CHash *self){
     if(!self){
         return true;
     }
-
-    if(self->private_error){
+    privateCHashError *error  = privateCHashError_get_error(self);
+    if(error){
         return true;
     }
     return false;
 }
+
 
 void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CHash *args){
     if(Chash_errors(self)){return;}
@@ -44,7 +55,7 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
          "value",self
     );
 
-    self->private_error = (privateCHashError*) privatenewCHashError(
+    self->private_error = (void *)privatenewCHashError(
         args,
         error_code,
         error_menssage
@@ -56,11 +67,13 @@ void privateCHashError_free(privateCHashError *self){
     CHash_free(self->args);
     free(self);
 }
+
 char * CHash_get_error_menssage(CHash *self){
+
     if(!Chash_errors(self)){
         return NULL;
     }
-    privateCHashError  *error = (privateCHashError*)self->private_error;
+    privateCHashError  *error = privateCHashError_get_error(self);
     return error->error_mensage->rendered_text;
 }
 
@@ -68,7 +81,7 @@ int CHash_get_error_code(CHash *self){
     if(!Chash_errors(self)){
         return 0;
     }
-    privateCHashError  *error = (privateCHashError*)self->private_error;
+    privateCHashError  *error = privateCHashError_get_error(self);
     return error->error_code;
 }
 
@@ -76,6 +89,6 @@ CHash * CHash_get_error_args(CHash *self){
     if(!Chash_errors(self)){
         return NULL;
     }
-    privateCHashError  *error = (privateCHashError*)self->private_error;
+    privateCHashError  *error = privateCHashError_get_error(self);
     return error->args;
 }

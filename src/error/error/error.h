@@ -22,3 +22,4 @@ int CHash_get_error_code(CHash *self);
 
 CHash * CHash_get_error_args(CHash *self);
 
+privateCHashError * privateCHashError_get_error(CHash *self);
