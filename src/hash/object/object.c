@@ -108,6 +108,17 @@ int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *elem
     return 0;
 }
 
+
+CHashArray  * CHashObject_get_keys(CHashObject *self){
+    CHashArray * keys = newCHashArray(NULL);
+    for(int i =0;i < self->private_size; i ++){
+        CHash * current = self->private_sub_elements[i];
+        CHashArray_append(keys, newCHashString(current->private_key));
+    }
+    return keys;
+}
+
+
 int privateCHashObject_set(CHashObject *self ,...){
 
     va_list args;
