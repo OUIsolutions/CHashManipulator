@@ -5,6 +5,10 @@
 
 
 char * CHash_toString(CHashArray *element){
+    if(Chash_errors(element)){
+        return NULL;
+    }
+    
     if(element->private_type != CHASH_STRING){
         return NULL;
     }
@@ -12,6 +16,9 @@ char * CHash_toString(CHashArray *element){
 }
 
 CTextStack  *CHash_toStackSttring(CHash *element){
+    if(Chash_errors(element)){
+        return NULL;
+    }
     if(element->private_type != CHASH_STRING){
         return NULL;
     }
@@ -19,6 +26,7 @@ CTextStack  *CHash_toStackSttring(CHash *element){
 }
 
 CHash * newCHashStackString(CTextStack *element){
+
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_STRING;
     self->private_value_stack = element;
