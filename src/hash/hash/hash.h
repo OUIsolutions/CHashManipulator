@@ -1,15 +1,20 @@
 
 typedef struct CHash{
 
-    int private_type;
-    int private_reference_type;
-    void **private_error;
+    unsigned short private_type;
+    unsigned short private_reference_type;
+
+
+    void *private_error;
+    struct CHash *private_first;
+
+
     struct CHash *private_father;
-    long private_size;
+    unsigned long private_size;
 
     //these is the reference system
     union {
-        long private_index;
+        unsigned long private_index;
         char * private_key;
     };
     //these is the values sysstem

@@ -22,15 +22,14 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
 }
 
 privateCHashError * privateCHashError_get_error(CHash *self){
-    if(!self->private_error){
-        return NULL;
+
+    CHash  *first = self->private_first;
+    if(first->private_error){
+        return (privateCHashError*)first->private_error;
     }
-    void * error = &self->private_error;
-    if(!error){
-        return NULL;
-    }
-    return (privateCHashError*)error;
+    return NULL;
 }
+
 
 bool Chash_errors(CHash *self){
     if(!self){
@@ -55,11 +54,14 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
          "value",self
     );
 
-    self->private_error = (void *)privatenewCHashError(
-        args,
-        error_code,
-        error_menssage
+    //printf("first %ld\n",self->private_first);
+    CHash  *first = self->private_first;
+    first->private_error = privatenewCHashError(
+            args,
+            error_code,
+            error_menssage
     );
+
 }
 
 void privateCHashError_free(privateCHashError *self){

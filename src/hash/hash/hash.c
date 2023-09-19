@@ -2,6 +2,7 @@
 CHash * privatenewChash_raw(){
     CHash  *self = (CHash*) malloc(sizeof (CHash));
     *self = (CHash){0};
+    self->private_first = self;
     return self;
 }
 
@@ -45,6 +46,12 @@ void CHash_free(CHash *self){
 
     if(self->private_reference_type == PRIVATE_CHASH_KEYVAL){
         free(self->private_key);
+    }
+    if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
+        if(self->private_error){
+            privateCHashError *error = (privateCHashError*)self->private_error;
+            privateCHashError_free(error);
+        }
     }
 
     if(self->private_type == CHASH_STRING){
