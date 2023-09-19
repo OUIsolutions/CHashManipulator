@@ -6,4 +6,4 @@ CTextStack  *CHash_toStackSttring(CHash *element);
 
 CHash * newCHashStackString(CTextStack *element);
 
-CHash * newCHashString(char *value);
+CHash * newCHashString(const char *value);

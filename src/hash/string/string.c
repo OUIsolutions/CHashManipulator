@@ -25,7 +25,7 @@ CHash * newCHashStackString(CTextStack *element){
     return self;
 }
 
-CHash * newCHashString(char *value){
+CHash * newCHashString(const char *value){
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_STRING;
     self->private_value_stack = newCTextStack_string(value);

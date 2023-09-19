@@ -126,6 +126,7 @@ CHash * CHash_load_from_cJSON(cJSON *element){
         }
         return newCHashDouble(value);
     }
+        return newCHashNULL();
 
 
 

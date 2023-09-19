@@ -17,7 +17,7 @@ void privateCHashArray_append_once(CHashArray *self, CHash *element){
 CHashArray * privatenewCHashArray(void *sentinel,...){
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_ARRAY;
-    self->private_sub_elements = malloc(0);
+    self->private_sub_elements = (CHash**)malloc(0);
     self->private_size = 0;
 
     va_list args;
@@ -54,7 +54,7 @@ void privateCHashArray_append(CHashArray *self, CHashArray *element, ...){
     va_end(args);
 
 }
-int CHashArray_delete(CHashArray *self, long index){
+void CHashArray_delete(CHashArray *self, long index){
     CHash  *current = CHashArray_get(self,index);
     CHash_free(current);
     self->private_size-=1;
@@ -63,7 +63,6 @@ int CHashArray_delete(CHashArray *self, long index){
         self->private_sub_elements[i] = self->private_sub_elements[i + 1];
 
     }
-
 }
 CHash * CHashArray_get(CHashArray *self, long index){
     return self->private_sub_elements[index];

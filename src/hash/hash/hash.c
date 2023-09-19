@@ -78,6 +78,7 @@ long CHash_get_size(CHash *self){
     if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_STRING){
         return self->private_size;
     }
+    return -1;
 }
 
 

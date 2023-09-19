@@ -3,7 +3,7 @@
 CHashObject* privatenewCHashObject(void * sentinel, ...){
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_OBJECT;
-    self->private_sub_elements = malloc(0);
+    self->private_sub_elements = (CHash**)malloc(0);
     self->private_size = 0;
 
     va_list args;
@@ -68,9 +68,11 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
     element->private_reference_type  = PRIVATE_CHASH_KEYVAL;
     self->private_sub_elements[self->private_size]=element;
     self->private_size+=1;
+
+    return self;
 }
 
-int CHashObject_delete(CHashObject *self, const char *key){
+void  CHashObject_delete(CHashObject *self, const char *key){
     bool found = false;
 
     for(int i =0;i < self->private_size; i ++){
@@ -86,14 +88,9 @@ int CHashObject_delete(CHashObject *self, const char *key){
         }
 
     }
-    if(!found){
-        return 1;
-    }
-    return 0;
-
-
+    
 }
-int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
+void  privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     CHashObject_delete(self,key);
 
     self->private_sub_elements = (CHash**) realloc(
@@ -106,7 +103,6 @@ int privateCHashObject_set_once(CHashObject * self, const char *key, CHash *elem
     element->private_key = strdup(key);
     self->private_sub_elements[self->private_size]= element;
     self->private_size+=1;
-    return 0;
 }
 
 
@@ -126,7 +122,7 @@ char * CHashObject_get_element_key(CHash *element){
     return element->private_key;
 }
 
-int privateCHashObject_set(CHashObject *self ,...){
+void  privateCHashObject_set(CHashObject *self ,...){
 
     va_list args;
 
@@ -152,14 +148,12 @@ int privateCHashObject_set(CHashObject *self ,...){
         }
 
         if(state == GETTING_VALUE){
-            int result = privateCHashObject_set_once(self, key, (CHash *) current);
-            if(result){
-                va_end(args);
-                return result;
-            }
+            privateCHashObject_set_once(self, key, (CHash *) current);
+         
             state = GETTING_KEY;
         }
 
     }
     va_end(args);
+    
 }
