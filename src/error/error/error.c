@@ -48,21 +48,25 @@ bool Chash_errors(CHash *self){
 void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CHash *args){
     if(Chash_errors(self)){return;}
     CHashArray  *path = CHash_get_path(self);
+    
+    CHash *formated_args = args;
+
     if(!args){
-        args = newCHashObject(NULL);
+        formated_args = newCHashObject(NULL);
     }
-    CHashObject_set(args,
+    CHashObject_set(formated_args,
          "path",path,
          "value",self
     );
 
-    //printf("first %ld\n",self->private_first);
-    CHash  *first = self->private_first;
-    first->private_error = privatenewCHashError(
-            args,
+   
+    privateCHashError *created = privatenewCHashError(
+            formated_args,
             error_code,
             error_menssage
     );
+    privateCHashError_free(created);
+
 
 }
 
