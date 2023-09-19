@@ -32,9 +32,11 @@ privateCHashError * privateCHashError_get_error(CHash *self){
 
 
 bool Chash_errors(CHash *self){
+    
     if(!self){
         return true;
     }
+
     privateCHashError *error  = privateCHashError_get_error(self);
     if(error){
         return true;
