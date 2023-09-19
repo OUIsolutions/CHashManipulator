@@ -28,8 +28,9 @@ int main(){
 
     CHash_raise_error(age,10,"value: #value# at #path# its not correct",NULL);
     //CHash_print(age);
+    printf("error %d\n",sizeof(CHash));
+
     if( Chash_errors(t)){
-    printf("error %s\n",CHash_get_error_menssage(t));
 
     }
     CHash_free(t);
