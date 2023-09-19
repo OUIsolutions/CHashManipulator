@@ -47,8 +47,32 @@ void CHash_raise_error(CHash *self, CHashObject *args, int error_code,const char
         error_menssage
     );
 }
+
 void privateCHashError_free(privateCHashError *self){
     CTextStack_free(self->error_mensage);
     CHash_free(self->args);
     free(self);
+}
+char * CHash_get_error_menssage(CHash *self){
+    if(!Chash_errors(self)){
+        return NULL;
+    }
+    privateCHashError  *error = (privateCHashError*)self->private_error;
+    return error->error_mensage->rendered_text;
+}
+
+int CHash_get_error_code(CHash *self){
+    if(!Chash_errors(self)){
+        return 0;
+    }
+    privateCHashError  *error = (privateCHashError*)self->private_error;
+    return error->error_code;
+}
+
+CHash * CHash_get_error_args(CHash *self){
+    if(!Chash_errors(self)){
+        return NULL;
+    }
+    privateCHashError  *error = (privateCHashError*)self->private_error;
+    return error->args;
 }

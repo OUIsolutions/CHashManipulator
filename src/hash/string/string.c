@@ -8,7 +8,7 @@ char * CHash_toString(CHashArray *element){
     if(Chash_errors(element)){
         return NULL;
     }
-    
+
     if(element->private_type != CHASH_STRING){
         return NULL;
     }
