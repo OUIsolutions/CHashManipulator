@@ -65,12 +65,12 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
             error_code,
             error_menssage
     );
-
-    if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
+    bool first = self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE;
+    if(first){
         self->private_error = (void*)created;
     }
 
-    if(self->private_reference_type != PRIVATE_CHASH_NOT_A_REFERENCE){
+    if(!first){
         self->private_first->private_error = (void*)created;
     }
     
