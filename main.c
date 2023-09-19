@@ -1,3 +1,4 @@
+
 #include "src/one.h"
 #include "src/one.h"
 
@@ -14,17 +15,10 @@ CHashObject *create (){
 
 int main(){
 
-    CHashObject *t = newCHashArray(
-            newCHashDouble(21),
-            newCHashString("aaaaaaaa"),
-            newCHashDouble(21)
-    );
-    CHashObject *t2 = newCHashArray(
-            newCHashDouble(21),
-            newCHashString("aaaaaaaa"),
-            newCHashDouble(20)
-    );
-    CHash_print(t);
-    CHash_free(t);
+    CHashObject *t = newCHashObject(
+            "name", newCHashString("mateus"),
+            "age", newCHashLong(26)
+            );
+    
 
 }
