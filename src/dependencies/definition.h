@@ -5,5 +5,6 @@
     #include "cJSON/cJSON.c"
 #endif
 #ifndef CTEXTENGINE_H
+#define CTEXTENGINE_H
 #include "CTextEngine/definition.h"
 #endif
