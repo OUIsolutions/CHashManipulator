@@ -51,4 +51,7 @@ CHash * CHash_copy(CHash *self);
 
 void CHash_free(CHash *self);
 
+bool CHash_equals(CHash *element1, CHash *element2);
+
+
 CHash * newCHashNULL();

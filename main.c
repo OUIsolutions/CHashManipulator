@@ -19,9 +19,13 @@ int main(){
             newCHashString("aaaaaaaa"),
             newCHashDouble(21)
     );
-
-    CHashArray_delete(t,0);
-    CHash_print(t);
+    CHashObject *t2 = newCHashArray(
+            newCHashDouble(21),
+            newCHashString("aaaaaaaa"),
+            newCHashDouble(20)
+    );
+    printf("%d", CHash_equals(t,t2));
+    
     CHash_free(t);
 
 }

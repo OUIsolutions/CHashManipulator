@@ -2,3 +2,4 @@
 #include "io/io.h"
 #include "hash/declaration.h"
 #include "parsers/declaration.h"
+#include "error/declaration.h"

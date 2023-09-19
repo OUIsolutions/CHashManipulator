@@ -2,3 +2,4 @@
 #include "io/io.c"
 #include "hash/definition.h"
 #include "parsers/definition.h"
+#include "error/definition.h"

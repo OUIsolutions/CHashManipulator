@@ -29,6 +29,18 @@ CHashArray * CHash_get_path(CHash *self){
     return path;
 
 }
+
+bool CHash_equals(CHash *element1, CHash *element2){
+    char *element1_str = CHash_dump_to_json_string(element1);
+    char *element2_str = CHash_dump_to_json_string(element2);
+
+    bool equal = strcmp(element1_str,element2_str) == 0;
+    free(element1_str);
+    free(element2_str);
+    return equal;
+}
+
+
 void CHash_free(CHash *self){
 
     if(self->private_reference_type == PRIVATE_CHASH_KEYVAL){
