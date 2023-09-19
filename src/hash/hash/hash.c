@@ -134,7 +134,13 @@ CHash * CHash_copy(CHash *self){
     return newCHashNULL();
 }
 
+CHash * privateCHash_get_first_object(CHash *self){
+    if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE) {
+        return self;
+    }
+    return privateCHash_get_first_object(self->private_father);
 
+}
 CHash * newCHashNULL(){
     return privatenewChash_raw();
 }

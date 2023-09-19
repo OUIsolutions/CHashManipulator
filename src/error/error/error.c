@@ -24,7 +24,7 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
 
 privateCHashError * privateCHashError_get_error(CHash *self){
 
-    CHash  *first = self->private_first;
+    CHash  *first =  privateCHash_get_first_object(self);
     if(first->private_error){
         return (privateCHashError*)first->private_error;
     }
@@ -65,14 +65,9 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
             error_code,
             error_menssage
     );
-    bool first = self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE;
-    if(first){
-        self->private_error = (void*)created;
-    }
+    CHash *first = privateCHash_get_first_object(self);
+    first->private_error = (void*)created;
 
-    if(!first){
-        self->private_first->private_error = (void*)created;
-    }
     
 }
 

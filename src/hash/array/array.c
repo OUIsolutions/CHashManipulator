@@ -8,7 +8,6 @@ void privateCHashArray_append_once(CHashArray *self, CHash *element){
     );
     element->private_reference_type = PRIVATE_CHASH_ARRAY_ITEM;
     element->private_father = self;
-    element->private_first = self->private_first;
     element->private_index = self->private_size;
     self->private_sub_elements[self->private_size]= element;
     self->private_size+=1;

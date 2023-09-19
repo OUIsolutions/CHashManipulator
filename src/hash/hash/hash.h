@@ -4,10 +4,7 @@ typedef struct CHash{
     unsigned short private_type;
     unsigned short private_reference_type;
 
-
     void *private_error;
-    struct CHash *private_first;
-
 
     struct CHash *private_father;
     unsigned long private_size;
@@ -62,5 +59,7 @@ bool CHash_equals(CHash *element1, CHash *element2);
 long CHash_get_size(CHash *self);
 
 long CHash_get_type(CHash *self);
+
+CHash * privateCHash_get_first_object(CHash *self);
 
 CHash * newCHashNULL();

@@ -102,7 +102,6 @@ void  privateCHashObject_set_once(CHashObject * self, const char *key, CHash *el
 
     element->private_reference_type = PRIVATE_CHASH_KEYVAL;
     element->private_father = self;
-    element->private_first = self->private_first;
     element->private_key = strdup(key);
     self->private_sub_elements[self->private_size]= element;
     self->private_size+=1;
