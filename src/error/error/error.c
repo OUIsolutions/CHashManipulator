@@ -57,18 +57,23 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
     }
     CHashObject_set(formated_args,
          "path",path,
-         "value",self
+         "value",CHash_copy(self)
     );
 
-   
     privateCHashError *created = privatenewCHashError(
             formated_args,
             error_code,
             error_menssage
     );
-    privateCHashError_free(created);
 
+    if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
+        self->private_error = (void*)created;
+    }
 
+    if(self->private_reference_type != PRIVATE_CHASH_NOT_A_REFERENCE){
+        self->private_first->private_error = (void*)created;
+    }
+    
 }
 
 void privateCHashError_free(privateCHashError *self){
