@@ -33,9 +33,12 @@ bool Chash_errors(CHash *self){
     return false;
 }
 
-void CHash_raise_error(CHash *self, CHashObject *args, int error_code,const char *error_menssage){
+void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CHash *args){
     if(Chash_errors(self)){return;}
     CHashArray  *path = CHash_get_path(self);
+    if(!args){
+        args = newCHashObject(NULL);
+    }
     CHashObject_set(args,
          "path",path,
          "value",self

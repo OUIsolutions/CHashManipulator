@@ -15,10 +15,11 @@ CHashObject *create (){
 
 int main(){
 
-    CHashObject *t = newCHashObject(
-            "name", newCHashString("mateus"),
-            "age", newCHashLong(26)
-            );
+    CHashObject *t = create();
+
+    CHash *age = CHashObject_get(t,"age");
+    CHash_raise_error(age,10,"value: #value# at #path# its not correct",NULL);
 
 
+    printf("error %s\n", CHash_get_error_menssage(age));
 }
