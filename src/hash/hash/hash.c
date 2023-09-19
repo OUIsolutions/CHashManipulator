@@ -48,7 +48,7 @@ void CHash_free(CHash *self){
     }
 
     if(self->private_type == CHASH_STRING){
-        free(self->private_value_string);
+        CTextStack_free(self->private_value_stack);
     }
 
     if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
@@ -67,7 +67,7 @@ void CHash_free(CHash *self){
 CHash * CHash_copy(CHash *self){
     
     if(self->private_type == CHASH_STRING){
-        return newCHashString(self->private_value_string);
+        return newCHashString(self->private_value_stack->rendered_text);
     }
     
     if(self->private_type == CHASH_LONG){

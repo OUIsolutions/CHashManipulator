@@ -13,7 +13,7 @@ typedef struct CHash{
     };
     //these is the values sysstem
     union {
-        char * private_value_string;
+        CTextStack  *private_value_stack;
         double private_value_double;
         long private_value_long;
         bool private_value_bool;

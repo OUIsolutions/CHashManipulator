@@ -23,8 +23,7 @@ int main(){
             newCHashString("aaaaaaaa"),
             newCHashDouble(20)
     );
-
-    printf("%d", CHash_equals(t,t2));
+    CHash_print(t);
     CHash_free(t);
 
 }
