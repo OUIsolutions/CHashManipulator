@@ -18,6 +18,13 @@ CTextStack  *CHash_toStackSttring(CHash *element){
     return element->private_value_stack;
 }
 
+CHash * newCHashStackString(CTextStack *element){
+    CHash * self =  privatenewChash_raw();
+    self->private_type = CHASH_STRING;
+    self->private_value_stack = element;
+    return self;
+}
+
 CHash * newCHashString(char *value){
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_STRING;

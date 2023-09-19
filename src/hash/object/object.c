@@ -47,6 +47,7 @@ CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key){
     }
     return NULL;
 }
+
 CHash * CHashObject_get_by_index(CHashObject * self, long index){
     return self->private_sub_elements[index];
 }
@@ -118,6 +119,12 @@ CHashArray  * CHashObject_get_keys(CHashObject *self){
     return keys;
 }
 
+char * CHashObject_get_element_key(CHash *element){
+    if(!element){
+        return NULL;
+    }
+    return element->private_key;
+}
 
 int privateCHashObject_set(CHashObject *self ,...){
 

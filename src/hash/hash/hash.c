@@ -64,6 +64,23 @@ void CHash_free(CHash *self){
     free(self);
 }
 
+long CHash_get_type(CHash *self){
+    if(!self){
+        return -1;
+    }
+    return self->private_type;
+}
+
+long CHash_get_size(CHash *self){
+    if(self->private_type == CHASH_STRING){
+        return (long)self->private_value_stack->size;
+    }
+    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_STRING){
+        return self->private_size;
+    }
+}
+
+
 CHash * CHash_copy(CHash *self){
     
     if(self->private_type == CHASH_STRING){

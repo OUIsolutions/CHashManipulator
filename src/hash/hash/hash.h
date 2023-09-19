@@ -53,5 +53,8 @@ void CHash_free(CHash *self);
 
 bool CHash_equals(CHash *element1, CHash *element2);
 
+long CHash_get_size(CHash *self);
+
+long CHash_get_type(CHash *self);
 
 CHash * newCHashNULL();
