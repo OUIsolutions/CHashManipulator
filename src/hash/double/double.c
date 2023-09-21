@@ -1,10 +1,13 @@
 
 
 double CHash_toDouble(CHash *element){
-    if(element->private_type != CHASH_DOUBLE){
+
+    if(CHash_ensure_double(element)){
         return -1;
     }
+
     return element->private_value_double;
+
 }
 
 CHash * newCHashDouble(double value){

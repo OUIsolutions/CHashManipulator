@@ -58,19 +58,23 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     return self->private_sub_elements[index];
 }
 
-CHash * CHashObject_get(CHashObject * self, const char *key){
+CHash * CHash_get_any_by_key(CHashObject * self, const char *key){
     if(Chash_errors(self)){
         return NULL;
     }
 
     CHash *element = privateCHashObject_get_by_key(self,key);
+
     if(element){
         return  element;
     }
+
+    CHash_raise_error(element, CHASH_ELEMENT_NOT_EXIST, "element at #path# not exist", NULL);
+
     return  NULL;
 }
 
-void  CHashObject_delete(CHashObject *self, const char *key){
+void  CHash_delete_by_key(CHashObject *self, const char *key){
     if(Chash_errors(self)){return;}
 
     bool found = false;
@@ -93,7 +97,7 @@ void  CHashObject_delete(CHashObject *self, const char *key){
 void  privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     if(Chash_errors(self)){return;}
 
-    CHashObject_delete(self,key);
+    CHash_delete_by_key(self, key);
 
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,
@@ -108,7 +112,7 @@ void  privateCHashObject_set_once(CHashObject * self, const char *key, CHash *el
 }
 
 
-CHashArray  * CHashObject_get_keys(CHashObject *self){
+CHashArray  * CHash_get_keys_of_object(CHashObject *self){
     if(Chash_errors(self)){
         return NULL;
     }
@@ -121,7 +125,7 @@ CHashArray  * CHashObject_get_keys(CHashObject *self){
     return keys;
 }
 
-char * CHashObject_get_element_key(CHash *element){
+char * CHash_get_key_of_element(CHash *element){
     if(Chash_errors(element)){
         return  NULL;
     }
