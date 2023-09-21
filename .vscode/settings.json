@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "one.h": "c",
-        "definition.h": "c"
+        "definition.h": "c",
+        "declaration.h": "c",
+        "ctype.h": "c"
     }
 }

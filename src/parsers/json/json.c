@@ -118,13 +118,7 @@ CHash * CHash_load_from_cJSON(cJSON *element){
     }
 
     if(element->type == cJSON_Number){
-        double value = element->valuedouble;
-        long value_long = (long)value;
-        double  rest = value - (double)value_long;
-        if(rest == 0){
-            return newCHashLong(value_long);
-        }
-        return newCHashDouble(value);
+        return newCHashDouble(element->valuedouble);
     }
         return newCHashNULL();
 
