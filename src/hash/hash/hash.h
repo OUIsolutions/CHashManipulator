@@ -25,15 +25,6 @@ typedef struct CHash{
 
 }CHash;
 
-enum{
-    CHASH_NULL,
-    CHASH_ARRAY,
-    CHASH_OBJECT,
-    CHASH_LONG,
-    CHASH_DOUBLE,
-    CHASH_BOOL,
-    CHASH_STRING
-};
 enum {
     PRIVATE_CHASH_NOT_A_REFERENCE,
     PRIVATE_CHASH_ARRAY_ITEM,
@@ -45,6 +36,8 @@ typedef CHash CHashObject;
 
 
 CHash * privatenewChash_raw();
+
+
 
 void CHash_print(CHash *self);
 
@@ -58,7 +51,6 @@ bool CHash_equals(CHash *element1, CHash *element2);
 
 long CHash_get_size(CHash *self);
 
-long CHash_get_type(CHash *self);
 
 CHash * privateCHash_get_first_object(CHash *self);
 

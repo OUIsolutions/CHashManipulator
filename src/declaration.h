@@ -9,5 +9,6 @@
 #include "dependencies/declaration.h"
 #include "io/io.h"
 #include "hash/declaration.h"
+#include "types/types.h"
 #include "parsers/declaration.h"
 #include "error/declaration.h"

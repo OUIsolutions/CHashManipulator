@@ -70,12 +70,6 @@ void CHash_free(CHash *self){
     free(self);
 }
 
-long CHash_get_type(CHash *self){
-    if(!self){
-        return -1;
-    }
-    return self->private_type;
-}
 
 long CHash_get_size(CHash *self){
     if(self->private_type == CHASH_STRING){
