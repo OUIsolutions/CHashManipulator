@@ -22,6 +22,9 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
     return self;
 }
 
+
+
+
 privateCHashError * privateCHashError_get_error(CHash *self){
 
     CHash  *first =  privateCHash_get_first_object(self);
@@ -78,11 +81,15 @@ void privateCHashError_free(privateCHashError *self){
 }
 
 char * CHash_get_error_menssage(CHash *self){
-
+    if(!self){
+        return NULL;
+    }
     if(!Chash_errors(self)){
         return NULL;
     }
+
     privateCHashError  *error = privateCHashError_get_error(self);
+
     return error->error_mensage->rendered_text;
 }
 
