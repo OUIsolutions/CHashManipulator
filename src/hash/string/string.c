@@ -5,18 +5,15 @@
 
 
 char * CHash_toString(CHashArray *element){
-    if(Chash_errors(element)){
+    if(CHash_ensure_string(element)){
         return NULL;
     }
 
-    if(element->private_type != CHASH_STRING){
-        return NULL;
-    }
     return element->private_value_stack->rendered_text;
 }
 
 CTextStack  *CHash_toStackSttring(CHash *element){
-    if(Chash_errors(element)){
+    if(CHash_ensure_string(element)){
         return NULL;
     }
     if(element->private_type != CHASH_STRING){
