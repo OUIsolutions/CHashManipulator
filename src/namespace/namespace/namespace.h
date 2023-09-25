@@ -8,6 +8,12 @@ typedef struct CHashNamespace{
     double  (*toDouble)(CHash *element);
     CHash * (*newDouble)(double value);
 
+    long (*toLong)(CHash *element);
+    CHash * (*newLong)(long value);
+
+
+    
+
 
 }CHashNamespace;
 

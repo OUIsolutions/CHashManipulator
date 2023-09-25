@@ -801,30 +801,30 @@ CHash * newCHashNULL();
 
 
 
-double  CHash_to_double(CHash *element);
+double  CHash_toDouble(CHash *element);
 
 CHash * newCHashDouble(double value);
 
 
 
 
-long CHash_parse_to_long(CHash *element);
+long CHash_toLong(CHash *element);
 
 CHash * newCHashLong(long value);
 
 
 
 
-bool CHash_to_bool(CHash *element);
+bool CHash_toBool(CHash *element);
 
 CHash * newCHashBool(bool value);
 
 
 
 
-char * CHash_to_string(CHashArray *element);
+char * CHash_toString(CHashArray *element);
 
-CTextStack  *CHash_to_Stack(CHash *element);
+CTextStack  *CHash_toStack(CHash *element);
 
 CHash * newCHashStackString(CTextStack *element);
 
@@ -5246,7 +5246,7 @@ CHash * newCHashNULL(){
 
 
 
-long CHash_parse_to_long(CHash *element){
+long CHash_toLong(CHash *element){
     if(Chash_errors(element)){
         return -1;
     }
@@ -5268,7 +5268,7 @@ CHash * newCHashLong(long value){
 
 
 
-double CHash_to_double(CHash *element){
+double CHash_toDouble(CHash *element){
 
     if(CHash_ensure_double(element)){
         return -1;
@@ -5289,7 +5289,7 @@ CHash * newCHashDouble(double value){
 
 
 
-bool CHash_to_bool(CHash *element){
+bool CHash_toBool(CHash *element){
     if(element->private_type != CHASH_BOOL){
         return false;
     }
@@ -5311,7 +5311,7 @@ CHash * newCHashBool(bool value){
 
 
 
-char * CHash_to_string(CHashArray *element){
+char * CHash_toString(CHashArray *element){
     if(CHash_ensure_string(element)){
         return NULL;
     }
@@ -5319,7 +5319,7 @@ char * CHash_to_string(CHashArray *element){
     return element->private_value_stack->rendered_text;
 }
 
-CTextStack  *CHash_to_Stack(CHash *element){
+CTextStack  *CHash_toStack(CHash *element){
     if(CHash_ensure_string(element)){
         return NULL;
     }

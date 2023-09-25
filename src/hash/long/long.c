@@ -1,6 +1,6 @@
 
 
-long CHash_parse_to_long(CHash *element){
+long CHash_toLong(CHash *element){
     if(Chash_errors(element)){
         return -1;
     }

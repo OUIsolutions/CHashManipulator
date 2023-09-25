@@ -1,5 +1,5 @@
 
 
-long CHash_parse_to_long(CHash *element);
+long CHash_toLong(CHash *element);
 
 CHash * newCHashLong(long value);
