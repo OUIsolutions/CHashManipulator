@@ -10,9 +10,9 @@ CHashObject *create (){
             "bbb", newCHashLong(20),
             "c",newCHashArray(
                 newCHashBool(true),
-                newCHashDouble(2.4),
-                CHASH_END
-            ));
+                newCHashDouble(2.4)
+            )
+    );
 
 }
 
