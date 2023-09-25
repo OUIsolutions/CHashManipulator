@@ -21,11 +21,19 @@ CHashArray * privatenewCHashArray(void *sentinel,...){
     self->private_sub_elements = (CHash**)malloc(0);
     self->private_size = 0;
 
+    if(!sentinel){
+        return self;
+    }
+
+    CHash * converted_sentinel = (CHash*)sentinel;
+    privateCHashArray_append_once(self, converted_sentinel);
+
     va_list args;
     va_start(args, sentinel);
 
     while(true){
         void * current = va_arg(args,void*);
+
         if(!current){
             break;
         }

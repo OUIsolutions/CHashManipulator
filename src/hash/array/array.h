@@ -1,6 +1,5 @@
 
 
-#define newCHashArray(...) privatenewCHashArray(NULL,__VA_ARGS__,NULL)
 
 CHashArray * privatenewCHashArray(void *sentinel, ...);
 
