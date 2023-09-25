@@ -31,6 +31,7 @@ CHashArray * newCHashArray(void *sentinel, ...){
     va_list args;
     va_start(args, sentinel);
 
+
   /* count number of arguments: */
     va_list  copy;
     va_copy(copy,args);
@@ -43,6 +44,7 @@ CHashArray * newCHashArray(void *sentinel, ...){
         size+=1;
     }
     va_end(copy);
+
     printf("size %d\n",size);
 
     for(int i =0;  i < size; i++){

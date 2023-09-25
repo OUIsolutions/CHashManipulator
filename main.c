@@ -8,9 +8,9 @@ CHashObject *create (){
     return newCHashObject(
             "aaa", newCHashString("aaaaaaaaa"),
             "bbb", newCHashLong(20),
-            "c",newCHashArray(
-                newCHashBool(true),
-                newCHashDouble(2.4)
+            "c",newCHashObject(
+               "c1", newCHashBool(true),
+               "c2", newCHashDouble(2.4)
             )
     );
 
