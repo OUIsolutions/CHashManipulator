@@ -6,7 +6,7 @@
 CHashObject *create (){
 
     return newCHashObject(
-            "nameccc", newCHashLong(27),
+            "name", newCHashDouble(10),
             "age", newCHashLong(26)
     );
 }

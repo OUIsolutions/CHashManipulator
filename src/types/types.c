@@ -13,7 +13,9 @@ const char  *private_Chash_convert_type(long type){
     if(type == CHASH_NULL){
         return "null";
     }
-
+    if(type == CHASH_STRING){
+        return "string";
+    }
     if(type == CHASH_ARRAY){
         return "array";
     }
