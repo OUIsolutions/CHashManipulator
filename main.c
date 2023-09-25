@@ -19,8 +19,4 @@ CHashObject *create (){
 int main(){
     CHashArray *t = create();
 
-   char *name = hash.toString(object.get(t,"name"));
-
-   long age = hash.toLong(object.get(t,"age"));
-
 }

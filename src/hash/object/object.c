@@ -71,6 +71,15 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     return self->private_sub_elements[index];
 }
 
+char   * CHashObject_get_key_of_element(CHash *self){
+    if(Chash_errors(self)){
+        return NULL;
+    }
+    if(self->private_reference_type != PRIVATE_CHASH_KEYVAL){
+        CHash_raise_error(self,CHASH_NOT_HAVE_KEY,"element of #path# does not have an key",NULL);
+    }
+    return self->private_key;
+}
 
 CHash * CHashObject_get(CHashObject * self, const char *key){
     if(Chash_errors(self)){
