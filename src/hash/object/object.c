@@ -12,7 +12,7 @@ CHashObject  * newCHashObjectEmpty(){
 
 CHashObject* privatenewCHashObject(void * sentinel, ...){
     CHash * self =  newCHashObjectEmpty();
-    
+
     va_list args;
     va_start(args, sentinel);
 
