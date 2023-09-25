@@ -1,15 +1,11 @@
 
 
-CHashObject* newCHashObject(void * sentinel, ...){
+CHashObject* privatenewCHashObject(void * sentinel, ...){
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_OBJECT;
     self->private_sub_elements = (CHash**)malloc(0);
     self->private_size = 0;
 
-    if(!sentinel){
-        return self;
-    }
-    
     va_list args;
     va_start(args, sentinel);
 
@@ -17,8 +13,8 @@ CHashObject* newCHashObject(void * sentinel, ...){
     const int GETTING_VALUE = 1;
 
 
-    int state = GETTING_VALUE;
-    char *key = (char*)sentinel;
+    int state = GETTING_KEY;
+    char *key = NULL;
 
     while(true){
         void * current = va_arg(args,void*);
@@ -34,7 +30,7 @@ CHashObject* newCHashObject(void * sentinel, ...){
         }
 
         if(state == GETTING_VALUE){
-            privateCHashObject_set_once(self, key, (CHash *) current);
+            CHashObject_set_once(self, key, (CHash *) current);
             state = GETTING_KEY;
 
         }
@@ -102,7 +98,7 @@ void  CHash_delete_by_key(CHashObject *self, const char *key){
     }
     
 }
-void  privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element){
+void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     if(Chash_errors(self)){return;}
 
     CHash_delete_by_key(self, key);
@@ -141,7 +137,7 @@ char * CHash_get_key_of_element(CHash *element){
     return element->private_key;
 }
 
-void  CHashObject_set(CHashObject *self , ...){
+void  privateCHashObject_set(CHashObject *self , ...){
     if(Chash_errors(self)){return;}
 
     va_list args;
@@ -168,7 +164,7 @@ void  CHashObject_set(CHashObject *self , ...){
         }
 
         if(state == GETTING_VALUE){
-            privateCHashObject_set_once(self, key, (CHash *) current);
+            CHashObject_set_once(self, key, (CHash *) current);
          
             state = GETTING_KEY;
         }

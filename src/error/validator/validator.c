@@ -7,7 +7,7 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type,char 
         CHash_raise_error(element,
                           CHASH_WRONG_TYPE,
                           "value: #value# of at #path# its not #type# ",
-                          newCHashObject("type", newCHashString(expected_type_str))
+                          privatenewCHashObject("type", newCHashString(expected_type_str))
                           );
         return 1;
     }

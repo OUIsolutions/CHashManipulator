@@ -71,13 +71,13 @@ int  CHash_dumps_to_json_file(CHash *element,const char *filename){
 }
 CHashArray * privateCHash_load_json_object(cJSON *element){
     int size = cJSON_GetArraySize(element);
-    CHashObject *equivalent = newCHashObject(NULL);
+    CHashObject *equivalent = privatenewCHashObject(NULL);
 
     for(int i = 0; i < size; i++){
         cJSON *current = cJSON_GetArrayItem(element,i);
         char *key = current->string;
         CHash * value = CHash_load_from_cJSON(current);
-        CHashObject_set(equivalent, key,value);
+        privateCHashObject_set(equivalent, key, value);
     }
 
     return equivalent;

@@ -112,13 +112,13 @@ CHash * CHash_copy(CHash *self){
     }
 
     if(self->private_type == CHASH_OBJECT){
-        CHash * new_element  = newCHashObject(NULL);
+        CHash * new_element  = privatenewCHashObject(NULL);
 
         for(long  i =0; i < self->private_size; i++){
             CHash  * current = CHashObject_get_by_index(self,i);
             CHash *copy = CHash_copy(current);
 
-            CHashObject_set(new_element, current->private_key, copy);
+            privateCHashObject_set(new_element, current->private_key, copy);
         }
         return new_element;
     }

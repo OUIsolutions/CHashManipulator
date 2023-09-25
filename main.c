@@ -4,7 +4,7 @@
 
 CHashObject *create (){
 
-    return newCHashObjectMacro(
+    return newCHashObject(
             "aaa", newCHashString("aaaaaaaaa"),
             "bbb", newCHashLong(20)
     );
