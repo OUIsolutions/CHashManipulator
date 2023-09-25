@@ -1,8 +1,8 @@
 
 
-char * CHash_parse_toString(CHashArray *element);
+char * CHash_to_string(CHashArray *element);
 
-CTextStack  *CHash_toStackSttring(CHash *element);
+CTextStack  *CHash_to_Stack(CHash *element);
 
 CHash * newCHashStackString(CTextStack *element);
 

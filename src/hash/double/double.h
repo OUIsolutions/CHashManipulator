@@ -1,5 +1,5 @@
 
 
-double  CHash_parse_toDouble(CHash *element);
+double  CHash_to_double(CHash *element);
 
 CHash * newCHashDouble(double value);
