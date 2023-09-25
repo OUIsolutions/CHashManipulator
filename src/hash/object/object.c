@@ -16,15 +16,6 @@ CHashObject* newCHashObject(void * sentinel, ...){
   /* count number of arguments: */
     va_list  copy;
     va_copy(copy,args);
-    int size = 0;
-    while (true) {
-        void *current =va_arg(copy,void *);
-        if(!current){
-            break;
-        }
-        size+=1;
-    }
-    va_end(copy);
 
     const int GETTING_KEY = 0;
     const int GETTING_VALUE = 1;
@@ -32,9 +23,12 @@ CHashObject* newCHashObject(void * sentinel, ...){
     int state = GETTING_VALUE;
     char *key = (char*)sentinel;
 
-    for(int i =0; i < size; i++){
-        void * current = va_arg(args,void*);
-        
+    while(true){
+        void * current = va_arg(copy,void*);
+        if(!current){
+            break;
+        }
+
         if(state == GETTING_KEY){
             key = (char*)current;
             state = GETTING_VALUE;
@@ -48,6 +42,7 @@ CHashObject* newCHashObject(void * sentinel, ...){
 
     }
     
+    va_end(copy);
     va_end(args);
 
     return self;
