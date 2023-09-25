@@ -4,7 +4,7 @@
 
 
 
-char * CHash_toString(CHashArray *element){
+char * privateCHash_cast_to_String(CHashArray *element){
     if(CHash_ensure_string(element)){
         return NULL;
     }
@@ -12,7 +12,7 @@ char * CHash_toString(CHashArray *element){
     return element->private_value_stack->rendered_text;
 }
 
-CTextStack  *CHash_toStack(CHash *element){
+CTextStack  *private_CHashString_cast_to_Stack(CHash *element){
     if(CHash_ensure_string(element)){
         return NULL;
     }

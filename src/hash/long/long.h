@@ -1,5 +1,5 @@
 
 
-long CHash_toLong(CHash *element);
+long privateCHashLong_cast(CHash *element);
 
 CHash * newCHashLong(long value);

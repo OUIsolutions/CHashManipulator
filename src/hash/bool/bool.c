@@ -1,6 +1,6 @@
 
 
-bool CHash_toBool(CHash *element){
+bool privateCHashBool_cast(CHash *element){
     if(element->private_type != CHASH_BOOL){
         return false;
     }
