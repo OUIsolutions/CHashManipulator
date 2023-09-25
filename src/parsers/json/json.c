@@ -86,11 +86,11 @@ CHashArray * privateCHash_load_json_object(cJSON *element){
 
 CHash  * privateCHash_load_json_array(cJSON *element){
     int size = cJSON_GetArraySize(element);
-    CHashObject *equivalent = newCHashArray(NULL);
+    CHashObject *equivalent = privatenewCHashArray(NULL);
     for(int i = 0; i < size; i++){
         cJSON *current = cJSON_GetArrayItem(element,i);
         CHash * value = CHash_load_from_cJSON(current);
-        CHashArray_append(equivalent,value);
+        privateCHashArray_append(equivalent, value);
     }
     return equivalent;
 }

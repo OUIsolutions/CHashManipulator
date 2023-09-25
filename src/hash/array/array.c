@@ -1,5 +1,34 @@
 
-void privateCHashArray_append_once(CHashArray *self, CHash *element){
+CHashArray  *newCHashArrayEmpty(){
+    CHash * self =  privatenewChash_raw();
+    self->private_type = CHASH_ARRAY;
+    self->private_sub_elements = (CHash**)malloc(0);
+    self->private_size = 0;
+    return self;
+}
+
+CHashArray * privatenewCHashArray(void *sentinel, ...){
+    CHash * self =  newCHashArrayEmpty();
+
+    va_list args;
+    va_start(args, sentinel);
+
+
+    while(true){
+        void * current = va_arg(args,void*);
+        if(!current){
+            break;
+        }
+        
+        CHash * current_element = (CHash*)current;
+        CHashArray_append_once(self, current_element);
+    }
+    va_end(args);
+    return self;
+}
+
+
+void CHashArray_append_once(CHashArray *self, CHash *element){
     if(Chash_errors(self)){return;}
 
     self->private_sub_elements = (CHash**) realloc(
@@ -14,44 +43,8 @@ void privateCHashArray_append_once(CHashArray *self, CHash *element){
 
 
 }
-
-CHashArray * newCHashArray(void *sentinel, ...){
-    CHash * self =  privatenewChash_raw();
-    self->private_type = CHASH_ARRAY;
-    self->private_sub_elements = (CHash**)malloc(0);
-    self->private_size = 0;
-
-    if(!sentinel){
-        return self;
-    }
-
-    CHash * converted_sentinel = (CHash*)sentinel;
-    privateCHashArray_append_once(self, converted_sentinel);
-
-    va_list args;
-    va_start(args, sentinel);
-
-
-  /* count number of arguments: */
-
-    while(true){
-        void * current = va_arg(args,void*);
-        if(!current){
-            break;
-        }
-        
-        CHash * current_element = (CHash*)current;
-        privateCHashArray_append_once(self, current_element);
-    }
-    va_end(args);
-    return self;
-}
-
-
-void CHashArray_append(CHashArray *self, CHashArray *element, ...){
+void privateCHashArray_append(CHashArray *self, ...){
     if(Chash_errors(self)){return;}
-
-    privateCHashArray_append_once(self, element);
 
     va_list args;
     va_start(args, NULL);
@@ -62,7 +55,7 @@ void CHashArray_append(CHashArray *self, CHashArray *element, ...){
             break;
         }
         CHash * current_element = (CHash*)current;
-        privateCHashArray_append_once(self, current_element);
+        CHashArray_append_once(self, current_element);
     }
     va_end(args);
 

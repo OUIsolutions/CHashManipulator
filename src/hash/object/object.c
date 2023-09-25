@@ -129,10 +129,10 @@ CHashArray  * CHash_get_keys(CHashObject *self){
         return NULL;
     }
 
-    CHashArray * keys = newCHashArray(NULL);
+    CHashArray * keys = privatenewCHashArray(NULL);
     for(int i =0;i < self->private_size; i ++){
         CHash * current = self->private_sub_elements[i];
-        CHashArray_append(keys, newCHashString(current->private_key));
+        privateCHashArray_append(keys, newCHashString(current->private_key));
     }
     return keys;
 }

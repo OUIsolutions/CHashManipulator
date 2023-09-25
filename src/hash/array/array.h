@@ -1,12 +1,18 @@
 
 
+CHashArray  *newCHashArrayEmpty();
 
-CHashArray * newCHashArray(void *sentinel, ...);
+
+CHashArray * privatenewCHashArray(void *sentinel, ...);
+#define  newCHashArray(...)privatenewCHashArray(NULL,__VA_ARGS__,NULL)
 
 
-void privateCHashArray_append_once(CHashArray *self, CHash *element);
+void CHashArray_append_once(CHashArray *self, CHash *element);
 
-void CHashArray_append(CHashArray *self, CHashArray *element, ...);
+
+void privateCHashArray_append(CHashArray *self, ...);
+#define  CHashArray_append(...)privateCHashArray_append(NULL,__VA_ARGS__,NULL)
+
 
 
 void  CHashArray_delete(CHashArray *self, long index);

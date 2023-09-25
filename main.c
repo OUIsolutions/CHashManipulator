@@ -6,7 +6,11 @@ CHashObject *create (){
 
     return newCHashObject(
             "aaa", newCHashString("aaaaaaaaa"),
-            "bbb", newCHashLong(20)
+            "bbb", newCHashLong(20),
+            "ddd", newCHashArray(
+                        newCHashLong(10),
+                        newCHashString("aaaaaaaaaa")
+                    )
     );
 
 }
