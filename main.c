@@ -4,11 +4,15 @@
 
 
 CHashObject *create (){
+
     return newCHashObject(
             "aaa", newCHashString("aaaaaaaaa"),
             "bbb", newCHashLong(20),
-            CHASH_END
-    );
+            "c",newCHashArray(
+                newCHashBool(true),
+                newCHashDouble(2.4),
+                CHASH_END
+            ));
 
 }
 

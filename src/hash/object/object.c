@@ -5,16 +5,15 @@ CHashObject* newCHashObject(void * sentinel, ...){
     self->private_type = CHASH_OBJECT;
     self->private_sub_elements = (CHash**)malloc(0);
     self->private_size = 0;
-    
+
     if(!sentinel){
         return self;
     }
     va_list args;
-    va_start(args, sentinel);
+    va_start(args, 10);
 
     const int GETTING_KEY = 0;
     const int GETTING_VALUE = 1;
-
 
     int state = GETTING_VALUE;
     char *key = (char*)sentinel;
