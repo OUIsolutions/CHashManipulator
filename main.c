@@ -26,5 +26,5 @@ int main(){
 
     CHash_print(t);
 
-
+    CHash_free(t);
 }
