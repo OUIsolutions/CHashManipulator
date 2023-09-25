@@ -12,3 +12,4 @@
 #include "types/types.h"
 #include "parsers/declaration.h"
 #include "error/declaration.h"
+#include "namespace/declaration.h"
