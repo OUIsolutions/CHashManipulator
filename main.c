@@ -15,6 +15,7 @@ CHashObject *create (){
 
 
 int main(){
+    TESTE(10,20,3);
 
     CHashArray *t = create();
     CHash_print(t);
