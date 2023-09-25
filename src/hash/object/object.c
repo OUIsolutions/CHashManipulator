@@ -84,7 +84,7 @@ char   * CHashObject_get_key_of_element(CHash *self){
 
 CHash * CHashObject_get(CHashObject * self, const char *key){
 
-    if(CHash_ensure_object(self)){
+    if(CHash_ensure_Object(self)){
         return NULL;
     }
 
@@ -100,7 +100,7 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
 }
 
 void  CHashObject_delete(CHashObject *self, const char *key){
-    if(CHash_ensure_object(self)){
+    if(CHash_ensure_Object(self)){
         return ;
     }
 
@@ -122,7 +122,7 @@ void  CHashObject_delete(CHashObject *self, const char *key){
     
 }
 void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
-    if(CHash_ensure_object(self)){
+    if(CHash_ensure_Object(self)){
         return ;
     }
     CHashObject_delete(self, key);
@@ -141,7 +141,7 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
 
 
 CHashArray  * CHashObject_get_keys(CHashObject *self){
-    if(CHash_ensure_object(self)){
+    if(CHash_ensure_Object(self)){
         return NULL;
     }
 
@@ -156,7 +156,7 @@ CHashArray  * CHashObject_get_keys(CHashObject *self){
 
 
 void  privateCHashObject_set(CHashObject *self , ...){
-    if(CHash_ensure_object(self)){
+    if(CHash_ensure_Object(self)){
         return ;
     }
     va_list args;

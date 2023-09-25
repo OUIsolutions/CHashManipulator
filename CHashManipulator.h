@@ -969,11 +969,11 @@ privateCHashError * privateCHashError_get_error(CHash *self);
 
 int private_chash_check_type(CHash *element, unsigned short  expected_type,char *expected_type_str);
 
-int CHash_ensure_double(CHash *element);
+int CHash_ensure_Double(CHash *element);
 
-int CHash_ensure_long(CHash *element);
+int CHash_ensure_Long(CHash *element);
 
-int CHash_ensure_string(CHash *element);
+int CHash_ensure_String(CHash *element);
 
 
 
@@ -5928,11 +5928,11 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type,char 
     return 0;
 }
 
-int CHash_ensure_double(CHash *element){
+int CHash_ensure_Double(CHash *element){
     return private_chash_check_type(element,CHASH_DOUBLE,"double");
 }
 
-int CHash_ensure_string(CHash *element){
+int CHash_ensure_String(CHash *element){
     return private_chash_check_type(element,CHASH_STRING,"string");
 }
 
