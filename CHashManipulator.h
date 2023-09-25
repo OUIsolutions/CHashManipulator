@@ -861,15 +861,15 @@ CHashObject* privatenewCHashObject(void * sentinel, ...);
 
 CHashObject  * newCHashObjectEmpty();
 
-void  CHashObject_set_by_key_once(CHashObject * self, const char *key, CHash *element);
+void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element);
 
 void  privateCHashObject_set(CHashObject *self , ...);
 #define  CHash_set_by_key(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 
 
-void  CHashObject_delete_by_key(CHashObject *self, const char *key);
+void  CHashObject_delete(CHashObject *self, const char *key);
 
-CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key);
+CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *key);
 
 CHash * CHashObject_get_by_index(CHashObject * self, long index);
 
@@ -878,7 +878,7 @@ CHashArray  * CHashObject_get_keys(CHashObject *self);
 
 char * CHashObject_get_key_of_element(CHash *element);
 
-CHash * CHashObject_get_any_by_key(CHashObject * self, const char *key);
+CHash * CHashObject_get(CHashObject * self, const char *key);
 
 
 
@@ -5478,7 +5478,7 @@ CHashObject* privatenewCHashObject(void * sentinel, ...){
 }
 
 
-CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key){
+CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *key){
     if(Chash_errors(self)){
         return NULL;
     }
@@ -5498,7 +5498,7 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     return self->private_sub_elements[index];
 }
 
-CHash * CHashObject_get_any_by_key(CHashObject * self, const char *key){
+CHash * CHashObject_get(CHashObject * self, const char *key){
     if(Chash_errors(self)){
         return NULL;
     }
@@ -5514,7 +5514,7 @@ CHash * CHashObject_get_any_by_key(CHashObject * self, const char *key){
     return  NULL;
 }
 
-void  CHashObject_delete_by_key(CHashObject *self, const char *key){
+void  CHashObject_delete(CHashObject *self, const char *key){
     if(Chash_errors(self)){return;}
 
     bool found = false;
@@ -5534,7 +5534,7 @@ void  CHashObject_delete_by_key(CHashObject *self, const char *key){
     }
     
 }
-void  CHashObject_set_by_key_once(CHashObject * self, const char *key, CHash *element){
+void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     if(Chash_errors(self)){return;}
 
     CHash_delete_by_key(self, key);

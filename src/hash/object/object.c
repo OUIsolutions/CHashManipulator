@@ -37,7 +37,7 @@ CHashObject* privatenewCHashObject(void * sentinel, ...){
         }
 
         if(state == GETTING_VALUE){
-            CHashObject_set_by_key_once(self, key, (CHash *) current);
+            CHashObject_set_once(self, key, (CHash *) current);
             state = GETTING_KEY;
 
         }
@@ -50,7 +50,7 @@ CHashObject* privatenewCHashObject(void * sentinel, ...){
 }
 
 
-CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key){
+CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *key){
     if(Chash_errors(self)){
         return NULL;
     }
@@ -63,6 +63,7 @@ CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key){
     return NULL;
 }
 
+
 CHash * CHashObject_get_by_index(CHashObject * self, long index){
     if(Chash_errors(self)){
         return NULL;
@@ -70,12 +71,13 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     return self->private_sub_elements[index];
 }
 
-CHash * CHashObject_get_any_by_key(CHashObject * self, const char *key){
+
+CHash * CHashObject_get(CHashObject * self, const char *key){
     if(Chash_errors(self)){
         return NULL;
     }
 
-    CHash *element = privateCHashObject_get_by_key(self,key);
+    CHash *element = privateCHashObject_get_by_key_or_null(self, key);
 
     if(element){
         return  element;
@@ -86,7 +88,7 @@ CHash * CHashObject_get_any_by_key(CHashObject * self, const char *key){
     return  NULL;
 }
 
-void  CHashObject_delete_by_key(CHashObject *self, const char *key){
+void  CHashObject_delete(CHashObject *self, const char *key){
     if(Chash_errors(self)){return;}
 
     bool found = false;
@@ -106,10 +108,10 @@ void  CHashObject_delete_by_key(CHashObject *self, const char *key){
     }
     
 }
-void  CHashObject_set_by_key_once(CHashObject * self, const char *key, CHash *element){
+void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     if(Chash_errors(self)){return;}
 
-    CHashObject_delete_by_key(self, key);
+    CHashObject_delete(self, key);
 
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,
@@ -138,13 +140,6 @@ CHashArray  * CHashObject_get_keys(CHashObject *self){
 }
 
 
-char * CHashObject_get_key_of_element(CHash *element){
-    if(Chash_errors(element)){
-        return  NULL;
-    }
-
-    return element->private_key;
-}
 
 void  privateCHashObject_set(CHashObject *self , ...){
     if(Chash_errors(self)){return;}
@@ -173,7 +168,7 @@ void  privateCHashObject_set(CHashObject *self , ...){
         }
 
         if(state == GETTING_VALUE){
-            CHashObject_set_by_key_once(self, key, (CHash *) current);
+            CHashObject_set_once(self, key, (CHash *) current);
          
             state = GETTING_KEY;
         }
