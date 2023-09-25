@@ -2,7 +2,7 @@
 
 
 CHashObject* privatenewCHashObject(void * sentinel, ...);
-#define newCHashObject(...) privatenewCHashObject(NULL,__VA_ARGS__,NULL);
+#define newCHashObject(...) privatenewCHashObject(NULL,__VA_ARGS__,NULL)
 
 CHashObject  * newCHashObjectEmpty();
 

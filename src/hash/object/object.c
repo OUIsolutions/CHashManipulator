@@ -91,10 +91,15 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
     CHash *element = privateCHashObject_get_by_key_or_null(self, key);
 
     if(element){
+
         return  element;
     }
 
-    CHash_raise_error(element, CHASH_ELEMENT_NOT_EXIST, "element at #path# not exist", NULL);
+    CHash_raise_error(self,
+                      CHASH_ELEMENT_NOT_EXIST,
+                      "element of #key# at #path# not exist",
+                      newCHashObject("key", newCHashString(key))
+     );
 
     return  NULL;
 }

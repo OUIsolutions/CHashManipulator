@@ -2,18 +2,17 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type){
     if(Chash_errors(element)){
         return 1;
     }
-
     if(element->private_type != expected_type){
-        CHashObject *args_of_error   = newCHashObject(
-                            "expected_type", newCHashString(
-                                            private_Chash_convert_type(expected_type)
-                                            )
-                    )
 
         CHash_raise_error(element,
                           CHASH_WRONG_TYPE,
                           "element at #path# is #type# istead of #expected_type#  ",
-                          args_of_error
+                          newCHashObject(
+                                  "expected_type", newCHashString(
+                                  private_Chash_convert_type(expected_type)
+                                )
+                          )
+
         );
         return 1;
     }
