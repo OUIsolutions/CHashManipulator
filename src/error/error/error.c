@@ -52,8 +52,9 @@ bool Chash_errors(CHash *self){
 void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CHash *args){
 
     if(Chash_errors(self)){return;}
-
     CHashArray  *path = CHash_get_path(self);
+    printf("pegou aqui\n");
+
     CHash *formated_args = args;
 
     if(!args){

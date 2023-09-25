@@ -20,7 +20,7 @@ CHashArray * CHash_get_path(CHash *self){
     CHashArray  *path = CHash_get_path(self->private_father);
 
     if(self->private_reference_type == PRIVATE_CHASH_ARRAY_ITEM){
-        privateCHashArray_append(path, newCHashLong(self->private_index));;
+        privateCHashArray_append(path, newCHashLong((long)self->private_index));;
     }
 
     if(self->private_reference_type == PRIVATE_CHASH_KEYVAL){
