@@ -2,7 +2,7 @@
 
 double CHash_toDouble(CHash *element){
 
-    if(privateCHash_ensure_double(element)){
+    if(CHash_ensure_double(element)){
         return -1;
     }
 

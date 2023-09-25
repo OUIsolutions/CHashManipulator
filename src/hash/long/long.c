@@ -1,7 +1,7 @@
 
 
 long CHash_toLong(CHash *element){
-    if(Chash_errors(element)){
+    if(CHash_ensure_long(element)){
         return -1;
     }
 

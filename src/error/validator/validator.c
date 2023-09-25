@@ -20,15 +20,15 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type){
     return 0;
 }
 
-int privateCHash_ensure_double(CHash *element){
+int CHash_ensure_double(CHash *element){
     return private_chash_check_type(element,CHASH_DOUBLE);
 }
 
-int privateCHash_ensure_string(CHash *element){
+int CHash_ensure_string(CHash *element){
     return private_chash_check_type(element,CHASH_STRING);
 }
 
 
-int privateCHash_ensure_object(CHash *element){
-
+int CHash_ensure_object(CHash *element){
+    return private_chash_check_type(element,CHASH_OBJECT);
 }

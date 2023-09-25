@@ -84,7 +84,7 @@ char   * CHashObject_get_key_of_element(CHash *self){
 
 CHash * CHashObject_get(CHashObject * self, const char *key){
 
-    if(Chash_errors(self)){
+    if(CHash_ensure_object(self)){
         return NULL;
     }
 
@@ -100,7 +100,9 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
 }
 
 void  CHashObject_delete(CHashObject *self, const char *key){
-    if(Chash_errors(self)){return;}
+    if(CHash_ensure_object(self)){
+        return ;
+    }
 
     bool found = false;
 
@@ -120,8 +122,9 @@ void  CHashObject_delete(CHashObject *self, const char *key){
     
 }
 void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
-    if(Chash_errors(self)){return;}
-
+    if(CHash_ensure_object(self)){
+        return ;
+    }
     CHashObject_delete(self, key);
 
     self->private_sub_elements = (CHash**) realloc(
@@ -138,7 +141,7 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
 
 
 CHashArray  * CHashObject_get_keys(CHashObject *self){
-    if(Chash_errors(self)){
+    if(CHash_ensure_object(self)){
         return NULL;
     }
 
@@ -153,8 +156,9 @@ CHashArray  * CHashObject_get_keys(CHashObject *self){
 
 
 void  privateCHashObject_set(CHashObject *self , ...){
-    if(Chash_errors(self)){return;}
-
+    if(CHash_ensure_object(self)){
+        return ;
+    }
     va_list args;
 
     va_start(args, NULL);
