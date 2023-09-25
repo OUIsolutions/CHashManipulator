@@ -46,7 +46,7 @@ CHashArray * newCHashArray(void *sentinel, ...){
 }
 
 
-void privateCHashArray_append(CHashArray *self, CHashArray *element, ...){
+void CHashArray_append(CHashArray *self, CHashArray *element, ...){
     if(Chash_errors(self)){return;}
 
     privateCHashArray_append_once(self, element);

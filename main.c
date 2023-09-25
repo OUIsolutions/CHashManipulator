@@ -7,7 +7,7 @@ CHashObject *create (){
     return newCHashArray(
             newCHashLong(10),
             newCHashLong(10),
-            NULL
+            CHASH_END
     );
 
 }
@@ -15,8 +15,9 @@ CHashObject *create (){
 int main(){
 
     CHashArray *t = create();
+    CHashArray_append(t, newCHashString("aaaaaaa"),CHASH_END);
     CHash_print(t);
 
-    //CHash_free(t);
+    CHash_free(t);
 
 }
