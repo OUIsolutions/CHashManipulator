@@ -68,6 +68,7 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     if(Chash_errors(self)){
         return NULL;
     }
+
     return self->private_sub_elements[index];
 }
 
@@ -82,6 +83,7 @@ char   * CHashObject_get_key_of_element(CHash *self){
 }
 
 CHash * CHashObject_get(CHashObject * self, const char *key){
+
     if(Chash_errors(self)){
         return NULL;
     }
