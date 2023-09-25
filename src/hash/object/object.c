@@ -157,7 +157,7 @@ void  privateCHashObject_set(CHashObject *self , ...){
 
     int state = GETTING_KEY;
 
-    char *key;
+    char *key =NULL;
 
     while (true){
         void * current = va_arg(args,void*);

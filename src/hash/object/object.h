@@ -8,6 +8,7 @@ CHashObject  * newCHashObjectEmpty();
 
 void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element);
 
+
 void  privateCHashObject_set(CHashObject *self , ...);
 
 
