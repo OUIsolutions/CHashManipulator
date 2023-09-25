@@ -23,4 +23,4 @@ CHashArray  * CHash_get_keys(CHashObject *self);
 
 char * CHash_get_key_of_element(CHash *element);
 
-CHash * CHash_get_by_key(CHashObject * self, const char *key);
+CHash * CHash_get_any_by_key(CHashObject * self, const char *key);

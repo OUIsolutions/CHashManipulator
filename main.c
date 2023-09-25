@@ -20,8 +20,8 @@ CHashObject *create (){
 
 int main(){
     CHashArray *t = create();
-    CHash * name =  CHash_get_by_key(t,"name");
-    CHash_ensure_string(name);
+    CHash * name = CHash_get_any_by_key(t, "name");
+    obj.ensure_sring_by_key(name);
 
     
     CHash_free(t);

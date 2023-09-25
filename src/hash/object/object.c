@@ -70,7 +70,7 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     return self->private_sub_elements[index];
 }
 
-CHash * CHash_get_by_key(CHashObject * self, const char *key){
+CHash * CHash_get_any_by_key(CHashObject * self, const char *key){
     if(Chash_errors(self)){
         return NULL;
     }
