@@ -4,9 +4,9 @@
 
 
 CHashObject *create (){
-    return newCHashArray(
-            newCHashLong(10),
-            newCHashLong(10),
+    return newCHashObject(
+            "aaa", newCHashString("aaaaaaaaa"),
+            "bbb", newCHashLong(20),
             CHASH_END
     );
 
@@ -15,7 +15,6 @@ CHashObject *create (){
 int main(){
 
     CHashArray *t = create();
-    CHashArray_append(t, newCHashString("aaaaaaa"),CHASH_END);
     CHash_print(t);
 
     CHash_free(t);

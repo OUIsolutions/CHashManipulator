@@ -1,6 +1,6 @@
 
 
-CHashObject* privatenewCHashObject(void * sentinel, ...){
+CHashObject* newCHashObject(void * sentinel, ...){
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_OBJECT;
     self->private_sub_elements = (CHash**)malloc(0);
@@ -133,7 +133,7 @@ char * CHash_get_key_of_element(CHash *element){
     return element->private_key;
 }
 
-void  privateCHashObject_set(CHashObject *self ,...){
+void  CHashObject_set(CHashObject *self , ...){
     if(Chash_errors(self)){return;}
 
     va_list args;

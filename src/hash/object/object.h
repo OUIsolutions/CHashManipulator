@@ -1,14 +1,13 @@
 
 
-#define newCHashObject(...) privatenewCHashObject(NULL,__VA_ARGS__,NULL)
 
-CHashObject* privatenewCHashObject(void * sentinel, ...);
+CHashObject* newCHashObject(void * sentinel, ...);
 
 
 void  privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element);
 
-#define CHashObject_set(...) privateCHashObject_set(__VA_ARGS__,NULL)
-void  privateCHashObject_set(CHashObject *self ,...);
+
+void  CHashObject_set(CHashObject *self , ...);
 
 void  CHash_delete_by_key(CHashObject *self, const char *key);
 
