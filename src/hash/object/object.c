@@ -1,11 +1,18 @@
 
 
-CHashObject* privatenewCHashObject(void * sentinel, ...){
+
+
+CHashObject  * newCHashObjectEmpty(){
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_OBJECT;
     self->private_sub_elements = (CHash**)malloc(0);
     self->private_size = 0;
+    return self;
+}
 
+CHashObject* privatenewCHashObject(void * sentinel, ...){
+    CHash * self =  newCHashObjectEmpty();
+    
     va_list args;
     va_start(args, sentinel);
 
@@ -41,6 +48,7 @@ CHashObject* privatenewCHashObject(void * sentinel, ...){
 
     return self;
 }
+
 
 CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key){
     if(Chash_errors(self)){
