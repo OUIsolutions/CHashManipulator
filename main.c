@@ -7,7 +7,8 @@ CHashObject *create (){
 
     return newCHashObject(
             "aaa", newCHashString("aaaaaaaaa"),
-            "bbb", newCHashLong(20)
+            "bbb", newCHashLong(20),
+            NULL
     );
 
 }

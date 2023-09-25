@@ -33,22 +33,13 @@ CHashArray * newCHashArray(void *sentinel, ...){
 
 
   /* count number of arguments: */
-    va_list  copy;
-    va_copy(copy,args);
-    int size = 0;
-    while (true) {
-        void *current =va_arg(copy,void *);
+
+    while(true){
+        void * current = va_arg(args,void*);
         if(!current){
             break;
         }
-        size+=1;
-    }
-    va_end(copy);
-
-    printf("size %d\n",size);
-
-    for(int i =0;  i < size; i++){
-        void * current = va_arg(args,void*);
+        
         CHash * current_element = (CHash*)current;
         privateCHashArray_append_once(self, current_element);
     }
