@@ -9,10 +9,9 @@ CHashObject* newCHashObject(void * sentinel, ...){
     if(!sentinel){
         return self;
     }
+    
     va_list args;
     va_start(args, sentinel);
-
-
 
     const int GETTING_KEY = 0;
     const int GETTING_VALUE = 1;

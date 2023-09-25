@@ -3,6 +3,7 @@
 
 CHashObject* newCHashObject(void * sentinel, ...);
 
+#define newCHashObjectMacro(...) newCHashObject(__VA_ARGS__,NULL);
 
 void  privateCHashObject_set_once(CHashObject * self, const char *key, CHash *element);
 
