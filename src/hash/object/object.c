@@ -37,7 +37,7 @@ CHashObject* privatenewCHashObject(void * sentinel, ...){
         }
 
         if(state == GETTING_VALUE){
-            CHash_set_by_key_once(self, key, (CHash *) current);
+            CHashObject_set_by_key_once(self, key, (CHash *) current);
             state = GETTING_KEY;
 
         }
@@ -70,7 +70,7 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     return self->private_sub_elements[index];
 }
 
-CHash * CHash_get_any_by_key(CHashObject * self, const char *key){
+CHash * CHashObject_get_any_by_key(CHashObject * self, const char *key){
     if(Chash_errors(self)){
         return NULL;
     }
@@ -86,7 +86,7 @@ CHash * CHash_get_any_by_key(CHashObject * self, const char *key){
     return  NULL;
 }
 
-void  CHash_delete_by_key(CHashObject *self, const char *key){
+void  CHashObject_delete_by_key(CHashObject *self, const char *key){
     if(Chash_errors(self)){return;}
 
     bool found = false;
@@ -106,10 +106,10 @@ void  CHash_delete_by_key(CHashObject *self, const char *key){
     }
     
 }
-void  CHash_set_by_key_once(CHashObject * self, const char *key, CHash *element){
+void  CHashObject_set_by_key_once(CHashObject * self, const char *key, CHash *element){
     if(Chash_errors(self)){return;}
 
-    CHash_delete_by_key(self, key);
+    CHashObject_delete_by_key(self, key);
 
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,
@@ -124,7 +124,7 @@ void  CHash_set_by_key_once(CHashObject * self, const char *key, CHash *element)
 }
 
 
-CHashArray  * CHash_get_keys(CHashObject *self){
+CHashArray  * CHashObject_get_keys(CHashObject *self){
     if(Chash_errors(self)){
         return NULL;
     }
@@ -138,7 +138,7 @@ CHashArray  * CHash_get_keys(CHashObject *self){
 }
 
 
-char * CHash_get_key_of_element(CHash *element){
+char * CHashObject_get_key_of_element(CHash *element){
     if(Chash_errors(element)){
         return  NULL;
     }
@@ -173,7 +173,7 @@ void  privateCHashObject_set(CHashObject *self , ...){
         }
 
         if(state == GETTING_VALUE){
-            CHash_set_by_key_once(self, key, (CHash *) current);
+            CHashObject_set_by_key_once(self, key, (CHash *) current);
          
             state = GETTING_KEY;
         }

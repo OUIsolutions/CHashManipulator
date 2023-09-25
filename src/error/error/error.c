@@ -10,7 +10,7 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
     long args_size = CHash_get_size(self->args);
     for(int i = 0; i < args_size; i++){
         CHash *current = CHashObject_get_by_index(self->args,i);
-        char *key = CHash_get_key_of_element(current);
+        char *key = CHashObject_get_key_of_element(current);
         char *value = CHash_dump_to_json_string(current);
         CTextStack * formated_key = newCTextStack_string_empty();
         CTextStack_format(formated_key,"#%s#",key);

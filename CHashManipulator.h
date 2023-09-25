@@ -861,24 +861,24 @@ CHashObject* privatenewCHashObject(void * sentinel, ...);
 
 CHashObject  * newCHashObjectEmpty();
 
-void  CHash_set_by_key_once(CHashObject * self, const char *key, CHash *element);
+void  CHashObject_set_by_key_once(CHashObject * self, const char *key, CHash *element);
 
 void  privateCHashObject_set(CHashObject *self , ...);
 #define  CHash_set_by_key(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 
 
-void  CHash_delete_by_key(CHashObject *self, const char *key);
+void  CHashObject_delete_by_key(CHashObject *self, const char *key);
 
 CHash * privateCHashObject_get_by_key(CHashObject * self, const char *key);
 
 CHash * CHashObject_get_by_index(CHashObject * self, long index);
 
 
-CHashArray  * CHash_get_keys(CHashObject *self);
+CHashArray  * CHashObject_get_keys(CHashObject *self);
 
-char * CHash_get_key_of_element(CHash *element);
+char * CHashObject_get_key_of_element(CHash *element);
 
-CHash * CHash_get_any_by_key(CHashObject * self, const char *key);
+CHash * CHashObject_get_any_by_key(CHashObject * self, const char *key);
 
 
 
@@ -969,11 +969,11 @@ privateCHashError * privateCHashError_get_error(CHash *self);
 
 int private_chash_check_type(CHash *element, unsigned short  expected_type,char *expected_type_str);
 
-int CHash_ensure_double(CHash *element);
+int privateCHash_ensure_double(CHash *element);
 
 int CHash_ensure_long(CHash *element);
 
-int CHash_ensure_string(CHash *element);
+int privateCHash_ensure_string(CHash *element);
 
 
 
@@ -5498,7 +5498,7 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     return self->private_sub_elements[index];
 }
 
-CHash * CHash_get_any_by_key(CHashObject * self, const char *key){
+CHash * CHashObject_get_any_by_key(CHashObject * self, const char *key){
     if(Chash_errors(self)){
         return NULL;
     }
@@ -5514,7 +5514,7 @@ CHash * CHash_get_any_by_key(CHashObject * self, const char *key){
     return  NULL;
 }
 
-void  CHash_delete_by_key(CHashObject *self, const char *key){
+void  CHashObject_delete_by_key(CHashObject *self, const char *key){
     if(Chash_errors(self)){return;}
 
     bool found = false;
@@ -5534,7 +5534,7 @@ void  CHash_delete_by_key(CHashObject *self, const char *key){
     }
     
 }
-void  CHash_set_by_key_once(CHashObject * self, const char *key, CHash *element){
+void  CHashObject_set_by_key_once(CHashObject * self, const char *key, CHash *element){
     if(Chash_errors(self)){return;}
 
     CHash_delete_by_key(self, key);
@@ -5552,7 +5552,7 @@ void  CHash_set_by_key_once(CHashObject * self, const char *key, CHash *element)
 }
 
 
-CHashArray  * CHash_get_keys(CHashObject *self){
+CHashArray  * CHashObject_get_keys(CHashObject *self){
     if(Chash_errors(self)){
         return NULL;
     }
@@ -5565,7 +5565,7 @@ CHashArray  * CHash_get_keys(CHashObject *self){
     return keys;
 }
 
-char * CHash_get_key_of_element(CHash *element){
+char * CHashObject_get_key_of_element(CHash *element){
     if(Chash_errors(element)){
         return  NULL;
     }
@@ -5928,11 +5928,11 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type,char 
     return 0;
 }
 
-int CHash_ensure_double(CHash *element){
+int privateCHash_ensure_double(CHash *element){
     return private_chash_check_type(element,CHASH_DOUBLE,"double");
 }
 
-int CHash_ensure_string(CHash *element){
+int privateCHash_ensure_string(CHash *element){
     return private_chash_check_type(element,CHASH_STRING,"string");
 }
 

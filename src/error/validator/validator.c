@@ -14,11 +14,11 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type,char 
     return 0;
 }
 
-int CHash_ensure_double(CHash *element){
+int privateCHash_ensure_double(CHash *element){
     return private_chash_check_type(element,CHASH_DOUBLE,"double");
 }
 
-int CHash_ensure_string(CHash *element){
+int privateCHash_ensure_string(CHash *element){
     return private_chash_check_type(element,CHASH_STRING,"string");
 }
 
