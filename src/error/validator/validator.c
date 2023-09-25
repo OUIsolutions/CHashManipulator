@@ -34,3 +34,8 @@ int CHash_ensure_Long(CHash *element){
 int CHash_ensure_Object(CHash *element){
     return private_chash_check_type(element,CHASH_OBJECT);
 }
+
+int CHash_ensure_Array(CHash *element){
+    return private_chash_check_type(element,CHASH_ARRAY);
+
+}

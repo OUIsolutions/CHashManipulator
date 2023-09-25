@@ -14,7 +14,7 @@ void CHash_print(CHash *self){
 CHashArray * CHash_get_path(CHash *self){
 
     if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
-        return privatenewCHashArray(NULL);
+        return newCHashArrayEmpty();
     }
 
     CHashArray  *path = CHash_get_path(self->private_father);

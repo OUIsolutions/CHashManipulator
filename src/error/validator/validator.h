@@ -8,3 +8,5 @@ int CHash_ensure_Long(CHash *element);
 int CHash_ensure_String(CHash *element);
 
 int CHash_ensure_Object(CHash *element);
+
+int CHash_ensure_Array(CHash *element);
