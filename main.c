@@ -18,8 +18,7 @@ CHashObject *create (){
 
 int main(){
     CHashArray *t = create();
-    
-    char *  name = obj.get_string(t, "name");
+
 
     CHash_free(t);
 }
