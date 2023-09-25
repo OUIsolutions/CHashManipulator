@@ -1,5 +1,5 @@
 
 
-double  privateCHashDouble_cast(CHash *element);
+double  CHash_toDouble(CHash *element);
 
 CHash * newCHashDouble(double value);

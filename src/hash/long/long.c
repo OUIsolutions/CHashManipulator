@@ -1,6 +1,6 @@
 
 
-long privateCHashLong_cast(CHash *element){
+long CHash_toLong(CHash *element){
     if(Chash_errors(element)){
         return -1;
     }

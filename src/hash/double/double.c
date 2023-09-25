@@ -1,6 +1,6 @@
 
 
-double privateCHashDouble_cast(CHash *element){
+double CHash_toDouble(CHash *element){
 
     if(privateCHash_ensure_double(element)){
         return -1;

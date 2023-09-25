@@ -1,8 +1,8 @@
 
 
-char * privateCHash_cast_to_String(CHashArray *element);
+char * CHash_toString(CHashArray *element);
 
-CTextStack  *private_CHashString_cast_to_Stack(CHash *element);
+CTextStack  *CHashtoStack(CHash *element);
 
 CHash * newCHashStackString(CTextStack *element);
 

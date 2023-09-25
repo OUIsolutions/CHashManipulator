@@ -31,19 +31,19 @@ cJSON * CHash_dump_to_cJSON(CHash *element){
         return privateCHash_dumps_json_array(element);
     }
     if(type == CHASH_STRING){
-        char *value  = privateCHash_cast_to_String(element);
+        char *value  = CHash_toString(element);
         return cJSON_CreateString(value);
     }
     if(type == CHASH_DOUBLE){
-        return cJSON_CreateNumber(privateCHashDouble_cast(element));
+        return cJSON_CreateNumber(CHash_toDouble(element));
     }
 
     if(type == CHASH_BOOL){
-        return cJSON_CreateBool(privateCHashBool_cast(element));
+        return cJSON_CreateBool(CHash_toBool(element));
     }
 
     if(type == CHASH_LONG){
-        long value  = privateCHashLong_cast(element);
+        long value  = CHash_toLong(element);
         return cJSON_CreateNumber((double)value);
     }
 
