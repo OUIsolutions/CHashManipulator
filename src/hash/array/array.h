@@ -1,7 +1,7 @@
 
 
 
-CHashArray * privatenewCHashArray(void *sentinel, ...);
+CHashArray * newCHashArray(void *sentinel, ...);
 
 
 void privateCHashArray_append_once(CHashArray *self, CHash *element);

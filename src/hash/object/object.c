@@ -117,7 +117,7 @@ CHashArray  * CHash_get_keys_of_object(CHashObject *self){
         return NULL;
     }
 
-    CHashArray * keys = privatenewCHashArray(NULL);
+    CHashArray * keys = newCHashArray(NULL);
     for(int i =0;i < self->private_size; i ++){
         CHash * current = self->private_sub_elements[i];
         CHashArray_append(keys, newCHashString(current->private_key));

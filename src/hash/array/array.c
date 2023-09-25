@@ -15,7 +15,7 @@ void privateCHashArray_append_once(CHashArray *self, CHash *element){
 
 }
 
-CHashArray * privatenewCHashArray(void *sentinel,...){
+CHashArray * newCHashArray(void *sentinel, ...){
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_ARRAY;
     self->private_sub_elements = (CHash**)malloc(0);

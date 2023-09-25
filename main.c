@@ -4,7 +4,7 @@
 
 
 CHashObject *create (){
-    return privatenewCHashArray(
+    return newCHashArray(
             newCHashLong(10),
             newCHashLong(10),
             NULL
