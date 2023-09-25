@@ -1,5 +1,5 @@
 
 
-bool CHash_toBool(CHash *element);
+bool CHash_parse_toBool(CHash *element);
 
 CHash * newCHashBool(bool value);

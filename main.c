@@ -2,6 +2,7 @@
 #include "src/one.h"
 
 
+
 CHashObject *create (){
 
     return newCHashObject(
@@ -15,14 +16,10 @@ CHashObject *create (){
 
 }
 
-
-
-
 int main(){
     CHashArray *t = create();
-    CHash * name = CHash_get_any_by_key(t, "name");
-    obj.ensure_sring_by_key(name);
-
     
+    char *  name = obj.get_string(t, "name");
+
     CHash_free(t);
 }

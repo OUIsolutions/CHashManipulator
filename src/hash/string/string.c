@@ -4,7 +4,7 @@
 
 
 
-char * CHash_toString(CHashArray *element){
+char * CHash_parse_toString(CHashArray *element){
     if(CHash_ensure_string(element)){
         return NULL;
     }
