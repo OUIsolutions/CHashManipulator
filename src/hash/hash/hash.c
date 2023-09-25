@@ -105,7 +105,7 @@ CHash * CHash_copy(CHash *self){
 
         for(long i =0; i < self->private_size; i++){
             CHash * copy = CHash_copy(CHashArray_get(self,i));
-            privateCHashArray_append(new_element, copy);
+            CHashArray_append(new_element, copy);
         }
         return new_element;
 
@@ -118,7 +118,7 @@ CHash * CHash_copy(CHash *self){
             CHash  * current = CHashObject_get_by_index(self,i);
             CHash *copy = CHash_copy(current);
 
-            privateCHashObject_set(new_element, current->private_key, copy);
+            CHashObject_set(new_element, current->private_key, copy);
         }
         return new_element;
     }
