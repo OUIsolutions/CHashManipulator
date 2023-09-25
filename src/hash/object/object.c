@@ -162,12 +162,13 @@ CHashArray  * CHashObject_get_keys(CHashObject *self){
 
 
 void  privateCHashObject_set(CHashObject *self , ...){
+
     if(CHash_ensure_Object(self)){
-        return ;
+        return;
     }
     va_list args;
 
-    va_start(args, NULL);
+    va_start(args, self);
 
     const int GETTING_KEY = 0;
     const int GETTING_VALUE = 1;

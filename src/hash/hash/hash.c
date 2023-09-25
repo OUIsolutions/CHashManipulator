@@ -101,7 +101,7 @@ CHash * CHash_copy(CHash *self){
     }
 
     if(self->private_type == CHASH_ARRAY ){
-        CHash * new_element  = privatenewCHashArray(NULL);
+        CHash * new_element  = newCHashArrayEmpty();
 
         for(long i =0; i < self->private_size; i++){
             CHash * copy = CHash_copy(CHashArray_get(self,i));
@@ -112,7 +112,7 @@ CHash * CHash_copy(CHash *self){
     }
 
     if(self->private_type == CHASH_OBJECT){
-        CHash * new_element  = privatenewCHashObject(NULL);
+        CHash * new_element  = newCHashObjectEmpty();
 
         for(long  i =0; i < self->private_size; i++){
             CHash  * current = CHashObject_get_by_index(self,i);

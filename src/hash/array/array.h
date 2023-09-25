@@ -11,7 +11,7 @@ void CHashArray_append_once(CHashArray *self, CHash *element);
 
 
 void privateCHashArray_append(CHashArray *self, ...);
-#define  CHashArray_append(...)privateCHashArray_append(NULL,__VA_ARGS__,NULL)
+#define  CHashArray_append(self,...)privateCHashArray_append(self,__VA_ARGS__,NULL)
 
 
 

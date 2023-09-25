@@ -9,7 +9,7 @@ CHashObject  * newCHashObjectEmpty();
 void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element);
 
 void  privateCHashObject_set(CHashObject *self , ...);
-#define  CHash_set_by_key(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
+#define  CHashObject_set(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 
 
 void  CHashObject_delete(CHashObject *self, const char *key);
