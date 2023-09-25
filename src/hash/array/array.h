@@ -7,6 +7,8 @@ CHashArray * privatenewCHashArray(void *sentinel, ...);
 #define  newCHashArray(...)privatenewCHashArray(NULL,__VA_ARGS__,NULL)
 
 
+CHashArray * privatenewCHashStringArray(void *sentinel, ...);
+#define  newCHashStringArray(...)privatenewCHashStringArray(NULL,__VA_ARGS__,NULL)
 void CHashArray_append_once(CHashArray *self, CHash *element);
 
 

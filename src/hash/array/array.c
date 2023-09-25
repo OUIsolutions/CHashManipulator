@@ -27,6 +27,23 @@ CHashArray * privatenewCHashArray(void *sentinel, ...){
     return self;
 }
 
+CHashArray * privatenewCHashStringArray(void *sentinel, ...){
+    CHash * self =  newCHashArrayEmpty();
+
+    va_list args;
+    va_start(args, sentinel);
+
+
+    while(true){
+        char  * current = va_arg(args,char*);
+        if(!current){
+            break;
+        }
+        CHashArray_append_once(self, newCHashString(current));
+    }
+    va_end(args);
+    return self;
+}
 
 void CHashArray_append_once(CHashArray *self, CHash *element){
 
