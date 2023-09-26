@@ -21,8 +21,9 @@ typedef struct CHashNamespace{
     CHash * (*newString)(const char *value);
     char * (*toString)(CHashArray *element);
 
-    CHashObjectModule  Object;
-
+    CHashObjectModule  object;
+    CHashArrayModule array;
+    
 }CHashNamespace;
 
 CHashNamespace newCHashNamespace();
