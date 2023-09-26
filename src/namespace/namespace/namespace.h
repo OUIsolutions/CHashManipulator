@@ -23,7 +23,7 @@ typedef struct CHashNamespace{
 
     CHashObjectModule  object;
     CHashArrayModule array;
-    
+
 }CHashNamespace;
 
 CHashNamespace newCHashNamespace();
