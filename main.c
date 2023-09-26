@@ -2,12 +2,15 @@
 #include "src/one.h"
 
 
+CHashNamespace hash;
+CHashObjectModule  obj;
+CHashArrayModule  array;
 
 CHashObject *create (){
 
     return newCHashObject(
-            "name", newCHashDouble(10),
-            "age", newCHashLong(26),
+            "name", hash.newString("aaa"),
+            "age", hash.newLong(26),
             "phones", newCHashStringArray(
                     "000000000",
                     "0000000000"
@@ -16,8 +19,12 @@ CHashObject *create (){
 }
 
 int main(){
+    hash = newCHashNamespace();
+    obj = hash.object;
+    array  = hash.array;
+
     CHashArray *t = create();
-    CHash_print(t);
+
 
     if(Chash_errors(t)){
         char *menssage = CHash_get_error_menssage(t);

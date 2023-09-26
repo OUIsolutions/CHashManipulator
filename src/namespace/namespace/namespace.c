@@ -17,6 +17,16 @@ CHashNamespace newCHashNamespace(){
 
     self.newString = newCHashString;
     self.toString = CHash_toString;
+    self.newNULL = newCHashNULL;
+
+    self.print = CHash_print;
+    self.get_path = CHash_get_path;
+    self.copy = CHash_copy;
+    self.equals  = CHash_equals;
+    self.get_size = CHash_get_size;
+
+
+    self.free = CHash_free;
 
     self.object = newCHashObjectModule();
     self.array = newCHashArrayModule();

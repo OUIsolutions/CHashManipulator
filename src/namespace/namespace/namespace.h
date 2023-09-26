@@ -20,6 +20,20 @@ typedef struct CHashNamespace{
 
     CHash * (*newString)(const char *value);
     char * (*toString)(CHashArray *element);
+    CHash * (*newNULL)();
+
+    void (*print)(CHash *self);
+
+    CHashArray * (*get_path)(CHash *self);
+
+    CHash * (*copy)(CHash *self);
+
+
+    bool (*equals)(CHash *element1, CHash *element2);
+
+    long (*get_size)(CHash *self);
+
+    void (*free)(CHash *self);
 
     CHashObjectModule  object;
     CHashArrayModule array;
