@@ -25,9 +25,28 @@ int main(){
 
     CHashArray *t = create();
 
+    char *name = hash.toString(obj.get(t,"name"));
+    long age = hash.toLong(obj.get(t,"age"));
 
-    if(Chash_errors(t)){
-        char *menssage = CHash_get_error_menssage(t);
+    if(!hash.errors(t)){
+        printf("name: %s\n",name);
+        printf("age %ld\n",age);
+    }
+    CHashArray  *phones = obj.get(t,"phones");
+    long  size = hash.get_size(phones);
+    if(!hash.errors(t)){
+        printf("phones: \n");
+    }
+    for(int i =0; i < size; i++){
+        char *current = hash.toString(array.get(phones,i));
+        if(!hash.errors(t)){
+            printf("\t%s",current);
+        }
+    }
+
+
+    if(hash.errors(t)){
+        char *menssage = hash.get_error_menssage(t);
         printf("%s",menssage);
     }
 

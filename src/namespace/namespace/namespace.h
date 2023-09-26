@@ -27,6 +27,11 @@ typedef struct CHashNamespace{
     CHash * (*copy)(CHash *self);
 
     bool (*errors)(CHash *self);
+    char * (*get_error_menssage)(CHash *self);
+    int (*get_error_code)(CHash *self);
+    CHash * (*get_error_args)(CHash *self);
+
+
     void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
 

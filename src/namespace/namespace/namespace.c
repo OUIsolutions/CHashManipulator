@@ -27,8 +27,11 @@ CHashNamespace newCHashNamespace(){
 
 
     self.errors = Chash_errors;
+    self.get_error_code = CHash_get_error_code;
+    self.get_error_args = CHash_get_error_args;
+    self.get_error_menssage= CHash_get_error_menssage;
     self.raise_error = CHash_raise_error;
-    
+
     self.free = CHash_free;
 
     self.object = newCHashObjectModule();
