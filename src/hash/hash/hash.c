@@ -72,6 +72,9 @@ void CHash_free(CHash *self){
 
 
 long CHash_get_size(CHash *self){
+    if(Chash_errors(self)){
+       return -1;
+    }
     if(self->private_type == CHASH_STRING){
         return (long)self->private_value_stack->size;
     }
@@ -79,6 +82,7 @@ long CHash_get_size(CHash *self){
         return (long)self->private_size;
     }
 
+    CHash_raise_error(self,CHASH_NOT_ITERABLE, "the element at #path# its not an iterable (string,array,object)",NULL);
     return -1;
 }
 
