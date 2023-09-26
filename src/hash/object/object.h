@@ -19,7 +19,7 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
 CHash * CHashObject_get_by_index(CHashObject * self, long index);
 
 
-CHashArray  * CHashObject_get_keys(CHashObject *self);
+CHashStringArray  * CHashObject_get_keys(CHashObject *self);
 
 char   * CHashObject_get_key_of_element(CHash *self);
 

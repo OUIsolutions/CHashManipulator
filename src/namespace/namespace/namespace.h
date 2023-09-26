@@ -3,11 +3,25 @@
 typedef struct CHashNamespace{
 
     CHash * (*newBool)(bool value);
-    CHash * (*newDouble)(double value);
-    CHash * (*newLong)(long value);
-    CHash * (*newStackString)(CTextStack *element);
-    CHash * (*newString)(const char *value);
+    bool (*toBool)(CHash *element);
 
+
+    CHash * (*newDouble)(double value);
+    double  (*toDouble)(CHash *element);
+
+
+    CHash * (*newLong)(long value);
+    long (*toLong)(CHash *element);
+
+
+    CHash * (*newStackString)(CTextStack *element);
+    CTextStack  *(*toStack)(CHash *element);
+
+
+    CHash * (*newString)(const char *value);
+    char * (*toString)(CHashArray *element);
+
+    CHashObjectModule  Object;
 
 }CHashNamespace;
 

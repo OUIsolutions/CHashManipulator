@@ -33,7 +33,7 @@ enum {
 
 typedef CHash CHashArray;
 typedef CHash CHashObject;
-
+typedef  CHash CHashStringArray;
 
 CHash * privatenewChash_raw();
 

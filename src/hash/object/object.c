@@ -146,7 +146,7 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
 }
 
 
-CHashArray  * CHashObject_get_keys(CHashObject *self){
+CHashStringArray  * CHashObject_get_keys(CHashObject *self){
     if(CHash_ensure_Object(self)){
         return NULL;
     }
