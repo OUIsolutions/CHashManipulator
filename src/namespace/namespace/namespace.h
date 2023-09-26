@@ -23,10 +23,11 @@ typedef struct CHashNamespace{
     CHash * (*newNULL)();
 
     void (*print)(CHash *self);
-
     CHashArray * (*get_path)(CHash *self);
-
     CHash * (*copy)(CHash *self);
+
+    bool (*errors)(CHash *self);
+    void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
 
     bool (*equals)(CHash *element1, CHash *element2);

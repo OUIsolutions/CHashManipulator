@@ -26,6 +26,9 @@ CHashNamespace newCHashNamespace(){
     self.get_size = CHash_get_size;
 
 
+    self.errors = Chash_errors;
+    self.raise_error = CHash_raise_error;
+    
     self.free = CHash_free;
 
     self.object = newCHashObjectModule();
