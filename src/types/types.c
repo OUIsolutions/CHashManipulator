@@ -1,7 +1,7 @@
 
 
 
-long CHash_get_type(CHash *self){
+short CHash_get_type(CHash *self){
     if(Chash_errors(self)){
         return -1;
     }

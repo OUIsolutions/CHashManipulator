@@ -875,7 +875,6 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
 
 CHash * CHashObject_get_by_index(CHashObject * self, long index);
 
-
 CHashStringArray  * CHashObject_get_keys(CHashObject *self);
 
 char   * CHashObject_get_key_of_element(CHash *self);
@@ -910,7 +909,7 @@ enum{
     CHASH_STRING
 };
 
-long CHash_get_type(CHash *self);
+short CHash_get_type(CHash *self);
 
 const char  *private_Chash_convert_type(long type);
 
@@ -1081,10 +1080,11 @@ typedef struct CHashNamespace{
 
     void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
-
     bool (*equals)(CHash *element1, CHash *element2);
 
     long (*get_size)(CHash *self);
+
+    short (*get_type)(CHash *self);
 
     void (*free)(CHash *self);
 
@@ -5815,7 +5815,7 @@ char  * CHashObject_getString(CHashObject * self, const char *key){
 
 
 
-long CHash_get_type(CHash *self){
+short CHash_get_type(CHash *self){
     if(Chash_errors(self)){
         return -1;
     }
@@ -6230,6 +6230,8 @@ CHashNamespace newCHashNamespace(){
     self.get_error_args = CHash_get_error_args;
     self.get_error_menssage= CHash_get_error_menssage;
     self.raise_error = CHash_raise_error;
+
+    self.get_type = CHash_get_type;
 
     self.free = CHash_free;
 

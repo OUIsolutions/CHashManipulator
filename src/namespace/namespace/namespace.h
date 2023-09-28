@@ -34,10 +34,11 @@ typedef struct CHashNamespace{
 
     void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
-
     bool (*equals)(CHash *element1, CHash *element2);
 
     long (*get_size)(CHash *self);
+
+    short (*get_type)(CHash *self);
 
     void (*free)(CHash *self);
 
