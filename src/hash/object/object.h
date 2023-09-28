@@ -22,6 +22,8 @@ CHashStringArray  * CHashObject_get_keys(CHashObject *self);
 
 char   * CHashObject_get_key_of_element(CHash *self);
 
+short  CHashObject_get_type(CHashObject *self, const char *key);
+
 CHash * CHashObject_get(CHashObject * self, const char *key);
 
 CHashArray * CHashObject_getArray(CHashObject * self, const char *key);

@@ -879,6 +879,8 @@ CHashStringArray  * CHashObject_get_keys(CHashObject *self);
 
 char   * CHashObject_get_key_of_element(CHash *self);
 
+short  CHashObject_get_type(CHashObject *self, const char *key);
+
 CHash * CHashObject_get(CHashObject * self, const char *key);
 
 CHashArray * CHashObject_getArray(CHashObject * self, const char *key);
@@ -1009,6 +1011,8 @@ typedef struct CHashObjectModule{
     CHash * (*get_by_index)(CHashObject * self, long index);
     CHashStringArray  * (*get_keys)(CHashObject *self);
     char   * (*get_key_of_element)(CHash *self);
+    short  (*get_type)(CHashObject *self, const char *key);
+
     CHash * (*get)(CHashObject * self, const char *key);
 
     CHashArray * (*getArray)(CHashObject * self, const char *key);
@@ -5751,6 +5755,14 @@ void  privateCHashObject_set(CHashObject *self , ...){
     va_end(args);
     
 }
+short  CHashObject_get_type(CHashObject *self, const char *key){
+    CHash  *element = privateCHashObject_get_by_key_or_null(self,key);
+    if(!element){
+        return  -1;
+    }
+    return CHash_get_type(element);
+}
+
 
 CHash * CHashObject_get(CHashObject * self, const char *key){
 
@@ -6175,6 +6187,8 @@ CHashObjectModule newCHashObjectModule(){
     self.get_keys = CHashObject_get_keys;
     self.get_by_index  = CHashObject_get_by_index;
     self.get_key_of_element = CHashObject_get_key_of_element;
+
+    self.get_type = CHashObject_get_type;
     self.get = CHashObject_get;
     self.getArray = CHashObject_getArray;
     self.getObject = CHashObject_getObject;
