@@ -1,11 +1,12 @@
 
 
 bool CHash_toBool(CHash *element){
-    if(element->private_type != CHASH_BOOL){
+    if(CHash_ensure_Bool(element)){
         return false;
     }
     return element->private_value_bool;
 }
+
 
 CHash * newCHashBool(bool value){
     CHash * self =  privatenewChash_raw();

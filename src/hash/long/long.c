@@ -4,10 +4,6 @@ long CHash_toLong(CHash *element){
     if(CHash_ensure_Long(element)){
         return -1;
     }
-
-    if(element->private_type != CHASH_LONG){
-        return -1;
-    }
     return element->private_value_long;
 }
 

@@ -11,7 +11,7 @@ CHashObject *create (){
     return newCHashObject(
             "name", hash.newString("aaa"),
             "age", hash.newLong(26),
-            "height",hash.newString("aa"),
+            "height",hash.newDouble(20),
             "maried",hash.newBool(true)
     );
 }
@@ -26,8 +26,11 @@ int main(){
     char *name =obj.getString(t,"name");
     long age = obj.getLong(t,"age");
     double height = obj.getDouble(t,"height");
+
     bool maried = obj.getBool(t,"maried");
+
     if(!hash.errors(t)){
+
         printf("name: %s\n",name);
         printf("age %ld\n",age);
         printf("heigh %lf\n",height);
