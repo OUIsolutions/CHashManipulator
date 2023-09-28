@@ -776,7 +776,7 @@ enum {
 
 typedef CHash CHashArray;
 typedef CHash CHashObject;
-
+typedef  CHash CHashStringArray;
 
 CHash * privatenewChash_raw();
 
@@ -839,11 +839,13 @@ CHashArray * privatenewCHashArray(void *sentinel, ...);
 #define  newCHashArray(...)privatenewCHashArray(NULL,__VA_ARGS__,NULL)
 
 
+CHashArray * privatenewCHashStringArray(void *sentinel, ...);
+#define  newCHashStringArray(...)privatenewCHashStringArray(NULL,__VA_ARGS__,NULL)
 void CHashArray_append_once(CHashArray *self, CHash *element);
 
 
 void privateCHashArray_append(CHashArray *self, ...);
-#define  CHashArray_append(...)privateCHashArray_append(NULL,__VA_ARGS__,NULL)
+#define  CHashArray_append(self,...)privateCHashArray_append(self,__VA_ARGS__,NULL)
 
 
 
@@ -857,14 +859,14 @@ CHash * CHashArray_get(CHashArray *self, long position);
 
 
 CHashObject* privatenewCHashObject(void * sentinel, ...);
-#define newCHashObject(...) privatenewCHashObject(NULL,__VA_ARGS__,NULL);
+#define newCHashObject(...) privatenewCHashObject(NULL,__VA_ARGS__,NULL)
 
 CHashObject  * newCHashObjectEmpty();
 
 void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element);
 
 void  privateCHashObject_set(CHashObject *self , ...);
-#define  CHash_set_by_key(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
+#define  CHashObject_set(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 
 
 void  CHashObject_delete(CHashObject *self, const char *key);
@@ -874,11 +876,25 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
 CHash * CHashObject_get_by_index(CHashObject * self, long index);
 
 
-CHashArray  * CHashObject_get_keys(CHashObject *self);
+CHashStringArray  * CHashObject_get_keys(CHashObject *self);
 
-char * CHashObject_get_key_of_element(CHash *element);
+char   * CHashObject_get_key_of_element(CHash *self);
 
 CHash * CHashObject_get(CHashObject * self, const char *key);
+
+CHashArray * CHashObject_getArray(CHashObject * self, const char *key);
+
+CHashObject * CHashObject_getObject(CHashObject * self, const char *key);
+
+long CHashObject_getLong(CHashObject * self, const char *key);
+
+double CHashObject_getDouble(CHashObject * self, const char *key);
+
+bool CHashObject_getBool(CHashObject * self, const char *key);
+
+char  * CHashObject_getString(CHashObject * self, const char *key);
+
+
 
 
 
@@ -936,6 +952,8 @@ CHash * CHash_load_from_json_file(const char *filename);
 
 #define CHASH_ELEMENT_NOT_EXIST 200
 #define CHASH_WRONG_TYPE 201
+#define  CHASH_NOT_HAVE_KEY 202
+#define  CHASH_NOT_ITERABLE 203
 
 
 
@@ -967,13 +985,115 @@ CHash * CHash_get_error_args(CHash *self);
 privateCHashError * privateCHashError_get_error(CHash *self);
 
 
-int private_chash_check_type(CHash *element, unsigned short  expected_type,char *expected_type_str);
+int private_chash_check_type(CHash *element, unsigned short  expected_type);
 
 int CHash_ensure_Double(CHash *element);
 
 int CHash_ensure_Long(CHash *element);
+int CHash_ensure_Bool(CHash *element);
 
 int CHash_ensure_String(CHash *element);
+
+int CHash_ensure_Object(CHash *element);
+
+int CHash_ensure_Array(CHash *element);
+
+
+
+
+
+typedef struct CHashObjectModule{
+
+    CHashObject  * (*newObjectEmpty)();
+    void  (*set_once)(CHashObject * self, const char *key, CHash *element);
+    void  (*delete)(CHashObject *self, const char *key);
+    CHash * (*get_by_index)(CHashObject * self, long index);
+    CHashStringArray  * (*get_keys)(CHashObject *self);
+    char   * (*get_key_of_element)(CHash *self);
+    CHash * (*get)(CHashObject * self, const char *key);
+
+    CHashArray * (*getArray)(CHashObject * self, const char *key);
+
+    CHashObject * (*getObject)(CHashObject * self, const char *key);
+
+    long (*getLong)(CHashObject * self, const char *key);
+
+    double (*getDouble)(CHashObject * self, const char *key);
+
+    bool (*getBool)(CHashObject * self, const char *key);
+
+    char  * (*getString)(CHashObject * self, const char *key);
+
+
+
+
+}CHashObjectModule;
+
+CHashObjectModule newCHashObjectModule();
+
+
+
+typedef struct CHashArrayModule{
+
+    CHashArray  *(*newArrayEmpty)();
+    void (*append_once)(CHashArray *self, CHash *element);
+    void  (*delete)(CHashArray *self, long index);
+    CHash * (*get)(CHashArray *self, long position);
+
+
+}CHashArrayModule;
+
+CHashArrayModule newCHashArrayModule();
+
+
+
+typedef struct CHashNamespace{
+
+    CHash * (*newBool)(bool value);
+    bool (*toBool)(CHash *element);
+
+
+    CHash * (*newDouble)(double value);
+    double  (*toDouble)(CHash *element);
+
+
+    CHash * (*newLong)(long value);
+    long (*toLong)(CHash *element);
+
+
+    CHash * (*newStackString)(CTextStack *element);
+    CTextStack  *(*toStack)(CHash *element);
+
+
+    CHash * (*newString)(const char *value);
+    char * (*toString)(CHashArray *element);
+    CHash * (*newNULL)();
+
+    void (*print)(CHash *self);
+    CHashArray * (*get_path)(CHash *self);
+    CHash * (*copy)(CHash *self);
+
+    bool (*errors)(CHash *self);
+    char * (*get_error_menssage)(CHash *self);
+    int (*get_error_code)(CHash *self);
+    CHash * (*get_error_args)(CHash *self);
+
+
+    void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
+
+
+    bool (*equals)(CHash *element1, CHash *element2);
+
+    long (*get_size)(CHash *self);
+
+    void (*free)(CHash *self);
+
+    CHashObjectModule  object;
+    CHashArrayModule array;
+
+}CHashNamespace;
+
+CHashNamespace newCHashNamespace();
 
 
 
@@ -5119,17 +5239,17 @@ void CHash_print(CHash *self){
 CHashArray * CHash_get_path(CHash *self){
 
     if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
-        return privatenewCHashArray(NULL);
+        return newCHashArrayEmpty();
     }
 
     CHashArray  *path = CHash_get_path(self->private_father);
 
     if(self->private_reference_type == PRIVATE_CHASH_ARRAY_ITEM){
-        privateCHashArray_append(path, newCHashLong(self->private_index));;
+        CHashArray_append(path, newCHashLong((long)self->private_index));
     }
 
     if(self->private_reference_type == PRIVATE_CHASH_KEYVAL){
-        privateCHashArray_append(path, newCHashString(self->private_key));
+        CHashArray_append(path, newCHashString(self->private_key));
     }
     return path;
 
@@ -5177,12 +5297,16 @@ void CHash_free(CHash *self){
 
 
 long CHash_get_size(CHash *self){
+    if(Chash_errors(self)){
+       return -1;
+    }
     if(self->private_type == CHASH_STRING){
         return (long)self->private_value_stack->size;
     }
-    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_STRING){
-        return self->private_size;
+    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
+        return (long)self->private_size;
     }
+    CHash_raise_error(self,CHASH_NOT_ITERABLE, "the element at #path# its not an iterable (string,array,object)",NULL);
     return -1;
 }
 
@@ -5206,24 +5330,24 @@ CHash * CHash_copy(CHash *self){
     }
 
     if(self->private_type == CHASH_ARRAY ){
-        CHash * new_element  = privatenewCHashArray(NULL);
+        CHash * new_element  = newCHashArrayEmpty();
 
         for(long i =0; i < self->private_size; i++){
             CHash * copy = CHash_copy(CHashArray_get(self,i));
-            privateCHashArray_append(new_element, copy);
+            CHashArray_append(new_element, copy);
         }
         return new_element;
 
     }
 
     if(self->private_type == CHASH_OBJECT){
-        CHash * new_element  = privatenewCHashObject(NULL);
+        CHash * new_element  = newCHashObjectEmpty();
 
         for(long  i =0; i < self->private_size; i++){
             CHash  * current = CHashObject_get_by_index(self,i);
             CHash *copy = CHash_copy(current);
 
-            privateCHashObject_set(new_element, current->private_key, copy);
+            CHashObject_set(new_element, current->private_key, copy);
         }
         return new_element;
     }
@@ -5247,11 +5371,7 @@ CHash * newCHashNULL(){
 
 
 long CHash_toLong(CHash *element){
-    if(Chash_errors(element)){
-        return -1;
-    }
-
-    if(element->private_type != CHASH_LONG){
+    if(CHash_ensure_Long(element)){
         return -1;
     }
     return element->private_value_long;
@@ -5270,7 +5390,7 @@ CHash * newCHashLong(long value){
 
 double CHash_toDouble(CHash *element){
 
-    if(CHash_ensure_double(element)){
+    if(CHash_ensure_Double(element)){
         return -1;
     }
 
@@ -5290,11 +5410,12 @@ CHash * newCHashDouble(double value){
 
 
 bool CHash_toBool(CHash *element){
-    if(element->private_type != CHASH_BOOL){
+    if(CHash_ensure_Bool(element)){
         return false;
     }
     return element->private_value_bool;
 }
+
 
 CHash * newCHashBool(bool value){
     CHash * self =  privatenewChash_raw();
@@ -5312,7 +5433,7 @@ CHash * newCHashBool(bool value){
 
 
 char * CHash_toString(CHashArray *element){
-    if(CHash_ensure_string(element)){
+    if(CHash_ensure_String(element)){
         return NULL;
     }
 
@@ -5320,7 +5441,7 @@ char * CHash_toString(CHashArray *element){
 }
 
 CTextStack  *CHashtoStack(CHash *element){
-    if(CHash_ensure_string(element)){
+    if(CHash_ensure_String(element)){
         return NULL;
     }
     if(element->private_type != CHASH_STRING){
@@ -5373,10 +5494,29 @@ CHashArray * privatenewCHashArray(void *sentinel, ...){
     return self;
 }
 
+CHashArray * privatenewCHashStringArray(void *sentinel, ...){
+    CHash * self =  newCHashArrayEmpty();
+
+    va_list args;
+    va_start(args, sentinel);
+
+
+    while(true){
+        char  * current = va_arg(args,char*);
+        if(!current){
+            break;
+        }
+        CHashArray_append_once(self, newCHashString(current));
+    }
+    va_end(args);
+    return self;
+}
 
 void CHashArray_append_once(CHashArray *self, CHash *element){
-    if(Chash_errors(self)){return;}
 
+    if(CHash_ensure_Array(self)){
+        return ;
+    }
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,
             (self->private_size + 1) * sizeof(CHash**)
@@ -5390,11 +5530,13 @@ void CHashArray_append_once(CHashArray *self, CHash *element){
 
 }
 void privateCHashArray_append(CHashArray *self, ...){
-    if(Chash_errors(self)){return;}
+
+    if(CHash_ensure_Array(self)){
+        return;
+    }
 
     va_list args;
-    va_start(args, NULL);
-
+    va_start(args, self);
     while(true){
         void * current = va_arg(args,void*);
         if(!current){
@@ -5407,8 +5549,10 @@ void privateCHashArray_append(CHashArray *self, ...){
 
 }
 void CHashArray_delete(CHashArray *self, long index){
-    if(Chash_errors(self)){return;}
 
+    if(CHash_ensure_Array(self)){
+        return ;
+    }
     CHash  *current = CHashArray_get(self,index);
     CHash_free(current);
     self->private_size-=1;
@@ -5419,7 +5563,8 @@ void CHashArray_delete(CHashArray *self, long index){
     }
 }
 CHash * CHashArray_get(CHashArray *self, long index){
-    if(Chash_errors(self)){
+
+    if(CHash_ensure_Array(self)){
         return NULL;
     }
 
@@ -5465,7 +5610,7 @@ CHashObject* privatenewCHashObject(void * sentinel, ...){
         }
 
         if(state == GETTING_VALUE){
-            CHash_set_by_key_once(self, key, (CHash *) current);
+            CHashObject_set_once(self, key, (CHash *) current);
             state = GETTING_KEY;
 
         }
@@ -5491,31 +5636,31 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
     return NULL;
 }
 
+
 CHash * CHashObject_get_by_index(CHashObject * self, long index){
     if(Chash_errors(self)){
         return NULL;
     }
+
     return self->private_sub_elements[index];
 }
 
-CHash * CHashObject_get(CHashObject * self, const char *key){
+char   * CHashObject_get_key_of_element(CHash *self){
     if(Chash_errors(self)){
         return NULL;
     }
-
-    CHash *element = privateCHashObject_get_by_key(self,key);
-
-    if(element){
-        return  element;
+    if(self->private_reference_type != PRIVATE_CHASH_KEYVAL){
+        CHash_raise_error(self,CHASH_NOT_HAVE_KEY,"element of #path# does not have an key",NULL);
     }
-
-    CHash_raise_error(element, CHASH_ELEMENT_NOT_EXIST, "element at #path# not exist", NULL);
-
-    return  NULL;
+    return self->private_key;
 }
 
+
+
 void  CHashObject_delete(CHashObject *self, const char *key){
-    if(Chash_errors(self)){return;}
+    if(CHash_ensure_Object(self)){
+        return ;
+    }
 
     bool found = false;
 
@@ -5535,9 +5680,10 @@ void  CHashObject_delete(CHashObject *self, const char *key){
     
 }
 void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
-    if(Chash_errors(self)){return;}
-
-    CHash_delete_by_key(self, key);
+    if(CHash_ensure_Object(self)){
+        return ;
+    }
+    CHashObject_delete(self, key);
 
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,
@@ -5552,8 +5698,8 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
 }
 
 
-CHashArray  * CHashObject_get_keys(CHashObject *self){
-    if(Chash_errors(self)){
+CHashStringArray  * CHashObject_get_keys(CHashObject *self){
+    if(CHash_ensure_Object(self)){
         return NULL;
     }
 
@@ -5565,20 +5711,16 @@ CHashArray  * CHashObject_get_keys(CHashObject *self){
     return keys;
 }
 
-char * CHashObject_get_key_of_element(CHash *element){
-    if(Chash_errors(element)){
-        return  NULL;
-    }
 
-    return element->private_key;
-}
 
 void  privateCHashObject_set(CHashObject *self , ...){
-    if(Chash_errors(self)){return;}
 
+    if(CHash_ensure_Object(self)){
+        return;
+    }
     va_list args;
 
-    va_start(args, NULL);
+    va_start(args, self);
 
     const int GETTING_KEY = 0;
     const int GETTING_VALUE = 1;
@@ -5600,7 +5742,7 @@ void  privateCHashObject_set(CHashObject *self , ...){
         }
 
         if(state == GETTING_VALUE){
-            CHash_set_by_key_once(self, key, (CHash *) current);
+            CHashObject_set_once(self, key, (CHash *) current);
          
             state = GETTING_KEY;
         }
@@ -5609,6 +5751,65 @@ void  privateCHashObject_set(CHashObject *self , ...){
     va_end(args);
     
 }
+
+CHash * CHashObject_get(CHashObject * self, const char *key){
+
+    if(CHash_ensure_Object(self)){
+        return NULL;
+    }
+
+
+    CHash *element = privateCHashObject_get_by_key_or_null(self, key);
+
+    if(element){
+        return  element;
+    }
+
+
+    CHash_raise_error(self,
+                      CHASH_ELEMENT_NOT_EXIST,
+                      "element of key:#key# at #path# not exist",
+                      newCHashObject("key", newCHashString(key))
+    );
+
+    return  NULL;
+}
+CHashArray * CHashObject_getArray(CHashObject * self, const char *key){
+    CHashArray  *element = CHashObject_get(self,key);
+    CHash_ensure_Array(element);
+    return element;
+}
+
+CHashObject * CHashObject_getObject(CHashObject * self, const char *key){
+    CHashObject *element = CHashObject_get(self,key);
+    CHash_ensure_Object(element);
+    return element;
+}
+
+
+long CHashObject_getLong(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toLong(element);
+}
+
+double CHashObject_getDouble(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toDouble(element);
+}
+
+bool CHashObject_getBool(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toBool(element);
+}
+
+char  * CHashObject_getString(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toString(element);
+}
+
+
+
+
 
 
 
@@ -5626,7 +5827,9 @@ const char  *private_Chash_convert_type(long type){
     if(type == CHASH_NULL){
         return "null";
     }
-
+    if(type == CHASH_STRING){
+        return "string";
+    }
     if(type == CHASH_ARRAY){
         return "array";
     }
@@ -5812,7 +6015,7 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
     long args_size = CHash_get_size(self->args);
     for(int i = 0; i < args_size; i++){
         CHash *current = CHashObject_get_by_index(self->args,i);
-        char *key = CHash_get_key_of_element(current);
+        char *key = CHashObject_get_key_of_element(current);
         char *value = CHash_dump_to_json_string(current);
         CTextStack * formated_key = newCTextStack_string_empty();
         CTextStack_format(formated_key,"#%s#",key);
@@ -5852,17 +6055,18 @@ bool Chash_errors(CHash *self){
 
 
 void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CHash *args){
+
     if(Chash_errors(self)){return;}
-    CHashArray  *path = CHash_get_path(self);
-    
+
     CHash *formated_args = args;
 
     if(!args){
-        formated_args = privatenewCHashObject(NULL);
+        formated_args = newCHashObjectEmpty();
     }
-    privateCHashObject_set(formated_args,
-                           "path", path,
-                           "value", CHash_copy(self)
+    CHashObject_set(formated_args,
+                    "path", CHash_get_path(self),
+                    "value", CHash_copy(self),
+                    "type", newCHashString(private_Chash_convert_type(self->private_type))
     );
 
     privateCHashError *created = privatenewCHashError(
@@ -5912,32 +6116,127 @@ CHash * CHash_get_error_args(CHash *self){
 }
 
 
-int private_chash_check_type(CHash *element, unsigned short  expected_type,char *expected_type_str){
+int private_chash_check_type(CHash *element, unsigned short  expected_type){
     if(Chash_errors(element)){
         return 1;
     }
 
     if(element->private_type != expected_type){
+
         CHash_raise_error(element,
                           CHASH_WRONG_TYPE,
-                          "value: #value# of at #path# its not #type# ",
-                          privatenewCHashObject("type", newCHashString(expected_type_str))
-                          );
+                          "element at #path# is #type# instead of #expected_type#  ",
+                          newCHashObject(
+                                  "expected_type", newCHashString(
+                                  private_Chash_convert_type(expected_type)
+                                )
+                          )
+
+        );
         return 1;
     }
     return 0;
 }
 
 int CHash_ensure_Double(CHash *element){
-    return private_chash_check_type(element,CHASH_DOUBLE,"double");
+    return private_chash_check_type(element,CHASH_DOUBLE);
 }
 
 int CHash_ensure_String(CHash *element){
-    return private_chash_check_type(element,CHASH_STRING,"string");
+    return private_chash_check_type(element,CHASH_STRING);
+}
+int CHash_ensure_Long(CHash *element){
+    return private_chash_check_type(element,CHASH_LONG);
+
+}
+int CHash_ensure_Bool(CHash *element){
+    return private_chash_check_type(element,CHASH_BOOL);
+}
+
+int CHash_ensure_Object(CHash *element){
+    return private_chash_check_type(element,CHASH_OBJECT);
+}
+
+int CHash_ensure_Array(CHash *element){
+    return private_chash_check_type(element,CHASH_ARRAY);
+
 }
 
 
 
+
+
+CHashObjectModule newCHashObjectModule(){
+    CHashObjectModule self = {0};
+    self.newObjectEmpty = newCHashObjectEmpty;
+    self.set_once = CHashObject_set_once;
+    self.delete= CHashObject_delete;
+
+    self.get_keys = CHashObject_get_keys;
+    self.get_by_index  = CHashObject_get_by_index;
+    self.get_key_of_element = CHashObject_get_key_of_element;
+    self.get = CHashObject_get;
+    self.getArray = CHashObject_getArray;
+    self.getObject = CHashObject_getObject;
+    self.getLong = CHashObject_getLong;
+    self.getBool = CHashObject_getBool;
+    self.getDouble = CHashObject_getDouble;
+    self.getString = CHashObject_getString;
+
+    return self;
+}
+
+
+
+CHashArrayModule newCHashArrayModule(){
+    CHashArrayModule self = {0};
+    self.newArrayEmpty = newCHashArrayEmpty;
+    self.append_once = CHashArray_append_once;
+    self.delete = CHashArray_delete;
+    self.get = CHashArray_get;
+    return self;
+}
+
+
+
+CHashNamespace newCHashNamespace(){
+    CHashNamespace self = {0};
+
+    self.newBool = newCHashBool;
+    self.toBool = CHash_toBool;
+
+    self.newDouble = newCHashDouble;
+    self.toDouble = CHash_toDouble;
+
+    self.newLong = newCHashLong;
+    self.toLong = CHash_toLong;
+
+    self.newStackString = newCHashStackString;
+    self.toStack = CHashtoStack;
+
+    self.newString = newCHashString;
+    self.toString = CHash_toString;
+    self.newNULL = newCHashNULL;
+
+    self.print = CHash_print;
+    self.get_path = CHash_get_path;
+    self.copy = CHash_copy;
+    self.equals  = CHash_equals;
+    self.get_size = CHash_get_size;
+
+
+    self.errors = Chash_errors;
+    self.get_error_code = CHash_get_error_code;
+    self.get_error_args = CHash_get_error_args;
+    self.get_error_menssage= CHash_get_error_menssage;
+    self.raise_error = CHash_raise_error;
+
+    self.free = CHash_free;
+
+    self.object = newCHashObjectModule();
+    self.array = newCHashArrayModule();
+    return self;
+}
 
 
 
