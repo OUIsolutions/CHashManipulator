@@ -11,8 +11,8 @@ CHashObject *create (){
     return newCHashObject(
             "name", hash.newString("aaa"),
             "age", hash.newLong(26),
-            "heigh",hash.newDouble(1.86),
-            "maried",hash.newBool(false)
+            "height",hash.newString("aa"),
+            "maried",hash.newBool(true)
     );
 }
 
@@ -23,27 +23,17 @@ int main(){
 
     CHashArray *t = create();
 
-    char *name = hash.toString(obj.get(t,"name"));
-    long age = hash.toLong(obj.get(t,"age"));
-
+    char *name =obj.getString(t,"name");
+    long age = obj.getLong(t,"age");
+    double height = obj.getDouble(t,"height");
+    bool maried = obj.getBool(t,"maried");
     if(!hash.errors(t)){
         printf("name: %s\n",name);
         printf("age %ld\n",age);
+        printf("heigh %lf\n",height);
+        printf("maried %s\n", maried ? "true":"false");
     }
-    CHashArray  *phones = obj.get(t,"phones");
-    long  size = hash.get_size(phones);
-    if(!hash.errors(t)){
-        printf("phones: \n");
-    }
-    for(int i =0; i < size; i++){
-        char *current = hash.toString(array.get(phones,i));
-        if(!hash.errors(t)){
-            printf("\t%s\n",current);
-        }
-    }
-
-
-    if(hash.errors(t)){
+    else{
         char *menssage = hash.get_error_menssage(t);
         printf("%s",menssage);
     }

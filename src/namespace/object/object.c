@@ -16,6 +16,6 @@ CHashObjectModule newCHashObjectModule(){
     self.getBool = CHashObject_getBool;
     self.getDouble = CHashObject_getDouble;
     self.getString = CHashObject_getString;
-    
+
     return self;
 }
