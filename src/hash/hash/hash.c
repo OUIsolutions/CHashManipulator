@@ -78,10 +78,9 @@ long CHash_get_size(CHash *self){
     if(self->private_type == CHASH_STRING){
         return (long)self->private_value_stack->size;
     }
-    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_STRING){
+    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
         return (long)self->private_size;
     }
-
     CHash_raise_error(self,CHASH_NOT_ITERABLE, "the element at #path# its not an iterable (string,array,object)",NULL);
     return -1;
 }

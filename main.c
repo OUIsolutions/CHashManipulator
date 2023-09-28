@@ -11,10 +11,8 @@ CHashObject *create (){
     return newCHashObject(
             "name", hash.newString("aaa"),
             "age", hash.newLong(26),
-            "phones", newCHashStringArray(
-                    "000000000",
-                    "0000000000"
-            )
+            "heigh",hash.newDouble(1.86),
+            "maried",hash.newBool(false)
     );
 }
 
@@ -40,7 +38,7 @@ int main(){
     for(int i =0; i < size; i++){
         char *current = hash.toString(array.get(phones,i));
         if(!hash.errors(t)){
-            printf("\t%s",current);
+            printf("\t%s\n",current);
         }
     }
 

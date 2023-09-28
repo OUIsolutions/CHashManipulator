@@ -24,3 +24,17 @@ CHashStringArray  * CHashObject_get_keys(CHashObject *self);
 char   * CHashObject_get_key_of_element(CHash *self);
 
 CHash * CHashObject_get(CHashObject * self, const char *key);
+
+CHashArray * CHashObject_getArray(CHashObject * self, const char *key);
+
+CHashObject * CHashObject_getObject(CHashObject * self, const char *key);
+
+long CHashObject_getLong(CHashObject * self, const char *key);
+
+double CHashObject_getDouble(CHashObject * self, const char *key);
+
+bool CHashObject_getBool(CHashObject * self, const char *key);
+
+char  * CHashObject_getString(CHashObject * self, const char *key);
+
+

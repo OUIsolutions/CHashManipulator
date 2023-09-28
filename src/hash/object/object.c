@@ -82,28 +82,7 @@ char   * CHashObject_get_key_of_element(CHash *self){
     return self->private_key;
 }
 
-CHash * CHashObject_get(CHashObject * self, const char *key){
 
-    if(CHash_ensure_Object(self)){
-        return NULL;
-    }
-
-
-    CHash *element = privateCHashObject_get_by_key_or_null(self, key);
-
-    if(element){
-        return  element;
-    }
-
-
-    CHash_raise_error(self,
-                      CHASH_ELEMENT_NOT_EXIST,
-                      "element of key:#key# at #path# not exist",
-                      newCHashObject("key", newCHashString(key))
-     );
-
-    return  NULL;
-}
 
 void  CHashObject_delete(CHashObject *self, const char *key){
     if(CHash_ensure_Object(self)){
@@ -199,3 +178,61 @@ void  privateCHashObject_set(CHashObject *self , ...){
     va_end(args);
     
 }
+
+CHash * CHashObject_get(CHashObject * self, const char *key){
+
+    if(CHash_ensure_Object(self)){
+        return NULL;
+    }
+
+
+    CHash *element = privateCHashObject_get_by_key_or_null(self, key);
+
+    if(element){
+        return  element;
+    }
+
+
+    CHash_raise_error(self,
+                      CHASH_ELEMENT_NOT_EXIST,
+                      "element of key:#key# at #path# not exist",
+                      newCHashObject("key", newCHashString(key))
+    );
+
+    return  NULL;
+}
+CHashArray * CHashObject_getArray(CHashObject * self, const char *key){
+    CHashArray  *element = CHashObject_get(self,key);
+    CHash_ensure_Array(element);
+    return element;
+}
+
+CHashObject * CHashObject_getObject(CHashObject * self, const char *key){
+    CHashObject *element = CHashObject_get(self,key);
+    CHash_ensure_Object(element);
+    return element;
+}
+
+
+long CHashObject_getLong(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toLong(element);
+}
+
+double CHashObject_getDouble(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toDouble(element);
+}
+
+bool CHashObject_getBool(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toBool(element);
+}
+
+char  * CHashObject_getString(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toString(element);
+}
+
+
+
