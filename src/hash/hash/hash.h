@@ -5,8 +5,9 @@ typedef struct CHash{
     unsigned short private_reference_type;
 
     void *private_error;
-    struct CHash *private_keys;
     struct CHash *private_father;
+
+    struct CHash *private_keys;
     unsigned long private_size;
 
     //these is the reference system
