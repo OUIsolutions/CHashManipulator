@@ -138,6 +138,7 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
 void  CHashObject_set_default(CHashObject * self, const char *key, CHash *element){
     if(CHashObject_exist(self,key)){
         CHash_free(element);
+        return;
     }
     CHashObject_set_once(self,key,element);
 }

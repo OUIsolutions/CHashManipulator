@@ -7,7 +7,6 @@ CHashArrayModule  array;
 
 CHashObject *create (){
     return newCHashObject(
-            "name", hash.newString("aaa"),
             "age", hash.newLong(26),
             "height",hash.newDouble(20),
             "maried",hash.newBool(true)
@@ -22,6 +21,7 @@ int main(){
     CHashArray *profile = create();
 
     obj.set_default(profile,"name", newCHashString("Mateus"));
+
     char *name =obj.getString(profile,"name");
     long age = obj.getLong(profile,"age");
     double height = obj.getDouble(profile,"height");
