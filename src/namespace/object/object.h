@@ -10,7 +10,7 @@ typedef struct CHashObjectModule{
     char * (*get_key_by_index)(CHashObject *self,long index);
 
 
-    short  (*get_type_of_key)(CHashObject *self, const char *key);
+    short  (*get_type)(CHashObject *self, const char *key);
 
     CHash * (*get)(CHashObject * self, const char *key);
 

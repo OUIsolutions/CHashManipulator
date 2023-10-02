@@ -1,5 +1,5 @@
  
-name:aaa
-age:26
-height:20.000000
-maried:true
+name: aaa
+age: 26
+height: 20.000000
+maried: true

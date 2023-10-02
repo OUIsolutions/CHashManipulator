@@ -2,9 +2,13 @@
 #include "CHashManipulator.h"
 
 
+
+
 CHashNamespace hash;
 CHashObjectModule  obj;
 CHashArrayModule  array;
+
+
 
 CHashObject *create (){
     return newCHashObject(
@@ -24,23 +28,25 @@ int main(){
 
     long size = hash.get_size(profile);
     for(int i = 0; i < size; i++){
-        CHash *element = hash.object.get_by_index(profile,i);
-        char *key =  hash.object.get_key_of_element(element);
-        printf("%s:",key);
-        int type = hash.get_type(element);
+
+        char *key = obj.get_key_by_index(profile,i);
+        printf("%s: ",key);
+        int type = obj.get_type(profile, key);
+
         if(type == CHASH_STRING){
-            printf("%s",hash.toString(element));
+            printf("%s",obj.getString(profile,key));
         }
 
         if(type == CHASH_DOUBLE){
-            printf("%lf",hash.toDouble(element));
+            printf("%lf",obj.getDouble(profile,key));
         }
         if(type == CHASH_LONG){
-            printf("%ld",hash.toLong(element));
+            printf("%ld",obj.getLong(profile,key));
         }
         if(type == CHASH_BOOL){
-            printf("%s", hash.toBool(element) ? "true":"false");
+            printf("%s",obj.getBool(profile,key)  ? "true":"false");
         }
+
         printf("\n");
 
     }

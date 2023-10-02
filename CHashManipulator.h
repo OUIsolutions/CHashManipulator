@@ -748,8 +748,9 @@ typedef struct CHash{
     unsigned short private_reference_type;
 
     void *private_error;
-
     struct CHash *private_father;
+
+    struct CHash *private_keys;
     unsigned long private_size;
 
     //these is the reference system
@@ -875,9 +876,11 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
 
 CHash * CHashObject_get_by_index(CHashObject * self, long index);
 
-CHashStringArray  * CHashObject_get_keys(CHashObject *self);
+char * CHashObject_get_key_by_index(CHashObject *self,long index);
+
 
 char   * CHashObject_get_key_of_element(CHash *self);
+
 
 short  CHashObject_get_type(CHashObject *self, const char *key);
 
@@ -1008,9 +1011,12 @@ typedef struct CHashObjectModule{
     CHashObject  * (*newObjectEmpty)();
     void  (*set_once)(CHashObject * self, const char *key, CHash *element);
     void  (*delete)(CHashObject *self, const char *key);
+
     CHash * (*get_by_index)(CHashObject * self, long index);
-    CHashStringArray  * (*get_keys)(CHashObject *self);
-    char   * (*get_key_of_element)(CHash *self);
+
+    char * (*get_key_by_index)(CHashObject *self,long index);
+
+
     short  (*get_type)(CHashObject *self, const char *key);
 
     CHash * (*get)(CHashObject * self, const char *key);
@@ -1089,6 +1095,8 @@ typedef struct CHashNamespace{
     long (*get_size)(CHash *self);
 
     short (*get_type)(CHash *self);
+
+    char   * (*get_key_of_element)(CHash *self);
 
     void (*free)(CHash *self);
 
@@ -5281,6 +5289,9 @@ void CHash_free(CHash *self){
             privateCHashError_free(error);
         }
     }
+    if(self->private_keys){
+        free(self->private_keys);
+    }
 
     if(self->private_type == CHASH_STRING){
         CTextStack_free(self->private_value_stack);
@@ -5642,12 +5653,22 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
 
 
 CHash * CHashObject_get_by_index(CHashObject * self, long index){
-    if(Chash_errors(self)){
+    if(CHash_ensure_Object(self)){
         return NULL;
     }
 
     return self->private_sub_elements[index];
 }
+
+char * CHashObject_get_key_by_index(CHashObject *self,long index){
+    CHash  *element = CHashObject_get_by_index(self,index);
+    if(!element){
+        return NULL;
+    }
+    return CHashObject_get_key_of_element(element);
+}
+
+
 
 char   * CHashObject_get_key_of_element(CHash *self){
     if(Chash_errors(self)){
@@ -5702,18 +5723,6 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
 }
 
 
-CHashStringArray  * CHashObject_get_keys(CHashObject *self){
-    if(CHash_ensure_Object(self)){
-        return NULL;
-    }
-
-    CHashArray * keys = privatenewCHashArray(NULL);
-    for(int i =0;i < self->private_size; i ++){
-        CHash * current = self->private_sub_elements[i];
-        privateCHashArray_append(keys, newCHashString(current->private_key));
-    }
-    return keys;
-}
 
 
 
@@ -6184,9 +6193,9 @@ CHashObjectModule newCHashObjectModule(){
     self.set_once = CHashObject_set_once;
     self.delete= CHashObject_delete;
 
-    self.get_keys = CHashObject_get_keys;
     self.get_by_index  = CHashObject_get_by_index;
-    self.get_key_of_element = CHashObject_get_key_of_element;
+    self.get_key_by_index = CHashObject_get_key_by_index;
+
 
     self.get_type = CHashObject_get_type;
     self.get = CHashObject_get;
@@ -6245,6 +6254,7 @@ CHashNamespace newCHashNamespace(){
     self.get_error_menssage= CHash_get_error_menssage;
     self.raise_error = CHash_raise_error;
 
+    self.get_key_of_element = CHashObject_get_key_of_element;
     self.get_type = CHash_get_type;
 
     self.free = CHash_free;

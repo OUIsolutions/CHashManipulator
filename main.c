@@ -28,7 +28,7 @@ int main(){
 
         char *key = obj.get_key_by_index(profile,i);
         printf("%s: ",key);
-        int type = obj.get_type_of_key(profile, key);
+        int type = obj.get_type(profile, key);
 
         if(type == CHASH_STRING){
             printf("%s",obj.getString(profile,key));

@@ -10,7 +10,7 @@ CHashObjectModule newCHashObjectModule(){
     self.get_key_by_index = CHashObject_get_key_by_index;
 
 
-    self.get_type_of_key = CHashObject_get_type;
+    self.get_type = CHashObject_get_type;
     self.get = CHashObject_get;
     self.getArray = CHashObject_getArray;
     self.getObject = CHashObject_getObject;
