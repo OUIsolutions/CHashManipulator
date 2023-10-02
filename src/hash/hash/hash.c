@@ -90,7 +90,10 @@ long CHash_get_size(CHash *self){
 
 
 CHash * CHash_copy(CHash *self){
-    
+    if(!self){
+        return newCHashNULL();
+    }
+
     if(self->private_type == CHASH_STRING){
         return newCHashString(self->private_value_stack->rendered_text);
     }
@@ -133,7 +136,16 @@ CHash * CHash_copy(CHash *self){
 
     return newCHashNULL();
 }
+CHash * privateCHash_copy_if_its_an_reference(CHash *self){
+    if(!self){
+        return NULL;
+    }
+    if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
+        return self;
+    }
+    return CHash_copy(self);
 
+}
 CHash * privateCHash_get_first_object(CHash *self){
     if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE) {
         return self;

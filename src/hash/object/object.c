@@ -121,6 +121,9 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     if(CHash_ensure_Object(self)){
         return ;
     }
+
+    CHash *formated_element = privateCHash_copy_if_its_an_reference(element);
+
     CHashObject_remove(self, key);
 
     self->private_sub_elements = (CHash**) realloc(
@@ -128,10 +131,10 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
             (self->private_size + 1) * sizeof(CHash**)
     );
 
-    element->private_reference_type = PRIVATE_CHASH_KEYVAL;
-    element->private_father = self;
-    element->private_key = strdup(key);
-    self->private_sub_elements[self->private_size]= element;
+    formated_element->private_reference_type = PRIVATE_CHASH_KEYVAL;
+    formated_element->private_father = self;
+    formated_element->private_key = strdup(key);
+    self->private_sub_elements[self->private_size]= formated_element;
     self->private_size+=1;
 }
 

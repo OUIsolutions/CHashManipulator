@@ -48,6 +48,8 @@ CHashArray * CHash_get_path(CHash *self);
 
 CHash * CHash_copy(CHash *self);
 
+CHash * privateCHash_copy_if_its_an_reference(CHash *self);
+
 void CHash_free(CHash *self);
 
 bool CHash_equals(CHash *element1, CHash *element2);
