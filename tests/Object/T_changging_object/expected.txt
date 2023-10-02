@@ -1,0 +1,7 @@
+ 
+{
+	"name":	"aaa",
+	"height":	20,
+	"age":	18,
+	"maried":	false
+}

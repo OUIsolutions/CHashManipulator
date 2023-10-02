@@ -787,6 +787,7 @@ void CHash_print(CHash *self);
 
 CHashArray * CHash_get_path(CHash *self);
 
+
 CHash * CHash_copy(CHash *self);
 
 void CHash_free(CHash *self);
@@ -954,10 +955,11 @@ CHash * CHash_load_from_json_file(const char *filename);
 
 
 
-#define CHASH_ELEMENT_NOT_EXIST 200
-#define CHASH_WRONG_TYPE 201
-#define  CHASH_NOT_HAVE_KEY 202
-#define  CHASH_NOT_ITERABLE 203
+#define CHASH_ELEMENT_NOT_EXIST 400
+#define CHASH_WRONG_TYPE 401
+#define  CHASH_NOT_HAVE_KEY 402
+#define  CHASH_NOT_ITERABLE 403
+#define CHASH_NOT_VALID_INDEX 404
 
 
 
@@ -1016,6 +1018,7 @@ typedef struct CHashObjectModule{
 
     char * (*get_key_by_index)(CHashObject *self,long index);
 
+    char   * (*get_key_of_element)(CHash *self);
 
     short  (*get_type)(CHashObject *self, const char *key);
 
@@ -1096,7 +1099,6 @@ typedef struct CHashNamespace{
 
     short (*get_type)(CHash *self);
 
-    char   * (*get_key_of_element)(CHash *self);
 
     void (*free)(CHash *self);
 
@@ -5656,8 +5658,23 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     if(CHash_ensure_Object(self)){
         return NULL;
     }
+    long formated_index = index;
+    if(index < 0){
+        formated_index = (long)self->private_size +index;
+    }
+    if(formated_index < 0|| formated_index>= self->private_size){
+        CHash_raise_error(
+                self,
+                CHASH_NOT_VALID_INDEX,
+                " index: #index# its not valid, at #path#",
+                newCHashObject(
+                        "index", newCHashLong(index)
+                        )
+        );
+        return NULL;
+    }
 
-    return self->private_sub_elements[index];
+    return self->private_sub_elements[formated_index];
 }
 
 char * CHashObject_get_key_by_index(CHashObject *self,long index){
@@ -6195,7 +6212,7 @@ CHashObjectModule newCHashObjectModule(){
 
     self.get_by_index  = CHashObject_get_by_index;
     self.get_key_by_index = CHashObject_get_key_by_index;
-
+    self.get_key_of_element = CHashObject_get_key_of_element;
 
     self.get_type = CHashObject_get_type;
     self.get = CHashObject_get;
@@ -6254,7 +6271,6 @@ CHashNamespace newCHashNamespace(){
     self.get_error_menssage= CHash_get_error_menssage;
     self.raise_error = CHash_raise_error;
 
-    self.get_key_of_element = CHashObject_get_key_of_element;
     self.get_type = CHash_get_type;
 
     self.free = CHash_free;
