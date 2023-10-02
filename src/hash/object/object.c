@@ -68,6 +68,21 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     if(CHash_ensure_Object(self)){
         return NULL;
     }
+    long formated_index = index;
+    if(index < 0){
+        formated_index = (long)self->private_size +index;
+    }
+    if(formated_index < 0|| formated_index>= self->private_size){
+        CHash_raise_error(
+                self,
+                CHASH_NOT_VALID_INDEX,
+                " index: #index# its not valid, at #path#",
+                newCHashObject(
+                        "index", newCHashLong(index)
+                        )
+        );
+        return NULL;
+    }
 
     return self->private_sub_elements[index];
 }

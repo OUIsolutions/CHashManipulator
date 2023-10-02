@@ -22,31 +22,16 @@ int main(){
     array  = hash.array;
 
     CHashArray *profile = create();
+    CHash * current = obj.get_by_index(profile,-1);
 
-    long size = hash.get_size(profile);
-    for(int i = 0; i < size; i++){
-
-        char *key = obj.get_key_by_index(profile,i);
-        printf("%s: ",key);
-        int type = obj.get_type(profile, key);
-
-        if(type == CHASH_STRING){
-            printf("%s",obj.getString(profile,key));
-        }
-
-        if(type == CHASH_DOUBLE){
-            printf("%lf",obj.getDouble(profile,key));
-        }
-        if(type == CHASH_LONG){
-            printf("%ld",obj.getLong(profile,key));
-        }
-        if(type == CHASH_BOOL){
-            printf("%s",obj.getBool(profile,key)  ? "true":"false");
-        }
-
-        printf("\n");
+    if(hash.errors(profile)){
+        printf("%s\n",hash.get_error_menssage(profile));
+    }
+    else{
+        hash.print(current);
 
     }
+
     hash.free(profile);
 
 }
