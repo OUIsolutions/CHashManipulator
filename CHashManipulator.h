@@ -855,6 +855,8 @@ void privateCHashArray_append(CHashArray *self, ...);
 
 void CHashArray_switch(CHashArray *self, long index ,long target_index);
 
+void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element);
+
 void  CHashArray_remove(CHashArrayOrObject *self, long index);
 
 CHash * CHashArray_get(CHashArray *self, long index);
@@ -1069,6 +1071,8 @@ typedef struct CHashArrayModule{
 
     CHashArray  *(*newArrayEmpty)();
     void (*append_once)(CHashArray *self, CHash *element);
+
+    void  (*set)(CHashArrayOrObject *self, long index,CHash *element);
     void  (*remove)(CHashArrayOrObject *self, long index);
     CHash * (*get)(CHashArrayOrObject *self, long position);
     short (*get_type)(CHashArrayOrObject *self, long index);
@@ -5613,6 +5617,22 @@ void privateCHashArray_append(CHashArray *self, ...){
     va_end(args);
 
 }
+void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element){
+    if(privateCHash_ensureArrayOrObject(self)){
+        return;
+    }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
+        return ;
+    }
+
+
+    CHash  *current = self->private_sub_elements[formated_index];
+
+    CHash_free(current);
+    self->private_sub_elements[formated_index] = element;
+
+}
 void CHashArray_remove(CHashArrayOrObject *self, long index){
 
     if(privateCHash_ensureArrayOrObject(self)){
@@ -5650,6 +5670,7 @@ long privateCHashArray_convert_index(CHashArrayOrObject *self, long index){
         );
         return -1;
     }
+    return formated_index;
 }
 CHash * CHashArray_get(CHashArrayOrObject *self, long index){
     if(privateCHash_ensureArrayOrObject(self)){
@@ -6251,7 +6272,8 @@ void privateCHashError_free(privateCHashError *self){
 
 char * CHash_get_error_menssage(CHash *self){
     if(!self){
-        return "element its NULL , (impossíble to get error menssage)\n";
+
+        return (char*)"element its NULL , (impossíble to get error menssage)\n";
     }
 
     if(!Chash_errors(self)){
@@ -6376,6 +6398,7 @@ CHashArrayModule newCHashArrayModule(){
     CHashArrayModule self = {0};
     self.newArrayEmpty = newCHashArrayEmpty;
     self.append_once = CHashArray_append_once;
+    self.set = CHashArray_set;
     self.remove = CHashArray_remove;
     self.get = CHashArray_get;
 

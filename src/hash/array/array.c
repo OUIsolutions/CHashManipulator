@@ -81,6 +81,22 @@ void privateCHashArray_append(CHashArray *self, ...){
     va_end(args);
 
 }
+void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element){
+    if(privateCHash_ensureArrayOrObject(self)){
+        return;
+    }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
+        return ;
+    }
+
+
+    CHash  *current = self->private_sub_elements[formated_index];
+
+    CHash_free(current);
+    self->private_sub_elements[formated_index] = element;
+
+}
 void CHashArray_remove(CHashArrayOrObject *self, long index){
 
     if(privateCHash_ensureArrayOrObject(self)){

@@ -1,4 +1,5 @@
-#include "src/one.h"
+
+#include "CHashManipulator.h"
 
 
 
@@ -25,7 +26,8 @@ int main(){
     CHashArray *element = create();
 
     //will remove the last element
-    array.remove(element, 0);
+    array.set(element,-1, newCHashString("b"));
+
 
     if(!hash.errors(element)){
         hash.print(element);

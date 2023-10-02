@@ -4,6 +4,7 @@ CHashArrayModule newCHashArrayModule(){
     CHashArrayModule self = {0};
     self.newArrayEmpty = newCHashArrayEmpty;
     self.append_once = CHashArray_append_once;
+    self.set = CHashArray_set;
     self.remove = CHashArray_remove;
     self.get = CHashArray_get;
 
