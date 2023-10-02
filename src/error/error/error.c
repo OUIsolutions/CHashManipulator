@@ -83,8 +83,9 @@ void privateCHashError_free(privateCHashError *self){
 
 char * CHash_get_error_menssage(CHash *self){
     if(!self){
-        return NULL;
+        return "element its NULL , (impossíble to get error menssage)\n";
     }
+
     if(!Chash_errors(self)){
         return NULL;
     }
@@ -95,6 +96,11 @@ char * CHash_get_error_menssage(CHash *self){
 }
 
 int CHash_get_error_code(CHash *self){
+
+    if(!self){
+        return CHASH_ELEMENT_IS_NULL;
+    }
+
     if(!Chash_errors(self)){
         return 0;
     }

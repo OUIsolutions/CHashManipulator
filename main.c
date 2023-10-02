@@ -6,11 +6,12 @@ CHashObjectModule  obj;
 CHashArrayModule  array;
 CHashValidatorModule  validator;
 
-
 CHashObject *create (){
-    return newCHashArray(
-        newCHashBool(true),
-        newCHashDouble(2.4)
+    return newCHashObject(
+            "name", hash.newString("aaa"),
+            "age", hash.newLong(26),
+            "height",hash.newDouble(20),
+            "maried",hash.newBool(true)
     );
 }
 
@@ -19,22 +20,24 @@ int main(){
     obj = hash.object;
     array  = hash.array;
     validator = hash.validator;
-
     CHashArray *profile = create();
-    validator.ensure_Object(profile);
-    if(hash.errors(profile)){
-        printf("%s\n",hash.get_error_menssage(profile));
-        hash.free(profile);
-        return 1;
+    char *name =obj.getString(profile,"name");
+    long age = obj.getLong(profile,"age");
+    double height = obj.getDouble(profile,"height");
+
+    bool maried = obj.getBool(profile,"maried");
+
+    if(hash.errors(profile) == false){
+        printf("name: %s\n",name);
+        printf("age %ld\n",age);
+        printf("heigh %lf\n",height);
+        printf("maried %s\n", maried ? "true":"false");
     }
 
-    CHashObject_set(profile,
-        "age", newCHashLong(18),
-        "maried", newCHashBool(false)
-    );
-
-    hash.print(profile);
-
+    else{
+        char *menssage = hash.get_error_menssage(profile);
+        printf("%s",menssage);
+    }
     hash.free(profile);
 
 }
