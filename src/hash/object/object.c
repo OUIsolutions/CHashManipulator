@@ -63,7 +63,13 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
     return NULL;
 }
 
-
+bool CHashObject_exist(CHashObject *self, const char *key){
+    CHash  *element = privateCHashObject_get_by_key_or_null(self,key);
+    if(element){
+        return  true;
+    }
+    return false;
+}
 
 
 

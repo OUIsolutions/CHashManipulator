@@ -16,6 +16,8 @@ void  CHashObject_remove(CHashObject *self, const char *key);
 
 CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *key);
 
+bool CHashObject_exist(CHashObject *self, const char *key);
+
 
 char * CHashObject_get_key_by_index(CHashObject *self,long index);
 

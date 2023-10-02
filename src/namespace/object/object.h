@@ -10,6 +10,7 @@ typedef struct CHashObjectModule{
     char   * (*get_key_of_element)(CHash *self);
 
     short  (*get_type)(CHashObject *self, const char *key);
+    bool (*exist)(CHashObject *self, const char *key);
 
     CHash * (*get)(CHashObject * self, const char *key);
 
