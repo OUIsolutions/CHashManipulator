@@ -8,7 +8,7 @@ CHashObjectModule newCHashObjectModule(){
 
     self.get_by_index  = CHashObject_get_by_index;
     self.get_key_by_index = CHashObject_get_key_by_index;
-
+    self.get_key_of_element = CHashObject_get_key_of_element;
 
     self.get_type = CHashObject_get_type;
     self.get = CHashObject_get;

@@ -40,7 +40,6 @@ typedef struct CHashNamespace{
 
     short (*get_type)(CHash *self);
 
-    char   * (*get_key_of_element)(CHash *self);
 
     void (*free)(CHash *self);
 

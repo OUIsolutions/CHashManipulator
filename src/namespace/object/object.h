@@ -9,6 +9,7 @@ typedef struct CHashObjectModule{
 
     char * (*get_key_by_index)(CHashObject *self,long index);
 
+    char   * (*get_key_of_element)(CHash *self);
 
     short  (*get_type)(CHashObject *self, const char *key);
 
