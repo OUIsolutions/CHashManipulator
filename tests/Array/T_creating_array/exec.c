@@ -1,10 +1,5 @@
-#include "src/one.h"
 
-CHashNamespace hash;
-CHashObjectModule  obj;
-CHashArrayModule  array;
-CHashValidatorModule validator;
-
+#include "../../../CHashManipulator.h"
 
 
 CHashNamespace hash;
