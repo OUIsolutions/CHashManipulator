@@ -81,7 +81,7 @@ void privateCHashArray_append(CHashArray *self, ...){
     va_end(args);
 
 }
-void CHashArray_delete(CHashArrayOrObject *self, long index){
+void CHashArray_remove(CHashArrayOrObject *self, long index){
 
     if(privateCHash_ensureArrayOrObject(self)){
         return;

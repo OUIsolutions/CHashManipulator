@@ -12,7 +12,7 @@ void  privateCHashObject_set(CHashObject *self , ...);
 #define  CHashObject_set(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 
 
-void  CHashObject_delete(CHashObject *self, const char *key);
+void  CHashObject_remove(CHashObject *self, const char *key);
 
 CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *key);
 

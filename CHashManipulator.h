@@ -855,7 +855,7 @@ void privateCHashArray_append(CHashArray *self, ...);
 
 void CHashArray_switch(CHashArray *self, long index ,long target_index);
 
-void  CHashArray_delete(CHashArray *self, long index);
+void  CHashArray_remove(CHashArrayOrObject *self, long index);
 
 CHash * CHashArray_get(CHashArray *self, long index);
 
@@ -890,7 +890,7 @@ void  privateCHashObject_set(CHashObject *self , ...);
 #define  CHashObject_set(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 
 
-void  CHashObject_delete(CHashObject *self, const char *key);
+void  CHashObject_remove(CHashObject *self, const char *key);
 
 CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *key);
 
@@ -1034,7 +1034,7 @@ typedef struct CHashObjectModule{
 
     CHashObject  * (*newObjectEmpty)();
     void  (*set_once)(CHashObject * self, const char *key, CHash *element);
-    void  (*delete)(CHashObject *self, const char *key);
+    void  (*remove)(CHashObject *self, const char *key);
 
     char * (*get_key_by_index)(CHashObject *self,long index);
 
@@ -1069,7 +1069,7 @@ typedef struct CHashArrayModule{
 
     CHashArray  *(*newArrayEmpty)();
     void (*append_once)(CHashArray *self, CHash *element);
-    void  (*delete)(CHashArrayOrObject *self, long index);
+    void  (*remove)(CHashArrayOrObject *self, long index);
     CHash * (*get)(CHashArrayOrObject *self, long position);
     short (*get_type)(CHashArrayOrObject *self, long index);
 
@@ -5613,7 +5613,7 @@ void privateCHashArray_append(CHashArray *self, ...){
     va_end(args);
 
 }
-void CHashArray_delete(CHashArrayOrObject *self, long index){
+void CHashArray_remove(CHashArrayOrObject *self, long index){
 
     if(privateCHash_ensureArrayOrObject(self)){
         return;
@@ -5823,7 +5823,7 @@ char   * CHashObject_get_key_of_element(CHash *self){
 
 
 
-void  CHashObject_delete(CHashObject *self, const char *key){
+void  CHashObject_remove(CHashObject *self, const char *key){
     if(CHash_ensure_Object(self)){
         return ;
     }
@@ -5849,7 +5849,7 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     if(CHash_ensure_Object(self)){
         return ;
     }
-    CHashObject_delete(self, key);
+    CHashObject_remove(self, key);
 
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,
@@ -6353,7 +6353,7 @@ CHashObjectModule newCHashObjectModule(){
     CHashObjectModule self = {0};
     self.newObjectEmpty = newCHashObjectEmpty;
     self.set_once = CHashObject_set_once;
-    self.delete= CHashObject_delete;
+    self.remove= CHashObject_remove;
 
     self.get_key_by_index = CHashObject_get_key_by_index;
     self.get_key_of_element = CHashObject_get_key_of_element;
@@ -6376,7 +6376,7 @@ CHashArrayModule newCHashArrayModule(){
     CHashArrayModule self = {0};
     self.newArrayEmpty = newCHashArrayEmpty;
     self.append_once = CHashArray_append_once;
-    self.delete = CHashArray_delete;
+    self.remove = CHashArray_remove;
     self.get = CHashArray_get;
 
     self.get_type = CHashArray_get_type;

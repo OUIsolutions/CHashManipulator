@@ -4,7 +4,7 @@ CHashObjectModule newCHashObjectModule(){
     CHashObjectModule self = {0};
     self.newObjectEmpty = newCHashObjectEmpty;
     self.set_once = CHashObject_set_once;
-    self.delete= CHashObject_delete;
+    self.remove= CHashObject_remove;
 
     self.get_key_by_index = CHashObject_get_key_by_index;
     self.get_key_of_element = CHashObject_get_key_of_element;

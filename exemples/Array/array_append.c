@@ -24,8 +24,13 @@ int main(){
     array  = hash.array;
     validator = hash.validator;
     CHashArray *element = create();
-    array.delete(element,-1);
-    
+
+    CHashArray_append(
+        element,
+       hash.newString("b"),
+       hash.newString("c")
+    );
+
     if(!hash.errors(element)){
         hash.print(element);
 

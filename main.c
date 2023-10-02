@@ -25,7 +25,7 @@ int main(){
     CHashArray *element = create();
 
     //will remove the last element
-    array.delete(element,0);
+    array.remove(element, 0);
 
 
     if(!hash.errors(element)){

@@ -89,7 +89,7 @@ char   * CHashObject_get_key_of_element(CHash *self){
 
 
 
-void  CHashObject_delete(CHashObject *self, const char *key){
+void  CHashObject_remove(CHashObject *self, const char *key){
     if(CHash_ensure_Object(self)){
         return ;
     }
@@ -115,7 +115,7 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     if(CHash_ensure_Object(self)){
         return ;
     }
-    CHashObject_delete(self, key);
+    CHashObject_remove(self, key);
 
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,

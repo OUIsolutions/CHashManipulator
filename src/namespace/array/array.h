@@ -4,7 +4,7 @@ typedef struct CHashArrayModule{
 
     CHashArray  *(*newArrayEmpty)();
     void (*append_once)(CHashArray *self, CHash *element);
-    void  (*delete)(CHashArrayOrObject *self, long index);
+    void  (*remove)(CHashArrayOrObject *self, long index);
     CHash * (*get)(CHashArrayOrObject *self, long position);
     short (*get_type)(CHashArrayOrObject *self, long index);
 

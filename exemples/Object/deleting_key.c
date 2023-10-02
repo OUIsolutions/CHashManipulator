@@ -24,7 +24,7 @@ int main(){
 
     CHashArray *profile = create();
 
-    obj.delete(profile,"maried");
+    obj.remove(profile,"maried");
 
     if(!hash.errors(profile)){
         hash.print(profile);
