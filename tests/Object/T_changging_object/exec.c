@@ -29,11 +29,11 @@ int main(){
         "maried", newCHashBool(false)
     );
 
-    if(hash.errors(profile)){
-        printf("%s\n",hash.get_error_menssage(profile));
+    if(!hash.errors(profile)){
+        hash.print(profile);
     }
     else{
-        hash.print(profile);
+        printf("%s\n",hash.get_error_menssage(profile));
 
     }
 

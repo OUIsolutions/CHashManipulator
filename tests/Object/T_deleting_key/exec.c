@@ -26,13 +26,14 @@ int main(){
     obj.delete(profile,"maried");
 
 
-    if(hash.errors(profile)){
-        printf("%s\n",hash.get_error_menssage(profile));
+    if(!hash.errors(profile)){
+        hash.print(profile);
     }
     else{
-        hash.print(profile);
+        printf("%s\n",hash.get_error_menssage(profile));
 
     }
+
 
     hash.free(profile);
 
