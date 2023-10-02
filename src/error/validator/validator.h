@@ -11,3 +11,5 @@ int CHash_ensure_String(CHash *element);
 int CHash_ensure_Object(CHash *element);
 
 int CHash_ensure_Array(CHash *element);
+
+int privateCHash_ensureArrayOrObject(CHash *element);

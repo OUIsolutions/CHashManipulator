@@ -83,7 +83,7 @@ void privateCHashArray_append(CHashArray *self, ...){
 }
 void CHashArray_delete(CHashArrayOrObject *self, long index){
 
-    if(CHash_ensure_Array(self)){
+    if(privateCHash_ensureArrayOrObject(self)){
         return ;
     }
     CHash  *current = CHashArray_get(self,index);
@@ -114,7 +114,7 @@ long privateCHashArray_convert_index(CHashArrayOrObject *self, long index){
 }
 CHash * CHashArray_get(CHashArrayOrObject *self, long index){
 
-    if(CHash_ensure_Array(self)){
+    if(privateCHash_ensureArrayOrObject(self)){
         return NULL;
     }
     long formated_index = privateCHashArray_convert_index(self,index);
@@ -126,7 +126,7 @@ CHash * CHashArray_get(CHashArrayOrObject *self, long index){
 }
 
 void CHashArray_switch(CHashArrayOrObject *self, long index ,long target_index){
-    if(CHash_ensure_Array(self)){
+    if(privateCHash_ensureArrayOrObject(self)){
         return ;
     }
     long formated_index = privateCHashArray_convert_index(self,index);
