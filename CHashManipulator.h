@@ -803,6 +803,7 @@ CHash * newCHashNULL();
 
 
 
+
 double  CHash_toDouble(CHash *element);
 
 CHash * newCHashDouble(double value);
@@ -836,6 +837,7 @@ CHash * newCHashString(const char *value);
 
 CHashArray  *newCHashArrayEmpty();
 
+long privateCHashArray_convert_index(CHashArray *self, long index);
 
 CHashArray * privatenewCHashArray(void *sentinel, ...);
 #define  newCHashArray(...)privatenewCHashArray(NULL,__VA_ARGS__,NULL)
@@ -850,6 +852,7 @@ void privateCHashArray_append(CHashArray *self, ...);
 #define  CHashArray_append(self,...)privateCHashArray_append(self,__VA_ARGS__,NULL)
 
 
+void CHashArray_switch(CHashArray *self, long index ,long target_index);
 
 void  CHashArray_delete(CHashArray *self, long index);
 
@@ -972,6 +975,7 @@ CHash * CHash_load_from_json_file(const char *filename);
 #define  CHASH_NOT_HAVE_KEY 402
 #define  CHASH_NOT_ITERABLE 403
 #define CHASH_NOT_VALID_INDEX 404
+#define  CHASH_ELEMENT_IS_NULL 405
 
 
 
@@ -5617,11 +5621,7 @@ void CHashArray_delete(CHashArray *self, long index){
 
     }
 }
-CHash * CHashArray_get(CHashArray *self, long index){
-
-    if(CHash_ensure_Array(self)){
-        return NULL;
-    }
+long privateCHashArray_convert_index(CHashArray *self, long index){
     long formated_index = index;
     if(index < 0){
         formated_index = (long)self->private_size +index;
@@ -5635,8 +5635,19 @@ CHash * CHashArray_get(CHashArray *self, long index){
                         "index", newCHashLong(index)
                 )
         );
+        return -1;
+    }
+}
+CHash * CHashArray_get(CHashArray *self, long index){
+
+    if(CHash_ensure_Array(self)){
         return NULL;
     }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
+        return NULL;
+    }
+
     return self->private_sub_elements[formated_index];
 }
 
@@ -5748,22 +5759,10 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
     if(CHash_ensure_Object(self)){
         return NULL;
     }
-    long formated_index = index;
-    if(index < 0){
-        formated_index = (long)self->private_size +index;
-    }
-    if(formated_index < 0|| formated_index>= self->private_size){
-        CHash_raise_error(
-                self,
-                CHASH_NOT_VALID_INDEX,
-                " index: #index# its not valid, at #path#",
-                newCHashObject(
-                        "index", newCHashLong(index)
-                        )
-        );
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
         return NULL;
     }
-
     return self->private_sub_elements[formated_index];
 }
 
@@ -6221,8 +6220,9 @@ void privateCHashError_free(privateCHashError *self){
 
 char * CHash_get_error_menssage(CHash *self){
     if(!self){
-        return NULL;
+        return "element its NULL , (impossíble to get error menssage)\n";
     }
+
     if(!Chash_errors(self)){
         return NULL;
     }
@@ -6233,6 +6233,11 @@ char * CHash_get_error_menssage(CHash *self){
 }
 
 int CHash_get_error_code(CHash *self){
+
+    if(!self){
+        return CHASH_ELEMENT_IS_NULL;
+    }
+
     if(!Chash_errors(self)){
         return 0;
     }

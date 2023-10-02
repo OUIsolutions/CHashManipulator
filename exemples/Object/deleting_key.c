@@ -23,8 +23,8 @@ int main(){
     array  = hash.array;
 
     CHashArray *profile = create();
-    obj.delete(profile,"maried");
 
+    obj.delete(profile,"maried");
 
     if(!hash.errors(profile)){
         hash.print(profile);

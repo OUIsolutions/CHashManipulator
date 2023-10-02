@@ -7,7 +7,7 @@
 CHashNamespace hash;
 CHashObjectModule  obj;
 CHashArrayModule  array;
-
+CHashValidatorModule validator;
 
 
 CHashObject *create (){
@@ -23,8 +23,14 @@ int main(){
     hash = newCHashNamespace();
     obj = hash.object;
     array  = hash.array;
-
+    validator = hash.validator;
     CHashArray *profile = create();
+    validator.ensure_Object(profile);
+    if(hash.errors(profile)){
+        printf("%s\n",hash.get_error_menssage(profile));
+        hash.free(profile);
+        return 1;
+    }
 
     long size = hash.get_size(profile);
     for(int i = 0; i < size; i++){

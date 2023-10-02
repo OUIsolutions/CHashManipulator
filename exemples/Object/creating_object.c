@@ -25,10 +25,9 @@ int main(){
     char *name =obj.getString(profile,"name");
     long age = obj.getLong(profile,"age");
     double height = obj.getDouble(profile,"height");
-
     bool maried = obj.getBool(profile,"maried");
 
-    if(hash.errors(profile) == false){
+    if(!hash.errors(profile)){
         printf("name: %s\n",name);
         printf("age %ld\n",age);
         printf("heigh %lf\n",height);
