@@ -1,4 +1,5 @@
-#include "src/one.h"
+
+#include "CHashManipulator.h"
 
 
 CHashNamespace hash;
@@ -23,6 +24,7 @@ int main(){
 
     CHashArray *profile = create();
     obj.delete(profile,"maried");
+
 
     if(hash.errors(profile)){
         printf("%s\n",hash.get_error_menssage(profile));

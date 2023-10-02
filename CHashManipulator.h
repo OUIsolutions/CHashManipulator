@@ -5714,7 +5714,7 @@ void  CHashObject_delete(CHashObject *self, const char *key){
             self->private_size-=1;
         }
 
-        if(found){
+        if(found && i < self->private_size){
             self->private_sub_elements[i] = self->private_sub_elements[i + 1];
         }
 
