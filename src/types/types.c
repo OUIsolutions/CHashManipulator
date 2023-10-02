@@ -3,7 +3,7 @@
 
 short CHash_get_type(CHash *self){
     if(Chash_errors(self)){
-        return -1;
+        return CHASH_NOT_EXIST;
     }
     return self->private_type;
 }

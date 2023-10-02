@@ -173,9 +173,6 @@ void  privateCHashObject_set(CHashObject *self , ...){
 }
 short  CHashObject_get_type(CHashObject *self, const char *key){
     CHash  *element = privateCHashObject_get_by_key_or_null(self,key);
-    if(!element){
-        return  -1;
-    }
     return CHash_get_type(element);
 }
 
@@ -185,7 +182,6 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
     if(CHash_ensure_Object(self)){
         return NULL;
     }
-
 
     CHash *element = privateCHashObject_get_by_key_or_null(self, key);
 

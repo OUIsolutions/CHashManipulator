@@ -1,4 +1,5 @@
 
+#define CHASH_NOT_EXIST -1
 
 enum{
     CHASH_NULL,

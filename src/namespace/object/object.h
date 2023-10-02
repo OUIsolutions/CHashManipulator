@@ -5,8 +5,6 @@ typedef struct CHashObjectModule{
     void  (*set_once)(CHashObject * self, const char *key, CHash *element);
     void  (*delete)(CHashObject *self, const char *key);
 
-    CHash * (*get_by_index)(CHashObject * self, long index);
-
     char * (*get_key_by_index)(CHashObject *self,long index);
 
     char   * (*get_key_of_element)(CHash *self);
