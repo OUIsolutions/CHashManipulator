@@ -135,6 +135,13 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     self->private_size+=1;
 }
 
+void  CHashObject_set_default(CHashObject * self, const char *key, CHash *element){
+    if(CHashObject_exist(self,key)){
+        CHash_free(element);
+    }
+    CHashObject_set_once(self,key,element);
+}
+
 
 
 

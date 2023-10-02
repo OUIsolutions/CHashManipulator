@@ -3,6 +3,9 @@ typedef struct CHashObjectModule{
 
     CHashObject  * (*newObjectEmpty)();
     void  (*set_once)(CHashObject * self, const char *key, CHash *element);
+    void  (*set_default)(CHashObject * self, const char *key, CHash *element);
+
+
     void  (*remove)(CHashObject *self, const char *key);
 
     char * (*get_key_by_index)(CHashObject *self,long index);

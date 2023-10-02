@@ -58,11 +58,10 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
     if(!args){
         formated_args = newCHashObjectEmpty();
     }
-    CHashObject_set(formated_args,
-                    "path", CHash_get_path(self),
-                    "value", CHash_copy(self),
-                    "type", newCHashString(private_Chash_convert_type(self->private_type))
-    );
+    CHashObject_set_default(formated_args,  "path", CHash_get_path(self));
+    CHashObject_set_default(formated_args,"value", CHash_copy(self));
+    CHashObject_set_default(formated_args,"type",newCHashString(private_Chash_convert_type(self->private_type)));
+
 
     privateCHashError *created = privatenewCHashError(
             formated_args,

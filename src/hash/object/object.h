@@ -11,12 +11,14 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element);
 void  privateCHashObject_set(CHashObject *self , ...);
 #define  CHashObject_set(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 
+void  CHashObject_set_default(CHashObject * self, const char *key, CHash *element);
 
 void  CHashObject_remove(CHashObject *self, const char *key);
 
 CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *key);
 
 bool CHashObject_exist(CHashObject *self, const char *key);
+
 
 
 char * CHashObject_get_key_by_index(CHashObject *self,long index);
