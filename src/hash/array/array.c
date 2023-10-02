@@ -124,6 +124,7 @@ CHash * CHashArray_get(CHashArray *self, long index){
 
     return self->private_sub_elements[formated_index];
 }
+
 void CHashArray_switch(CHashArray *self, long index ,long target_index){
     if(CHash_ensure_Array(self)){
         return ;
