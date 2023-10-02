@@ -84,13 +84,20 @@ void privateCHashArray_append(CHashArray *self, ...){
 void CHashArray_delete(CHashArrayOrObject *self, long index){
 
     if(privateCHash_ensureArrayOrObject(self)){
+        return;
+    }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
         return ;
     }
-    CHash  *current = CHashArray_get(self,index);
+
+
+    CHash  *current = self->private_sub_elements[formated_index];
+
     CHash_free(current);
     self->private_size-=1;
 
-    for(int i = 0; i <  self->private_size;i++){
+    for(long i = formated_index; i <  self->private_size;i++){
         self->private_sub_elements[i] = self->private_sub_elements[i + 1];
 
     }
