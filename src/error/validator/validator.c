@@ -53,5 +53,6 @@ int privateCHash_ensureArrayOrObject(CHash *element){
                           NULL
         );
     }
+    return 0;
 
 }
