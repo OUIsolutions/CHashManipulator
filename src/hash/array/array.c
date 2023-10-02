@@ -124,6 +124,19 @@ CHash * CHashArray_get(CHashArrayOrObject *self, long index){
     return self->private_sub_elements[formated_index];
 }
 
+short CHashArray_get_type(CHashArray *self, long index){
+    if(privateCHash_ensureArrayOrObject(self)){
+        return CHASH_NOT_EXIST;
+    }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
+        return CHASH_NOT_EXIST;
+    }
+    CHash  *element = self->private_sub_elements[formated_index];
+    return CHash_get_type(element);
+
+}
+
 void CHashArray_switch(CHashArrayOrObject *self, long index ,long target_index){
     if(privateCHash_ensureArrayOrObject(self)){
         return ;

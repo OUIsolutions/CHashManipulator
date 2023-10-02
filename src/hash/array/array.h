@@ -23,6 +23,9 @@ void  CHashArray_delete(CHashArray *self, long index);
 
 CHash * CHashArray_get(CHashArray *self, long index);
 
+short CHashArray_get_type(CHashArray *self, long index);
+
+
 CHashArray * CHashArray_getArray(CHashObject * self, long index);
 
 CHashObject * CHashArray_getObject(CHashObject * self, long index);

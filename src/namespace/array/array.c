@@ -6,6 +6,8 @@ CHashArrayModule newCHashArrayModule(){
     self.append_once = CHashArray_append_once;
     self.delete = CHashArray_delete;
     self.get = CHashArray_get;
+
+    self.get_type = CHashArray_get_type;
     self.getArray = CHashArray_getArray;
     self.getObject = CHashArray_getObject;
     self.getString = CHashArray_getString;

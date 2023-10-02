@@ -1,4 +1,7 @@
-#include "src/one.h"
+
+#include "../../../CHashManipulator.h"
+
+
 
 
 CHashNamespace hash;
@@ -11,8 +14,7 @@ CHashObject *create (){
     return newCHashArray(
             hash.newString("aaa"),
             hash.newLong(26),
-            hash.newDouble(20),
-            hash.newBool(true)
+            hash.newDouble(20)
     );
 }
 
@@ -28,26 +30,27 @@ int main(){
 
     for(int i = 0; i < size; i++){
 
-        int type = array.get_type(element, i);
+        char *key = obj.get_key_by_index(profile,i);
+        printf("%s: ",key);
+        int type = obj.get_type(profile, key);
 
         if(type == CHASH_STRING){
-            printf("%s\n",array.getString(element, i));
+            printf("%s",obj.getString(profile,key));
         }
 
         if(type == CHASH_DOUBLE){
-            printf("%lf\n",array.getDouble(element,i));
+            printf("%lf",obj.getDouble(profile,key));
         }
         if(type == CHASH_LONG){
-            printf("%ld\n",array.getLong(element,i));
+            printf("%ld",obj.getLong(profile,key));
         }
         if(type == CHASH_BOOL){
-            printf("%s\n",array.getBool(element,i)  ? "true":"false");
+            printf("%s",obj.getBool(profile,key)  ? "true":"false");
         }
 
         printf("\n");
 
     }
-    
-    hash.free(element);
+    hash.free(profile);
 
 }
