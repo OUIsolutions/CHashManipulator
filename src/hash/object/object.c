@@ -125,22 +125,6 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
 }
 
 
-CHashStringArray  * CHashObject_get_keys(CHashObject *self){
-    if(CHash_ensure_Object(self)){
-        return NULL;
-    }
-    if(self->private_keys){
-        free(self->private_keys);
-    }
-
-    CHashArray * keys = privatenewCHashArray(NULL);
-    for(int i =0;i < self->private_size; i ++){
-        CHash * current = self->private_sub_elements[i];
-        privateCHashArray_append(keys, newCHashString(current->private_key));
-    }
-    self->private_keys = keys;
-    return keys;
-}
 
 
 

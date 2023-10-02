@@ -27,6 +27,7 @@ int main(){
         CHash *element = hash.object.get_by_index(profile,i);
         char *key =  hash.object.get_key_of_element(element);
         printf("%s:",key);
+
         int type = hash.get_type(element);
         if(type == CHASH_STRING){
             printf("%s",hash.toString(element));
