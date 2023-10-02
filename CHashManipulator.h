@@ -1059,6 +1059,27 @@ CHashArrayModule newCHashArrayModule();
 
 
 
+typedef struct CHashValidatorModule {
+
+    int (*ensure_Double)(CHash *element);
+
+    int (*ensure_Long)(CHash *element);
+
+    int (*ensure_Bool)(CHash *element);
+
+    int (*ensure_String)(CHash *element);
+
+    int (*ensure_Object)(CHash *element);
+
+    int (*ensure_Array)(CHash *element);
+
+}CHashValidatorModule;
+
+CHashValidatorModule newCHashValidatorModule();
+
+
+
+
 typedef struct CHashNamespace{
 
     CHash * (*newBool)(bool value);
@@ -1104,7 +1125,7 @@ typedef struct CHashNamespace{
 
     CHashObjectModule  object;
     CHashArrayModule array;
-
+    CHashValidatorModule validator;
 }CHashNamespace;
 
 CHashNamespace newCHashNamespace();
@@ -6239,6 +6260,20 @@ CHashArrayModule newCHashArrayModule(){
 
 
 
+CHashValidatorModule newCHashValidatorModule(){
+    CHashValidatorModule self = {0};
+    self.ensure_Array = CHash_ensure_Array;
+    self.ensure_Object = CHash_ensure_Object;
+    self.ensure_Bool = CHash_ensure_Bool;
+    self.ensure_Long = CHash_ensure_Long;
+    self.ensure_Double = CHash_ensure_Double;
+    self.ensure_String = CHash_ensure_String;
+    return self;
+}
+
+
+
+
 CHashNamespace newCHashNamespace(){
     CHashNamespace self = {0};
 
@@ -6277,6 +6312,7 @@ CHashNamespace newCHashNamespace(){
 
     self.object = newCHashObjectModule();
     self.array = newCHashArrayModule();
+    self.validator = newCHashValidatorModule();
     return self;
 }
 
