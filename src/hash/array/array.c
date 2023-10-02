@@ -124,7 +124,24 @@ CHash * CHashArray_get(CHashArray *self, long index){
 
     return self->private_sub_elements[formated_index];
 }
+void CHashArray_switch(CHashArray *self, long index ,long target_index){
+    if(CHash_ensure_Array(self)){
+        return ;
+    }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
+        return;
+    }
+    long formated_target_index = privateCHashArray_convert_index(self,target_index);
+    if(formated_target_index == -1){
+        return;
+    }
 
+    CHash *changed = self->private_sub_elements[formated_index];
+    self->private_sub_elements[formated_index] =  self->private_sub_elements[target_index];
+    self->private_sub_elements[target_index] = changed;
+
+}
 CHashArray * CHashArray_getArray(CHashObject * self, long index){
     CHash *element = CHashArray_get(self,index);
     if(CHash_ensure_Array(element)){

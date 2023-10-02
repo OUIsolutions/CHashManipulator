@@ -7,12 +7,10 @@ CHashArrayModule  array;
 CHashValidatorModule  validator;
 
 CHashObject *create (){
-    return newCHashObject(
-            "name", hash.newString("aaa"),
-            "age", hash.newLong(26),
-            "height",hash.newDouble(20),
-            "maried",hash.newBool(true)
-    );
+    return newCHashArray(
+            newCHashLong(10),
+            newCHashString("aaa")
+            );
 }
 
 int main(){
@@ -21,23 +19,9 @@ int main(){
     array  = hash.array;
     validator = hash.validator;
     CHashArray *profile = create();
-    char *name =obj.getString(profile,"name");
-    long age = obj.getLong(profile,"age");
-    double height = obj.getDouble(profile,"height");
+    CHashArray_switch(profile,0,1);
 
-    bool maried = obj.getBool(profile,"maried");
-
-    if(hash.errors(profile) == false){
-        printf("name: %s\n",name);
-        printf("age %ld\n",age);
-        printf("heigh %lf\n",height);
-        printf("maried %s\n", maried ? "true":"false");
-    }
-
-    else{
-        char *menssage = hash.get_error_menssage(profile);
-        printf("%s",menssage);
-    }
+    hash.print(profile);
     hash.free(profile);
 
 }
