@@ -1,6 +1,7 @@
 #include "src/one.h"
 
 
+
 CHashNamespace hash;
 CHashObjectModule  obj;
 CHashArrayModule  array;
@@ -23,32 +24,17 @@ int main(){
     validator = hash.validator;
     CHashArray *element = create();
 
-    long size = hash.get_size(element);
+    //will remove the last element
+    array.delete(element,0);
 
 
-    for(int i = 0; i < size; i++){
-
-        int type = array.get_type(element, i);
-
-        if(type == CHASH_STRING){
-            printf("%s\n",array.getString(element, i));
-        }
-
-        if(type == CHASH_DOUBLE){
-            printf("%lf\n",array.getDouble(element,i));
-        }
-        if(type == CHASH_LONG){
-            printf("%ld\n",array.getLong(element,i));
-        }
-        if(type == CHASH_BOOL){
-            printf("%s\n",array.getBool(element,i)  ? "true":"false");
-        }
-
+    if(!hash.errors(element)){
+        hash.print(element);
 
     }
-
-    if(hash.errors(element)){
+    else{
         printf("%s",hash.get_error_menssage(element));
+
     }
 
     hash.free(element);

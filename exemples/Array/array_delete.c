@@ -24,8 +24,11 @@ int main(){
     array  = hash.array;
     validator = hash.validator;
     CHashArray *element = create();
+
+    //will remove the last element
     array.delete(element,-1);
-    
+
+
     if(!hash.errors(element)){
         hash.print(element);
 

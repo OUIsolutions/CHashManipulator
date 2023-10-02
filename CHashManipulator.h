@@ -1069,16 +1069,16 @@ typedef struct CHashArrayModule{
 
     CHashArray  *(*newArrayEmpty)();
     void (*append_once)(CHashArray *self, CHash *element);
-    void  (*delete)(CHashArray *self, long index);
-    CHash * (*get)(CHashArray *self, long position);
-    short (*get_type)(CHashArray *self, long index);
+    void  (*delete)(CHashArrayOrObject *self, long index);
+    CHash * (*get)(CHashArrayOrObject *self, long position);
+    short (*get_type)(CHashArrayOrObject *self, long index);
 
-    CHashArray * (*getArray)(CHashObject * self, long index);
-    CHashObject * (*getObject)(CHashObject * self, long index);
-    long (*getLong)(CHashObject * self, long index);
-    double (*getDouble)(CHashObject * self, long index);
-    bool (*getBool)(CHashObject * self, long index);
-    char  * (*getString)(CHashObject * self, long index);
+    CHashArray * (*getArray)(CHashArrayOrObject * self, long index);
+    CHashObject * (*getObject)(CHashArrayOrObject * self, long index);
+    long (*getLong)(CHashArrayOrObject * self, long index);
+    double (*getDouble)(CHashArrayOrObject * self, long index);
+    bool (*getBool)(CHashArrayOrObject * self, long index);
+    char  * (*getString)(CHashArrayOrObject * self, long index);
 
 }CHashArrayModule;
 
@@ -5616,13 +5616,20 @@ void privateCHashArray_append(CHashArray *self, ...){
 void CHashArray_delete(CHashArrayOrObject *self, long index){
 
     if(privateCHash_ensureArrayOrObject(self)){
+        return;
+    }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
         return ;
     }
-    CHash  *current = CHashArray_get(self,index);
+
+
+    CHash  *current = self->private_sub_elements[formated_index];
+
     CHash_free(current);
     self->private_size-=1;
 
-    for(int i = 0; i <  self->private_size;i++){
+    for(long i = formated_index; i <  self->private_size;i++){
         self->private_sub_elements[i] = self->private_sub_elements[i + 1];
 
     }
