@@ -1,4 +1,6 @@
-#include "src/one.h"
+
+#include "CHashManipulator.h"
+
 
 
 CHashNamespace hash;

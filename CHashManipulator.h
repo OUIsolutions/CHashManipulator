@@ -859,6 +859,9 @@ void  CHashArray_delete(CHashArray *self, long index);
 
 CHash * CHashArray_get(CHashArray *self, long index);
 
+short CHashArray_get_type(CHashArray *self, long index);
+
+
 CHashArray * CHashArray_getArray(CHashObject * self, long index);
 
 CHashObject * CHashArray_getObject(CHashObject * self, long index);
@@ -1068,6 +1071,8 @@ typedef struct CHashArrayModule{
     void (*append_once)(CHashArray *self, CHash *element);
     void  (*delete)(CHashArray *self, long index);
     CHash * (*get)(CHashArray *self, long position);
+    short (*get_type)(CHashArray *self, long index);
+
     CHashArray * (*getArray)(CHashObject * self, long index);
     CHashObject * (*getObject)(CHashObject * self, long index);
     long (*getLong)(CHashObject * self, long index);
@@ -5651,6 +5656,19 @@ CHash * CHashArray_get(CHashArrayOrObject *self, long index){
     return self->private_sub_elements[formated_index];
 }
 
+short CHashArray_get_type(CHashArray *self, long index){
+    if(privateCHash_ensureArrayOrObject(self)){
+        return CHASH_NOT_EXIST;
+    }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
+        return CHASH_NOT_EXIST;
+    }
+    CHash  *element = self->private_sub_elements[formated_index];
+    return CHash_get_type(element);
+
+}
+
 void CHashArray_switch(CHashArrayOrObject *self, long index ,long target_index){
     if(privateCHash_ensureArrayOrObject(self)){
         return ;
@@ -6353,6 +6371,8 @@ CHashArrayModule newCHashArrayModule(){
     self.append_once = CHashArray_append_once;
     self.delete = CHashArray_delete;
     self.get = CHashArray_get;
+
+    self.get_type = CHashArray_get_type;
     self.getArray = CHashArray_getArray;
     self.getObject = CHashArray_getObject;
     self.getString = CHashArray_getString;

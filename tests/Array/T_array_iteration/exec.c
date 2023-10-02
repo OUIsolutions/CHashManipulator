@@ -3,7 +3,6 @@
 
 
 
-
 CHashNamespace hash;
 CHashObjectModule  obj;
 CHashArrayModule  array;
@@ -14,7 +13,8 @@ CHashObject *create (){
     return newCHashArray(
             hash.newString("aaa"),
             hash.newLong(26),
-            hash.newDouble(20)
+            hash.newDouble(20),
+            hash.newBool(true)
     );
 }
 
@@ -30,27 +30,29 @@ int main(){
 
     for(int i = 0; i < size; i++){
 
-        char *key = obj.get_key_by_index(profile,i);
-        printf("%s: ",key);
-        int type = obj.get_type(profile, key);
+        int type = array.get_type(element, i);
 
         if(type == CHASH_STRING){
-            printf("%s",obj.getString(profile,key));
+            printf("%s\n",array.getString(element, i));
         }
 
         if(type == CHASH_DOUBLE){
-            printf("%lf",obj.getDouble(profile,key));
+            printf("%lf\n",array.getDouble(element,i));
         }
         if(type == CHASH_LONG){
-            printf("%ld",obj.getLong(profile,key));
+            printf("%ld\n",array.getLong(element,i));
         }
         if(type == CHASH_BOOL){
-            printf("%s",obj.getBool(profile,key)  ? "true":"false");
+            printf("%s\n",array.getBool(element,i)  ? "true":"false");
         }
 
-        printf("\n");
 
     }
-    hash.free(profile);
+
+    if(hash.errors(element)){
+        printf("%s",hash.get_error_menssage(element));
+    }
+
+    hash.free(element);
 
 }
