@@ -140,7 +140,9 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
 
 void  CHashObject_set_default(CHashObject * self, const char *key, CHash *element){
     if(CHashObject_exist(self,key)){
-        CHash_free(element);
+        if(element->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
+            CHash_free(element);
+        }
         return;
     }
     CHashObject_set_once(self,key,element);

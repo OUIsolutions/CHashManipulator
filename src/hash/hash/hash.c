@@ -140,6 +140,7 @@ CHash * privateCHash_copy_if_its_an_reference(CHash *self){
     if(!self){
         return NULL;
     }
+
     if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
         return self;
     }

@@ -50,14 +50,17 @@ void CHashArray_append_once(CHashArray *self, CHash *element){
     if(CHash_ensure_Array(self)){
         return ;
     }
+
+    CHash *new_element = privateCHash_copy_if_its_an_reference(element);
+
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,
             (self->private_size + 1) * sizeof(CHash**)
     );
-    element->private_reference_type = PRIVATE_CHASH_ARRAY_ITEM;
-    element->private_father = self;
-    element->private_index = self->private_size;
-    self->private_sub_elements[self->private_size]= element;
+    new_element->private_reference_type = PRIVATE_CHASH_ARRAY_ITEM;
+    new_element->private_father = self;
+    new_element->private_index = self->private_size;
+    self->private_sub_elements[self->private_size]= new_element;
     self->private_size+=1;
 
 
@@ -90,10 +93,13 @@ void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element){
         return ;
     }
 
-    CHash  *current = self->private_sub_elements[formated_index];
+    CHash *new_element = privateCHash_copy_if_its_an_reference(element);
 
+    CHash  *current = self->private_sub_elements[formated_index];
     CHash_free(current);
-    self->private_sub_elements[formated_index] = element;
+
+
+    self->private_sub_elements[formated_index] = new_element;
 
 }
 
@@ -176,8 +182,12 @@ void CHashArray_switch(CHashArrayOrObject *self, long index ,long target_index){
     }
 
     CHash *changed = self->private_sub_elements[formated_index];
+
     self->private_sub_elements[formated_index] =  self->private_sub_elements[target_index];
+    self->private_sub_elements[formated_index]->private_index = formated_index;
+
     self->private_sub_elements[target_index] = changed;
+    changed->private_index = target_index;
 
 }
 CHashArray * CHashArray_getArray(CHashArrayOrObject * self, long index){

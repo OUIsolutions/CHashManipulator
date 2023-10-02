@@ -27,9 +27,9 @@ int main(){
     bool maried = obj.getBool(profile,"maried");
 
 
-    CHashObject *second = newCHashObject(
-            "name",  obj.get(profile,"name"),
-            "age",obj.get(profile,"age")
+    CHashObject *second = newCHashArray(
+            obj.get(profile,"name"),
+            obj.get(profile,"age")
             );
 
     hash.print(second);
