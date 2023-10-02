@@ -97,6 +97,8 @@ void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element){
     self->private_sub_elements[formated_index] = element;
 
 }
+
+
 void CHashArray_remove(CHashArrayOrObject *self, long index){
 
     if(privateCHash_ensureArrayOrObject(self)){

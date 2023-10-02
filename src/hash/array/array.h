@@ -21,6 +21,7 @@ void CHashArray_switch(CHashArray *self, long index ,long target_index);
 
 void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element);
 
+
 void  CHashArray_remove(CHashArrayOrObject *self, long index);
 
 CHash * CHashArray_get(CHashArray *self, long index);
