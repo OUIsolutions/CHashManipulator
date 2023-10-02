@@ -95,11 +95,7 @@ void CHashArray_delete(CHashArray *self, long index){
 
     }
 }
-CHash * CHashArray_get(CHashArray *self, long index){
-
-    if(CHash_ensure_Array(self)){
-        return NULL;
-    }
+long privateCHashArray_convert_index(CHashArray *self, long index){
     long formated_index = index;
     if(index < 0){
         formated_index = (long)self->private_size +index;
@@ -113,8 +109,19 @@ CHash * CHashArray_get(CHashArray *self, long index){
                         "index", newCHashLong(index)
                 )
         );
+        return -1;
+    }
+}
+CHash * CHashArray_get(CHashArray *self, long index){
+
+    if(CHash_ensure_Array(self)){
         return NULL;
     }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
+        return NULL;
+    }
+
     return self->private_sub_elements[formated_index];
 }
 

@@ -2,6 +2,7 @@
 
 CHashArray  *newCHashArrayEmpty();
 
+long privateCHashArray_convert_index(CHashArray *self, long index);
 
 CHashArray * privatenewCHashArray(void *sentinel, ...);
 #define  newCHashArray(...)privatenewCHashArray(NULL,__VA_ARGS__,NULL)
@@ -16,6 +17,7 @@ void privateCHashArray_append(CHashArray *self, ...);
 #define  CHashArray_append(self,...)privateCHashArray_append(self,__VA_ARGS__,NULL)
 
 
+void CHashArray_switch(CHashArray *self, long index ,long target_index);
 
 void  CHashArray_delete(CHashArray *self, long index);
 
