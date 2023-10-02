@@ -5,8 +5,9 @@ CHashNamespace hash;
 CHashObjectModule  obj;
 CHashArrayModule  array;
 
-CHashObject *create (){
 
+
+CHashObject *create (){
     return newCHashObject(
             "name", hash.newString("aaa"),
             "age", hash.newLong(26),
@@ -20,24 +21,32 @@ int main(){
     obj = hash.object;
     array  = hash.array;
 
-    CHashArray *t = create();
+    CHashArray *profile = create();
 
-    char *name =obj.getString(t,"name");
-    long age = obj.getLong(t,"age");
-    double height = obj.getDouble(t,"height");
+    long size = hash.get_size(profile);
+    for(int i = 0; i < size; i++){
 
-    bool maried = obj.getBool(t,"maried");
+        char *key = obj.get_key_by_index(profile,i);
+        printf("%s: ",key);
+        int type = obj.get_type_of_key(profile, key);
 
-    if(hash.errors(t) == false){
-        printf("name: %s\n",name);
-        printf("age %ld\n",age);
-        printf("heigh %lf\n",height);
-        printf("maried %s\n", maried ? "true":"false");
+        if(type == CHASH_STRING){
+            printf("%s",obj.getString(profile,key));
+        }
+
+        if(type == CHASH_DOUBLE){
+            printf("%lf",obj.getDouble(profile,key));
+        }
+        if(type == CHASH_LONG){
+            printf("%ld",obj.getLong(profile,key));
+        }
+        if(type == CHASH_BOOL){
+            printf("%s",obj.getBool(profile,key)  ? "true":"false");
+        }
+
+        printf("\n");
+
     }
-
-    else{
-        char *menssage = hash.get_error_menssage(t);
-        printf("%s",menssage);
-    }
+    hash.free(profile);
 
 }

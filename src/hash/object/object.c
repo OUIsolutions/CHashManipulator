@@ -65,12 +65,22 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
 
 
 CHash * CHashObject_get_by_index(CHashObject * self, long index){
-    if(Chash_errors(self)){
+    if(CHash_ensure_Object(self)){
         return NULL;
     }
 
     return self->private_sub_elements[index];
 }
+
+char * CHashObject_get_key_by_index(CHashObject *self,long index){
+    CHash  *element = CHashObject_get_by_index(self,index);
+    if(!element){
+        return NULL;
+    }
+    return CHashObject_get_key_of_element(element);
+}
+
+
 
 char   * CHashObject_get_key_of_element(CHash *self){
     if(Chash_errors(self)){
