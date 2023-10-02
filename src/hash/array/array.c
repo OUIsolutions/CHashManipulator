@@ -81,7 +81,7 @@ void privateCHashArray_append(CHashArray *self, ...){
     va_end(args);
 
 }
-void CHashArray_delete(CHashArray *self, long index){
+void CHashArray_delete(CHashArrayOrObject *self, long index){
 
     if(CHash_ensure_Array(self)){
         return ;
@@ -95,7 +95,7 @@ void CHashArray_delete(CHashArray *self, long index){
 
     }
 }
-long privateCHashArray_convert_index(CHashArray *self, long index){
+long privateCHashArray_convert_index(CHashArrayOrObject *self, long index){
     long formated_index = index;
     if(index < 0){
         formated_index = (long)self->private_size +index;
@@ -112,7 +112,7 @@ long privateCHashArray_convert_index(CHashArray *self, long index){
         return -1;
     }
 }
-CHash * CHashArray_get(CHashArray *self, long index){
+CHash * CHashArray_get(CHashArrayOrObject *self, long index){
 
     if(CHash_ensure_Array(self)){
         return NULL;
@@ -125,7 +125,7 @@ CHash * CHashArray_get(CHashArray *self, long index){
     return self->private_sub_elements[formated_index];
 }
 
-void CHashArray_switch(CHashArray *self, long index ,long target_index){
+void CHashArray_switch(CHashArrayOrObject *self, long index ,long target_index){
     if(CHash_ensure_Array(self)){
         return ;
     }
@@ -143,7 +143,7 @@ void CHashArray_switch(CHashArray *self, long index ,long target_index){
     self->private_sub_elements[target_index] = changed;
 
 }
-CHashArray * CHashArray_getArray(CHashObject * self, long index){
+CHashArray * CHashArray_getArray(CHashArrayOrObject * self, long index){
     CHash *element = CHashArray_get(self,index);
     if(CHash_ensure_Array(element)){
         return NULL;
@@ -151,7 +151,7 @@ CHashArray * CHashArray_getArray(CHashObject * self, long index){
     return  element;
 }
 
-CHashObject * CHashArray_getObject(CHashObject * self, long index){
+CHashObject * CHashArray_getObject(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     if(CHash_ensure_Object(element)){
         return NULL;
@@ -159,23 +159,23 @@ CHashObject * CHashArray_getObject(CHashObject * self, long index){
     return element;
 }
 
-long CHashArray_getLong(CHashObject * self, long index){
+long CHashArray_getLong(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toLong(element);
 }
 
-double CHashArray_getDouble(CHashObject * self, long index){
+double CHashArray_getDouble(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toDouble(element);
 }
 
-bool CHashArray_getBool(CHashObject * self, long index){
+bool CHashArray_getBool(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toBool(element);
 
 }
 
-char  * CHashArray_getString(CHashObject * self, long index){
+char  * CHashArray_getString(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toString(element);
 }

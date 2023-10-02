@@ -64,19 +64,11 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
 }
 
 
-CHash * CHashObject_get_by_index(CHashObject * self, long index){
-    if(CHash_ensure_Object(self)){
-        return NULL;
-    }
-    long formated_index = privateCHashArray_convert_index(self,index);
-    if(formated_index == -1){
-        return NULL;
-    }
-    return self->private_sub_elements[formated_index];
-}
+
+
 
 char * CHashObject_get_key_by_index(CHashObject *self,long index){
-    CHash  *element = CHashObject_get_by_index(self,index);
+    CHash  *element = CHashArray_get(self,index);
     if(!element){
         return NULL;
     }
