@@ -38,5 +38,6 @@ CHashNamespace newCHashNamespace(){
 
     self.object = newCHashObjectModule();
     self.array = newCHashArrayModule();
+    self.validator = newCHashValidatorModule();
     return self;
 }

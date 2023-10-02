@@ -45,7 +45,7 @@ typedef struct CHashNamespace{
 
     CHashObjectModule  object;
     CHashArrayModule array;
-
+    CHashValidatorModule validator;
 }CHashNamespace;
 
 CHashNamespace newCHashNamespace();
