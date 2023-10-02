@@ -90,7 +90,6 @@ void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element){
         return ;
     }
 
-
     CHash  *current = self->private_sub_elements[formated_index];
 
     CHash_free(current);

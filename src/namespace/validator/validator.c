@@ -2,6 +2,8 @@
 
 CHashValidatorModule newCHashValidatorModule(){
     CHashValidatorModule self = {0};
+    self.raise_error = CHash_raise_error;
+
     self.ensure_Array = CHash_ensure_Array;
     self.ensure_Object = CHash_ensure_Object;
     self.ensure_Bool = CHash_ensure_Bool;

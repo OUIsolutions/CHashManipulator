@@ -1,6 +1,7 @@
 
 
 typedef struct CHashValidatorModule {
+    void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
     int (*ensure_Double)(CHash *element);
 

@@ -30,7 +30,6 @@ CHashNamespace newCHashNamespace(){
     self.get_error_code = CHash_get_error_code;
     self.get_error_args = CHash_get_error_args;
     self.get_error_menssage= CHash_get_error_menssage;
-    self.raise_error = CHash_raise_error;
 
     self.get_type = CHash_get_type;
 

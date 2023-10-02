@@ -32,7 +32,6 @@ typedef struct CHashNamespace{
     CHash * (*get_error_args)(CHash *self);
 
 
-    void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
     bool (*equals)(CHash *element1, CHash *element2);
 

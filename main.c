@@ -4,7 +4,7 @@
 CHashNamespace hash;
 CHashObjectModule  obj;
 CHashArrayModule  array;
-
+CHashValidatorModule  validator;
 CHashObject *create (){
     return newCHashObject(
             "age", hash.newLong(26),
@@ -17,7 +17,7 @@ int main(){
     hash = newCHashNamespace();
     obj = hash.object;
     array  = hash.array;
-
+    validator = hash.validator;
     CHashArray *profile = create();
 
     obj.set_default(profile,"name", newCHashString("Mateus"));
