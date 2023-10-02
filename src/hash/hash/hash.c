@@ -122,7 +122,7 @@ CHash * CHash_copy(CHash *self){
         CHash * new_element  = newCHashObjectEmpty();
 
         for(long  i =0; i < self->private_size; i++){
-            CHash  * current = CHashObject_get_by_index(self,i);
+            CHash  * current = CHashArray_get(self,i);
             CHash *copy = CHash_copy(current);
 
             CHashObject_set(new_element, current->private_key, copy);

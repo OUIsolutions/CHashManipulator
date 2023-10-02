@@ -3,7 +3,7 @@ cJSON * privateCHash_dumps_json_object(CHashObject * object){
     long size = object->private_size;
     cJSON * element = cJSON_CreateObject();
     for(int i = 0; i < size; i++){
-        CHashArray *current  = CHashObject_get_by_index(object, i);
+        CHashArray *current  = CHashArray_get(object, i);
         cJSON *current_json = CHash_dump_to_cJSON(current);
         cJSON_AddItemToObject(element, current->private_key, current_json);
     }

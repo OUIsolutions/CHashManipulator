@@ -777,6 +777,7 @@ enum {
 
 typedef CHash CHashArray;
 typedef CHash CHashObject;
+typedef CHash CHashArrayOrObject;
 typedef  CHash CHashStringArray;
 
 CHash * privatenewChash_raw();
@@ -890,7 +891,6 @@ void  CHashObject_delete(CHashObject *self, const char *key);
 
 CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *key);
 
-CHash * CHashObject_get_by_index(CHashObject * self, long index);
 
 char * CHashObject_get_key_by_index(CHashObject *self,long index);
 
@@ -919,6 +919,7 @@ char  * CHashObject_getString(CHashObject * self, const char *key);
 
 
 
+#define CHASH_NOT_EXIST -1
 
 enum{
     CHASH_NULL,
@@ -1020,6 +1021,8 @@ int CHash_ensure_Object(CHash *element);
 
 int CHash_ensure_Array(CHash *element);
 
+int privateCHash_ensureArrayOrObject(CHash *element);
+
 
 
 
@@ -1029,8 +1032,6 @@ typedef struct CHashObjectModule{
     CHashObject  * (*newObjectEmpty)();
     void  (*set_once)(CHashObject * self, const char *key, CHash *element);
     void  (*delete)(CHashObject *self, const char *key);
-
-    CHash * (*get_by_index)(CHashObject * self, long index);
 
     char * (*get_key_by_index)(CHashObject *self,long index);
 
@@ -5403,7 +5404,7 @@ CHash * CHash_copy(CHash *self){
         CHash * new_element  = newCHashObjectEmpty();
 
         for(long  i =0; i < self->private_size; i++){
-            CHash  * current = CHashObject_get_by_index(self,i);
+            CHash  * current = CHashArray_get(self,i);
             CHash *copy = CHash_copy(current);
 
             CHashObject_set(new_element, current->private_key, copy);
@@ -5607,9 +5608,9 @@ void privateCHashArray_append(CHashArray *self, ...){
     va_end(args);
 
 }
-void CHashArray_delete(CHashArray *self, long index){
+void CHashArray_delete(CHashArrayOrObject *self, long index){
 
-    if(CHash_ensure_Array(self)){
+    if(privateCHash_ensureArrayOrObject(self)){
         return ;
     }
     CHash  *current = CHashArray_get(self,index);
@@ -5621,7 +5622,7 @@ void CHashArray_delete(CHashArray *self, long index){
 
     }
 }
-long privateCHashArray_convert_index(CHashArray *self, long index){
+long privateCHashArray_convert_index(CHashArrayOrObject *self, long index){
     long formated_index = index;
     if(index < 0){
         formated_index = (long)self->private_size +index;
@@ -5638,9 +5639,9 @@ long privateCHashArray_convert_index(CHashArray *self, long index){
         return -1;
     }
 }
-CHash * CHashArray_get(CHashArray *self, long index){
+CHash * CHashArray_get(CHashArrayOrObject *self, long index){
 
-    if(CHash_ensure_Array(self)){
+    if(privateCHash_ensureArrayOrObject(self)){
         return NULL;
     }
     long formated_index = privateCHashArray_convert_index(self,index);
@@ -5651,7 +5652,25 @@ CHash * CHashArray_get(CHashArray *self, long index){
     return self->private_sub_elements[formated_index];
 }
 
-CHashArray * CHashArray_getArray(CHashObject * self, long index){
+void CHashArray_switch(CHashArrayOrObject *self, long index ,long target_index){
+    if(privateCHash_ensureArrayOrObject(self)){
+        return ;
+    }
+    long formated_index = privateCHashArray_convert_index(self,index);
+    if(formated_index == -1){
+        return;
+    }
+    long formated_target_index = privateCHashArray_convert_index(self,target_index);
+    if(formated_target_index == -1){
+        return;
+    }
+
+    CHash *changed = self->private_sub_elements[formated_index];
+    self->private_sub_elements[formated_index] =  self->private_sub_elements[target_index];
+    self->private_sub_elements[target_index] = changed;
+
+}
+CHashArray * CHashArray_getArray(CHashArrayOrObject * self, long index){
     CHash *element = CHashArray_get(self,index);
     if(CHash_ensure_Array(element)){
         return NULL;
@@ -5659,7 +5678,7 @@ CHashArray * CHashArray_getArray(CHashObject * self, long index){
     return  element;
 }
 
-CHashObject * CHashArray_getObject(CHashObject * self, long index){
+CHashObject * CHashArray_getObject(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     if(CHash_ensure_Object(element)){
         return NULL;
@@ -5667,23 +5686,23 @@ CHashObject * CHashArray_getObject(CHashObject * self, long index){
     return element;
 }
 
-long CHashArray_getLong(CHashObject * self, long index){
+long CHashArray_getLong(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toLong(element);
 }
 
-double CHashArray_getDouble(CHashObject * self, long index){
+double CHashArray_getDouble(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toDouble(element);
 }
 
-bool CHashArray_getBool(CHashObject * self, long index){
+bool CHashArray_getBool(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toBool(element);
 
 }
 
-char  * CHashArray_getString(CHashObject * self, long index){
+char  * CHashArray_getString(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toString(element);
 }
@@ -5755,19 +5774,11 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
 }
 
 
-CHash * CHashObject_get_by_index(CHashObject * self, long index){
-    if(CHash_ensure_Object(self)){
-        return NULL;
-    }
-    long formated_index = privateCHashArray_convert_index(self,index);
-    if(formated_index == -1){
-        return NULL;
-    }
-    return self->private_sub_elements[formated_index];
-}
+
+
 
 char * CHashObject_get_key_by_index(CHashObject *self,long index){
-    CHash  *element = CHashObject_get_by_index(self,index);
+    CHash  *element = CHashArray_get(self,index);
     if(!element){
         return NULL;
     }
@@ -5872,9 +5883,6 @@ void  privateCHashObject_set(CHashObject *self , ...){
 }
 short  CHashObject_get_type(CHashObject *self, const char *key){
     CHash  *element = privateCHashObject_get_by_key_or_null(self,key);
-    if(!element){
-        return  -1;
-    }
     return CHash_get_type(element);
 }
 
@@ -5884,7 +5892,6 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
     if(CHash_ensure_Object(self)){
         return NULL;
     }
-
 
     CHash *element = privateCHashObject_get_by_key_or_null(self, key);
 
@@ -5949,7 +5956,7 @@ char  * CHashObject_getString(CHashObject * self, const char *key){
 
 short CHash_get_type(CHash *self){
     if(Chash_errors(self)){
-        return -1;
+        return CHASH_NOT_EXIST;
     }
     return self->private_type;
 }
@@ -5992,7 +5999,7 @@ cJSON * privateCHash_dumps_json_object(CHashObject * object){
     long size = object->private_size;
     cJSON * element = cJSON_CreateObject();
     for(int i = 0; i < size; i++){
-        CHashArray *current  = CHashObject_get_by_index(object, i);
+        CHashArray *current  = CHashArray_get(object, i);
         cJSON *current_json = CHash_dump_to_cJSON(current);
         cJSON_AddItemToObject(element, current->private_key, current_json);
     }
@@ -6146,7 +6153,7 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
 
     long args_size = CHash_get_size(self->args);
     for(int i = 0; i < args_size; i++){
-        CHash *current = CHashObject_get_by_index(self->args,i);
+        CHash *current = CHashArray_get(self->args,i);
         char *key = CHashObject_get_key_of_element(current);
         char *value = CHash_dump_to_json_string(current);
         CTextStack * formated_key = newCTextStack_string_empty();
@@ -6269,7 +6276,6 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type){
                                   private_Chash_convert_type(expected_type)
                                 )
                           )
-
         );
         return 1;
     }
@@ -6297,8 +6303,22 @@ int CHash_ensure_Object(CHash *element){
 
 int CHash_ensure_Array(CHash *element){
     return private_chash_check_type(element,CHASH_ARRAY);
+}
+int privateCHash_ensureArrayOrObject(CHash *element){
+    if(Chash_errors(element)){
+        return 1;
+    }
+
+    if(element->private_type != CHASH_OBJECT && element->private_type != CHASH_ARRAY){
+        CHash_raise_error(element,
+                          CHASH_WRONG_TYPE,
+                          "element at #path# is #type# instead of array or object  ",
+                          NULL
+        );
+    }
 
 }
+
 
 
 
@@ -6310,7 +6330,6 @@ CHashObjectModule newCHashObjectModule(){
     self.set_once = CHashObject_set_once;
     self.delete= CHashObject_delete;
 
-    self.get_by_index  = CHashObject_get_by_index;
     self.get_key_by_index = CHashObject_get_key_by_index;
     self.get_key_of_element = CHashObject_get_key_of_element;
 
