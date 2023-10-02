@@ -853,7 +853,19 @@ void privateCHashArray_append(CHashArray *self, ...);
 
 void  CHashArray_delete(CHashArray *self, long index);
 
-CHash * CHashArray_get(CHashArray *self, long position);
+CHash * CHashArray_get(CHashArray *self, long index);
+
+CHashArray * CHashArray_getArray(CHashObject * self, long index);
+
+CHashObject * CHashArray_getObject(CHashObject * self, long index);
+
+long CHashArray_getLong(CHashObject * self, long index);
+
+double CHashArray_getDouble(CHashObject * self, long index);
+
+bool CHashArray_getBool(CHashObject * self, long index);
+
+char  * CHashArray_getString(CHashObject * self, long index);
 
 
 
@@ -1051,7 +1063,12 @@ typedef struct CHashArrayModule{
     void (*append_once)(CHashArray *self, CHash *element);
     void  (*delete)(CHashArray *self, long index);
     CHash * (*get)(CHashArray *self, long position);
-
+    CHashArray * (*getArray)(CHashObject * self, long index);
+    CHashObject * (*getObject)(CHashObject * self, long index);
+    long (*getLong)(CHashObject * self, long index);
+    double (*getDouble)(CHashObject * self, long index);
+    bool (*getBool)(CHashObject * self, long index);
+    char  * (*getString)(CHashObject * self, long index);
 
 }CHashArrayModule;
 
@@ -5605,9 +5622,61 @@ CHash * CHashArray_get(CHashArray *self, long index){
     if(CHash_ensure_Array(self)){
         return NULL;
     }
-
-    return self->private_sub_elements[index];
+    long formated_index = index;
+    if(index < 0){
+        formated_index = (long)self->private_size +index;
+    }
+    if(formated_index < 0|| formated_index>= self->private_size){
+        CHash_raise_error(
+                self,
+                CHASH_NOT_VALID_INDEX,
+                " index: #index# its not valid, at #path#",
+                newCHashObject(
+                        "index", newCHashLong(index)
+                )
+        );
+        return NULL;
+    }
+    return self->private_sub_elements[formated_index];
 }
+
+CHashArray * CHashArray_getArray(CHashObject * self, long index){
+    CHash *element = CHashArray_get(self,index);
+    if(CHash_ensure_Array(element)){
+        return NULL;
+    }
+    return  element;
+}
+
+CHashObject * CHashArray_getObject(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    if(CHash_ensure_Object(element)){
+        return NULL;
+    }
+    return element;
+}
+
+long CHashArray_getLong(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toLong(element);
+}
+
+double CHashArray_getDouble(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toDouble(element);
+}
+
+bool CHashArray_getBool(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toBool(element);
+
+}
+
+char  * CHashArray_getString(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toString(element);
+}
+
 
 
 
@@ -5835,13 +5904,18 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
 }
 CHashArray * CHashObject_getArray(CHashObject * self, const char *key){
     CHashArray  *element = CHashObject_get(self,key);
-    CHash_ensure_Array(element);
+    if(CHash_ensure_Array(element)){
+        return NULL;
+    };
+
     return element;
 }
 
 CHashObject * CHashObject_getObject(CHashObject * self, const char *key){
     CHashObject *element = CHashObject_get(self,key);
-    CHash_ensure_Object(element);
+    if(CHash_ensure_Object(element)){
+        return NULL;
+    }
     return element;
 }
 
@@ -6255,6 +6329,12 @@ CHashArrayModule newCHashArrayModule(){
     self.append_once = CHashArray_append_once;
     self.delete = CHashArray_delete;
     self.get = CHashArray_get;
+    self.getArray = CHashArray_getArray;
+    self.getObject = CHashArray_getObject;
+    self.getString = CHashArray_getString;
+    self.getDouble = CHashArray_getDouble;
+    self.getLong = CHashArray_getLong;
+    self.getBool = CHashArray_getBool;
     return self;
 }
 
