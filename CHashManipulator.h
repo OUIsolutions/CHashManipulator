@@ -857,6 +857,7 @@ void CHashArray_switch(CHashArray *self, long index ,long target_index);
 
 void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element);
 
+
 void  CHashArray_remove(CHashArrayOrObject *self, long index);
 
 CHash * CHashArray_get(CHashArray *self, long index);
@@ -891,10 +892,14 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element);
 void  privateCHashObject_set(CHashObject *self , ...);
 #define  CHashObject_set(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 
+void  CHashObject_set_default(CHashObject * self, const char *key, CHash *element);
 
 void  CHashObject_remove(CHashObject *self, const char *key);
 
 CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *key);
+
+bool CHashObject_exist(CHashObject *self, const char *key);
+
 
 
 char * CHashObject_get_key_by_index(CHashObject *self,long index);
@@ -1036,6 +1041,9 @@ typedef struct CHashObjectModule{
 
     CHashObject  * (*newObjectEmpty)();
     void  (*set_once)(CHashObject * self, const char *key, CHash *element);
+    void  (*set_default)(CHashObject * self, const char *key, CHash *element);
+
+
     void  (*remove)(CHashObject *self, const char *key);
 
     char * (*get_key_by_index)(CHashObject *self,long index);
@@ -1043,6 +1051,7 @@ typedef struct CHashObjectModule{
     char   * (*get_key_of_element)(CHash *self);
 
     short  (*get_type)(CHashObject *self, const char *key);
+    bool (*exist)(CHashObject *self, const char *key);
 
     CHash * (*get)(CHashObject * self, const char *key);
 
@@ -1091,6 +1100,7 @@ CHashArrayModule newCHashArrayModule();
 
 
 typedef struct CHashValidatorModule {
+    void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
     int (*ensure_Double)(CHash *element);
 
@@ -1143,7 +1153,6 @@ typedef struct CHashNamespace{
     CHash * (*get_error_args)(CHash *self);
 
 
-    void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
     bool (*equals)(CHash *element1, CHash *element2);
 
@@ -5626,13 +5635,14 @@ void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element){
         return ;
     }
 
-
     CHash  *current = self->private_sub_elements[formated_index];
 
     CHash_free(current);
     self->private_sub_elements[formated_index] = element;
 
 }
+
+
 void CHashArray_remove(CHashArrayOrObject *self, long index){
 
     if(privateCHash_ensureArrayOrObject(self)){
@@ -5818,7 +5828,13 @@ CHash * privateCHashObject_get_by_key_or_null(CHashObject * self, const char *ke
     return NULL;
 }
 
-
+bool CHashObject_exist(CHashObject *self, const char *key){
+    CHash  *element = privateCHashObject_get_by_key_or_null(self,key);
+    if(element){
+        return  true;
+    }
+    return false;
+}
 
 
 
@@ -5882,6 +5898,14 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     element->private_key = strdup(key);
     self->private_sub_elements[self->private_size]= element;
     self->private_size+=1;
+}
+
+void  CHashObject_set_default(CHashObject * self, const char *key, CHash *element){
+    if(CHashObject_exist(self,key)){
+        CHash_free(element);
+        return;
+    }
+    CHashObject_set_once(self,key,element);
 }
 
 
@@ -6247,11 +6271,10 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
     if(!args){
         formated_args = newCHashObjectEmpty();
     }
-    CHashObject_set(formated_args,
-                    "path", CHash_get_path(self),
-                    "value", CHash_copy(self),
-                    "type", newCHashString(private_Chash_convert_type(self->private_type))
-    );
+    CHashObject_set_default(formated_args,  "path", CHash_get_path(self));
+    CHashObject_set_default(formated_args,"value", CHash_copy(self));
+    CHashObject_set_default(formated_args,"type",newCHashString(private_Chash_convert_type(self->private_type)));
+
 
     privateCHashError *created = privatenewCHashError(
             formated_args,
@@ -6375,11 +6398,12 @@ CHashObjectModule newCHashObjectModule(){
     CHashObjectModule self = {0};
     self.newObjectEmpty = newCHashObjectEmpty;
     self.set_once = CHashObject_set_once;
+    self.set_default = CHashObject_set_default;
     self.remove= CHashObject_remove;
 
     self.get_key_by_index = CHashObject_get_key_by_index;
     self.get_key_of_element = CHashObject_get_key_of_element;
-
+    self.exist = CHashObject_exist;
     self.get_type = CHashObject_get_type;
     self.get = CHashObject_get;
     self.getArray = CHashObject_getArray;
@@ -6416,6 +6440,8 @@ CHashArrayModule newCHashArrayModule(){
 
 CHashValidatorModule newCHashValidatorModule(){
     CHashValidatorModule self = {0};
+    self.raise_error = CHash_raise_error;
+
     self.ensure_Array = CHash_ensure_Array;
     self.ensure_Object = CHash_ensure_Object;
     self.ensure_Bool = CHash_ensure_Bool;
@@ -6458,7 +6484,6 @@ CHashNamespace newCHashNamespace(){
     self.get_error_code = CHash_get_error_code;
     self.get_error_args = CHash_get_error_args;
     self.get_error_menssage= CHash_get_error_menssage;
-    self.raise_error = CHash_raise_error;
 
     self.get_type = CHash_get_type;
 
