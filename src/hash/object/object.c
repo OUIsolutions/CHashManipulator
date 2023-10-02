@@ -84,7 +84,7 @@ CHash * CHashObject_get_by_index(CHashObject * self, long index){
         return NULL;
     }
 
-    return self->private_sub_elements[index];
+    return self->private_sub_elements[formated_index];
 }
 
 char * CHashObject_get_key_by_index(CHashObject *self,long index){

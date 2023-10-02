@@ -22,7 +22,7 @@ int main(){
     array  = hash.array;
 
     CHashArray *profile = create();
-    CHash * current = obj.get_by_index(profile,-1);
+    CHash * current = obj.get_by_index(profile,50);
 
     if(hash.errors(profile)){
         printf("%s\n",hash.get_error_menssage(profile));
