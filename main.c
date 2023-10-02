@@ -47,7 +47,11 @@ int main(){
         printf("\n");
 
     }
-    
+
+    if(hash.errors(element)){
+        printf("%s",hash.get_error_menssage(element));
+    }
+
     hash.free(element);
 
 }
