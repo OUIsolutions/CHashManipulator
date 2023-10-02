@@ -100,6 +100,57 @@ CHash * CHashArray_get(CHashArray *self, long index){
     if(CHash_ensure_Array(self)){
         return NULL;
     }
+    long formated_index = index;
+    if(index < 0){
+        formated_index = (long)self->private_size +index;
+    }
+    if(formated_index < 0|| formated_index>= self->private_size){
+        CHash_raise_error(
+                self,
+                CHASH_NOT_VALID_INDEX,
+                " index: #index# its not valid, at #path#",
+                newCHashObject(
+                        "index", newCHashLong(index)
+                )
+        );
+        return NULL;
+    }
+    return self->private_sub_elements[formated_index];
+}
 
-    return self->private_sub_elements[index];
+CHashArray * CHashArray_getArray(CHashObject * self, long index){
+    CHash *element = CHashArray_get(self,index);
+    if(CHash_ensure_Array(element)){
+        return NULL;
+    }
+    return  element;
+}
+
+CHashObject * CHashArray_getObject(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    if(CHash_ensure_Object(element)){
+        return NULL;
+    }
+    return element;
+}
+
+long CHashArray_getLong(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toLong(element);
+}
+
+double CHashArray_getDouble(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toDouble(element);
+}
+
+bool CHashArray_getBool(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toBool(element);
+
+}
+
+char  * CHashArray_getString(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toString(element);
 }

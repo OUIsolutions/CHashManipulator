@@ -224,13 +224,18 @@ CHash * CHashObject_get(CHashObject * self, const char *key){
 }
 CHashArray * CHashObject_getArray(CHashObject * self, const char *key){
     CHashArray  *element = CHashObject_get(self,key);
-    CHash_ensure_Array(element);
+    if(CHash_ensure_Array(element)){
+        return NULL;
+    };
+
     return element;
 }
 
 CHashObject * CHashObject_getObject(CHashObject * self, const char *key){
     CHashObject *element = CHashObject_get(self,key);
-    CHash_ensure_Object(element);
+    if(CHash_ensure_Object(element)){
+        return NULL;
+    }
     return element;
 }
 

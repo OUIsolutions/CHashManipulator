@@ -19,5 +19,17 @@ void privateCHashArray_append(CHashArray *self, ...);
 
 void  CHashArray_delete(CHashArray *self, long index);
 
-CHash * CHashArray_get(CHashArray *self, long position);
+CHash * CHashArray_get(CHashArray *self, long index);
+
+CHashArray * CHashArray_getArray(CHashObject * self, long index);
+
+CHashObject * CHashArray_getObject(CHashObject * self, long index);
+
+long CHashArray_getLong(CHashObject * self, long index);
+
+double CHashArray_getDouble(CHashObject * self, long index);
+
+bool CHashArray_getBool(CHashObject * self, long index);
+
+char  * CHashArray_getString(CHashObject * self, long index);
 
