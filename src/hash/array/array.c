@@ -118,6 +118,7 @@ long privateCHashArray_convert_index(CHashArrayOrObject *self, long index){
         );
         return -1;
     }
+    return formated_index;
 }
 CHash * CHashArray_get(CHashArrayOrObject *self, long index){
     if(privateCHash_ensureArrayOrObject(self)){
