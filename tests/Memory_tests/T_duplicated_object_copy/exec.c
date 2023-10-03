@@ -28,8 +28,8 @@ int main(){
     bool maried = obj.getBool(profile,"maried");
 
     CHash *second = newCHashObject(
-            "name",obj.get(profile,"name"),
-            "age",obj.get(profile,"age")
+            "name",hash.copy(obj.get(profile,"name")),
+            "age",hash.copy(obj.get(profile,"age"))
             );
     hash.print(second);
     hash.free(second);

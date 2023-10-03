@@ -33,7 +33,7 @@ int main(){
             );
     hash.print(second);
     hash.free(second);
-    
+
     if(!hash.errors(profile)){
         printf("name: %s\n",name);
         printf("age %ld\n",age);
