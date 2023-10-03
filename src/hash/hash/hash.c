@@ -52,9 +52,7 @@ void CHash_free(CHash *self){
             privateCHashError_free(error);
         }
     }
-    if(self->private_keys){
-        free(self->private_keys);
-    }
+
 
     if(self->private_type == CHASH_STRING){
         CTextStack_free(self->private_value_stack);
