@@ -791,6 +791,8 @@ CHashArray * CHash_get_path(CHash *self);
 
 CHash * CHash_copy(CHash *self);
 
+CHash * privateCHash_copy_if_its_an_reference(CHash *self);
+
 void CHash_free(CHash *self);
 
 bool CHash_equals(CHash *element1, CHash *element2);
@@ -5390,7 +5392,10 @@ long CHash_get_size(CHash *self){
 
 
 CHash * CHash_copy(CHash *self){
-    
+    if(!self){
+        return newCHashNULL();
+    }
+
     if(self->private_type == CHASH_STRING){
         return newCHashString(self->private_value_stack->rendered_text);
     }
@@ -5433,7 +5438,17 @@ CHash * CHash_copy(CHash *self){
 
     return newCHashNULL();
 }
+CHash * privateCHash_copy_if_its_an_reference(CHash *self){
+    if(!self){
+        return NULL;
+    }
 
+    if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
+        return self;
+    }
+    return CHash_copy(self);
+
+}
 CHash * privateCHash_get_first_object(CHash *self){
     if(self->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE) {
         return self;
@@ -5595,14 +5610,17 @@ void CHashArray_append_once(CHashArray *self, CHash *element){
     if(CHash_ensure_Array(self)){
         return ;
     }
+
+    CHash *new_element = privateCHash_copy_if_its_an_reference(element);
+
     self->private_sub_elements = (CHash**) realloc(
             self->private_sub_elements,
             (self->private_size + 1) * sizeof(CHash**)
     );
-    element->private_reference_type = PRIVATE_CHASH_ARRAY_ITEM;
-    element->private_father = self;
-    element->private_index = self->private_size;
-    self->private_sub_elements[self->private_size]= element;
+    new_element->private_reference_type = PRIVATE_CHASH_ARRAY_ITEM;
+    new_element->private_father = self;
+    new_element->private_index = self->private_size;
+    self->private_sub_elements[self->private_size]= new_element;
     self->private_size+=1;
 
 
@@ -5635,10 +5653,13 @@ void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element){
         return ;
     }
 
-    CHash  *current = self->private_sub_elements[formated_index];
+    CHash *new_element = privateCHash_copy_if_its_an_reference(element);
 
+    CHash  *current = self->private_sub_elements[formated_index];
     CHash_free(current);
-    self->private_sub_elements[formated_index] = element;
+
+
+    self->private_sub_elements[formated_index] = new_element;
 
 }
 
@@ -5721,8 +5742,12 @@ void CHashArray_switch(CHashArrayOrObject *self, long index ,long target_index){
     }
 
     CHash *changed = self->private_sub_elements[formated_index];
+
     self->private_sub_elements[formated_index] =  self->private_sub_elements[target_index];
+    self->private_sub_elements[formated_index]->private_index = formated_index;
+
     self->private_sub_elements[target_index] = changed;
+    changed->private_index = target_index;
 
 }
 CHashArray * CHashArray_getArray(CHashArrayOrObject * self, long index){
@@ -5886,6 +5911,9 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
     if(CHash_ensure_Object(self)){
         return ;
     }
+
+    CHash *formated_element = privateCHash_copy_if_its_an_reference(element);
+
     CHashObject_remove(self, key);
 
     self->private_sub_elements = (CHash**) realloc(
@@ -5893,16 +5921,18 @@ void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element){
             (self->private_size + 1) * sizeof(CHash**)
     );
 
-    element->private_reference_type = PRIVATE_CHASH_KEYVAL;
-    element->private_father = self;
-    element->private_key = strdup(key);
-    self->private_sub_elements[self->private_size]= element;
+    formated_element->private_reference_type = PRIVATE_CHASH_KEYVAL;
+    formated_element->private_father = self;
+    formated_element->private_key = strdup(key);
+    self->private_sub_elements[self->private_size]= formated_element;
     self->private_size+=1;
 }
 
 void  CHashObject_set_default(CHashObject * self, const char *key, CHash *element){
     if(CHashObject_exist(self,key)){
-        CHash_free(element);
+        if(element->private_reference_type == PRIVATE_CHASH_NOT_A_REFERENCE){
+            CHash_free(element);
+        }
         return;
     }
     CHashObject_set_once(self,key,element);

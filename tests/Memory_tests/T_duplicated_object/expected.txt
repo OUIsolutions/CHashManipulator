@@ -1,0 +1,9 @@
+ 
+{
+	"name":	"aaa",
+	"age":	26
+}
+name: aaa
+age 26
+heigh 20.000000
+maried true
