@@ -34,9 +34,11 @@ CHash *create (){
 }
 
 int main(){
+    hash = newCHashNamespace();
+    obj = hash.object;
+    array  = hash.array;
 
     CHashArray *element = create();
-    printf("aaaa\n");
     
     long size = hash.get_size(element);
     for(int i = 0; i <size; i++){
