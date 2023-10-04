@@ -22,7 +22,7 @@ int main(){
 
     CHashArray *profile = create();
 
-    char *name =obj.getString(profile,"name");
+    char *name = obj.getString(profile,"name");
     long age = obj.getLong(profile,"age");
     double height = obj.getDouble(profile,"height");
     bool maried = obj.getBool(profile,"maried");

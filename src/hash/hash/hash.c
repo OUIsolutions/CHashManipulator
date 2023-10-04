@@ -42,7 +42,9 @@ bool CHash_equals(CHash *element1, CHash *element2){
 
 
 void CHash_free(CHash *self){
-
+    if(!self){
+        return;
+    }
     if(self->private_reference_type == PRIVATE_CHASH_KEYVAL){
         free(self->private_key);
     }
