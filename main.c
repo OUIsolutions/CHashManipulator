@@ -5,6 +5,7 @@ CHashNamespace hash;
 CHashObjectModule  obj;
 CHashArrayModule  array;
 CHashValidatorModule  validator;
+
 CHashArray *create (){
     return newCHashArray(
         
