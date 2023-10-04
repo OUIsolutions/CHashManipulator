@@ -52,6 +52,7 @@ int privateCHash_ensureArrayOrObject(CHash *element){
                           "element at #path# is #type# instead of array or object  ",
                           NULL
         );
+        return 1;
     }
     return 0;
 

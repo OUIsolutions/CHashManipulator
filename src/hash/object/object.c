@@ -227,6 +227,7 @@ CHashArray * CHashObject_getArray(CHashObject * self, const char *key){
 }
 
 CHashObject * CHashObject_getObject(CHashObject * self, const char *key){
+    
     CHashObject *element = CHashObject_get(self,key);
     if(CHash_ensure_Object(element)){
         return NULL;

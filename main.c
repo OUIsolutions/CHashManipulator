@@ -19,14 +19,15 @@ int main(){
     CHashArray *element = create();
     
     long size = hash.get_size(element);
+    
     for(int i = 0; i <size; i++){
         CHashObject *current_person = array.getObject(element,i);
-        
+        /*
         char * name = obj.getString(current_person,"name");
         long age = obj.getLong(current_person,"age");
         double height = obj.getDouble(current_person,"height");
         bool married = obj.getBool(current_person,"married");
-
+        
         if(!hash.errors(element)){
             // its safe to print anything here 
             printf("-----------------------------------------------\n");
@@ -35,9 +36,10 @@ int main(){
             printf("\tage:%ld\n",age);
             printf("\tmarried:%s\n",married  ? "true": "false");
         }
+        */
         
     }
-
+    
     if(hash.errors(element)){
         char *menssage = hash.get_error_menssage(element);
         printf("%s\n",menssage);
