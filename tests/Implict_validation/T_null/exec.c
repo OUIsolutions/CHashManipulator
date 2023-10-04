@@ -1,5 +1,5 @@
-#include "src/one.h"
 
+#include "../../../CHashManipulator.h"
 
 CHashNamespace hash;
 CHashObjectModule  obj;
@@ -7,29 +7,7 @@ CHashArrayModule  array;
 CHashValidatorModule  validator;
 
 CHash *create (){
-
-    return newCHashArray(
-        
-        newCHashObject(
-                "name",hash.newString("mateus"),
-                "age", hash.newLong(26),
-                "height",hash.newDouble(1.69),
-                "married",hash.newBool(true)
-        ),
-        newCHashObject(
-                "name",hash.newString("second name"),
-                "age", hash.newLong(42),
-                "height",hash.newDouble(18.4),
-                "married",hash.newBool(true)
-        ),
-
-        newCHashObject(
-                "name",hash.newString("third name"),
-                "age", hash.newLong(55),
-                "height",hash.newDouble(14.4),
-                "married",hash.newBool(false)
-        )
-    );
+    return NULL;
 
 }
 
