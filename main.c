@@ -15,38 +15,13 @@ CHashObject *create (){
 }
 
 int main(){
-    hash = newCHashNamespace();
-    obj = hash.object;
-    array  = hash.array;
-    validator = hash.validator;
-    CHashArray *profile = create();
 
-    char *name =obj.getString(profile,"name");
-    long age = obj.getLong(profile,"age");
-    double height = obj.getDouble(profile,"height");
-    bool maried = obj.getBool(profile,"maried");
+    char *teste[2]={0};
+    char *menssage = "💩💩💩";
 
-
-    CHashObject *second = newCHashArray(
-            obj.get(profile,"name"),
-            obj.get(profile,"age")
-            );
-
-
-    hash.print(second);
-   hash.free(second);
-
-    if(!hash.errors(profile)){
-        printf("name: %s\n",name);
-        printf("age %ld\n",age);
-        printf("heigh %lf\n",height);
-        printf("maried %s\n", maried ? "true":"false");
+    for(int i = 0 ; i < strlen(menssage); i++){
+        long current = menssage[i];
+        printf("valor: %ld\n",current);
     }
-
-    else{
-        char *menssage = hash.get_error_menssage(profile);
-        printf("%s",menssage);
-    }
-    hash.free(profile);
 
 }
