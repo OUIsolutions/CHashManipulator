@@ -5705,7 +5705,9 @@ long privateCHashArray_convert_index(CHashArrayOrObject *self, long index){
 CHash * CHashArray_get(CHashArrayOrObject *self, long index){
     if(privateCHash_ensureArrayOrObject(self)){
         return NULL;
+
     }
+
     long formated_index = privateCHashArray_convert_index(self,index);
     if(formated_index == -1){
         return NULL;
@@ -6016,6 +6018,7 @@ CHashArray * CHashObject_getArray(CHashObject * self, const char *key){
 }
 
 CHashObject * CHashObject_getObject(CHashObject * self, const char *key){
+    
     CHashObject *element = CHashObject_get(self,key);
     if(CHash_ensure_Object(element)){
         return NULL;
@@ -6413,6 +6416,7 @@ int privateCHash_ensureArrayOrObject(CHash *element){
                           "element at #path# is #type# instead of array or object  ",
                           NULL
         );
+        return 1;
     }
     return 0;
 
