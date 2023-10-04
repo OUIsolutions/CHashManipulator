@@ -750,7 +750,6 @@ typedef struct CHash{
     void *private_error;
     struct CHash *private_father;
 
-    struct CHash *private_keys;
     unsigned long private_size;
 
     //these is the reference system
@@ -5344,7 +5343,9 @@ bool CHash_equals(CHash *element1, CHash *element2){
 
 
 void CHash_free(CHash *self){
-
+    if(!self){
+        return;
+    }
     if(self->private_reference_type == PRIVATE_CHASH_KEYVAL){
         free(self->private_key);
     }
@@ -5354,9 +5355,7 @@ void CHash_free(CHash *self){
             privateCHashError_free(error);
         }
     }
-    if(self->private_keys){
-        free(self->private_keys);
-    }
+
 
     if(self->private_type == CHASH_STRING){
         CTextStack_free(self->private_value_stack);

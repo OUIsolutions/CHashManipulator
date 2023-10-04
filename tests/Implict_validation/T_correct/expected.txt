@@ -1,0 +1,16 @@
+ 
+-----------------------------------------------
+	name:mateus
+	age:26
+	age:26
+	married:true
+-----------------------------------------------
+	name:second name
+	age:42
+	age:42
+	married:true
+-----------------------------------------------
+	name:third name
+	age:55
+	age:55
+	married:false
