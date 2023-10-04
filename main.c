@@ -39,7 +39,7 @@ int main(){
         CHashObject *current_person = array.getObject(element,i);
         
         char * name = obj.getString(current_person,"name");
-        long age = obj.getString(current_person,"age");
+        long age = obj.getLong(current_person,"age");
         double height = obj.getDouble(current_person,"height");
         bool married = obj.getBool(current_person,"married");
 
@@ -53,7 +53,13 @@ int main(){
         }
         
     }
-    
+
+    if(hash.errors(element)){
+        char *menssage = hash.get_error_menssage(element);
+        printf("%s\n",menssage);
+    }
+
+
     hash.free(element);
 
 }
