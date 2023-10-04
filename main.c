@@ -7,6 +7,7 @@ CHashArrayModule  array;
 CHashValidatorModule  validator;
 
 CHashArray *create (){
+
     return newCHashArray(
         
         newCHashObject(
@@ -35,6 +36,7 @@ CHashArray *create (){
 int main(){
 
     CHashArray *element = create();
+    printf("aaaa\n");
     long size = hash.get_size(element);
     for(int i = 0; i <size; i++){
         CHashObject *current_person = array.getObject(element,i);
