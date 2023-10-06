@@ -22,6 +22,14 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type){
 int CHash_ensure_Number(CHash *element){
     return private_chash_check_type(element, CHASH_NUMBER);
 }
+int CHash_ensure_Number_by_key(CHash *object, const char *key){
+    CHash *element = CHashObject_get(object,key);
+    return CHash_ensure_Number(element);
+}
+int CHash_ensure_Number_by_index(CHash *array, long index){
+    CHash  *element = CHashArray_get(array,index);
+    return CHash_ensure_Number(element);
+}
 
 int CHash_ensure_min(CHash *element, double  min){
     double  value = CHash_toNumber(element);
