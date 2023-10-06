@@ -93,6 +93,34 @@ int CHash_ensure_long_by_index(CHash *array , long index){
     return CHash_ensure_Long(current);
 }
 
+int CHash_ensure_minLong(CHash *element,long min){
+    long  value = CHash_toLong(element);
+    if(Chash_errors(element)){
+        return 1;
+    }
+    if(value < min){
+        CHash_raise_error(
+                element,
+                CHASH_LOWER_NUMBER,
+                "element at #path# of value #value# its lower than #number#",
+                newCHashObject("number", newCHashLong(min))
+        );
+        return 1;
+    }
+    return 0;
+}
+
+int CHash_ensure_minLong_by_key(CHash *object,const char *key, long min){
+    CHash *current = CHashObject_get(object,key);
+    return CHash_ensure_minLong(current,min);
+}
+
+int CHash_ensure_minLong_by_index(CHash *array,long index, long min){
+    CHash *current = CHashArray_get(array,index);
+    return CHash_ensure_minLong(current,min);
+}
+
+
 int CHash_ensure_Bool(CHash *element){
     return private_chash_check_type(element,CHASH_BOOL);
 
