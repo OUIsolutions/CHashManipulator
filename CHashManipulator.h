@@ -857,7 +857,18 @@ void  CHashArray_remove(CHashArrayOrObject *self, long index);
 
 CHash * CHashArray_get(CHashArray *self, long index);
 
+long CHashArray_find(CHashArray *self, CHash *element);
+
+
+long CHashArray_find_Number(CHashArray *self, double element);
+
+long CHashArray_find_Bool(CHashArray *self, bool  element);
+
+long CHashArray_find_String(CHashArray *self, const char *element);
+
+
 short CHashArray_get_type(CHashArray *self, long index);
+
 
 
 CHashArray * CHashArray_getArray(CHashObject * self, long index);
@@ -980,6 +991,7 @@ CHash * CHash_load_from_json_file(const char *filename);
 #define CHASH_NOT_VALID_INDEX 404
 #define  CHASH_ELEMENT_IS_NULL 405
 #define  CHASH_LOWER_NUMBER 406
+#define  CHASH_INVALID_KEY 406
 
 
 
@@ -1041,9 +1053,15 @@ int CHash_ensure_Object(CHash *element);
 int CHash_ensure_Object_by_key(CHash *object , const char *key);
 int CHash_ensure_Object_by_index(CHash *array , long index);
 
+int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys);
+int CHash_ensure_only_keys_cleaning_args(CHashObject *object, CHashStringArray *keys);
+
+
 int CHash_ensure_Array(CHash *element);
 int CHash_ensure_Array_by_key(CHash *object , const char *key);
 int CHash_ensure_Array_by_index(CHash *array , long index);
+
+
 
 int privateCHash_ensureArrayOrObject(CHash *element);
 
@@ -1097,6 +1115,12 @@ typedef struct CHashArrayModule{
     void  (*set)(CHashArrayOrObject *self, long index,CHash *element);
     void  (*remove)(CHashArrayOrObject *self, long index);
     CHash * (*get)(CHashArrayOrObject *self, long position);
+    long (*find)(CHashArray *self, CHash *element);
+    long (*find_Number)(CHashArray *self, double element);
+    long (*find_Bool)(CHashArray *self, bool  element);
+    long (*find_String)(CHashArray *self, const char *element);
+
+
     short (*get_type)(CHashArrayOrObject *self, long index);
 
     CHashArray * (*getArray)(CHashArrayOrObject * self, long index);
@@ -1115,16 +1139,39 @@ CHashArrayModule newCHashArrayModule();
 typedef struct CHashValidatorModule {
     void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
-    int (*ensure_Double)(CHash *element);
+    int (*ensure_Number)(CHash *element);
+    int (*ensure_Number_by_key)(CHash *object, const char *key);
+    int (*ensure_Number_by_index)(CHash *array, long index);
 
+
+    int (*ensure_min)(CHash *element, double  min);
+    int (*ensure_min_by_key)(CHash *object, const char *key, double min );
+    int (*ensure_min_by_index)(CHash *array, long index, double min);
+
+
+    int (*ensure_max)(CHash *element, double  max);
+    int (*ensure_max_by_key)(CHash *object, const char *key, double  max);
+    int (*ensure_max_by_index)(CHash *array, long index, double  max);
 
     int (*ensure_Bool)(CHash *element);
+    int (*ensure_Bool_by_key)(CHash *object , const char *key);
+    int (*ensure_Bool_by_index)(CHash *array , long index);
 
     int (*ensure_String)(CHash *element);
+    int (*ensure_String_by_key)(CHash *object , const char *key);
+    int (*ensure_String_by_index)(CHash *array , long index);
 
     int (*ensure_Object)(CHash *element);
+    int (*ensure_Object_by_key)(CHash *object , const char *key);
+    int (*ensure_Object_by_index)(CHash *array , long index);
+    int (*ensure_only_keys)(CHashObject *object, CHashStringArray *keys);
+    int (*ensure_only_keys_cleaning_args)(CHashObject *object, CHashStringArray *keys);
+
 
     int (*ensure_Array)(CHash *element);
+    int (*ensure_Array_by_key)(CHash *object , const char *key);
+    int (*ensure_Array_by_index)(CHash *array , long index);
+
 
 }CHashValidatorModule;
 
@@ -5702,6 +5749,38 @@ CHash * CHashArray_get(CHashArrayOrObject *self, long index){
     return self->private_sub_elements[formated_index];
 }
 
+long CHashArray_find(CHashArray *self, CHash *element){
+    long size = CHash_get_size(self);
+    for(long i = 0; i < size; i++){
+        CHash *current = CHashArray_get(self,i);
+        if(CHash_equals(current,element)){
+            return i;
+        }
+    }
+    return -1;
+}
+long CHashArray_find_Number(CHashArray *self, double element){
+    CHash *created = newCHashNumber(element);
+    long index = CHashArray_find(self,created);
+    CHash_free(created);
+    return index;
+}
+
+long CHashArray_find_Bool(CHashArray *self, bool  element){
+    CHash *created = newCHashBool(element);
+    long index = CHashArray_find(self,created);
+    CHash_free(created);
+    return index;
+}
+
+long CHashArray_find_String(CHashArray *self, const char *element){
+    CHash *created = newCHashString(element);
+    long index = CHashArray_find(self,created);
+    CHash_free(created);
+    return index;
+}
+
+
 short CHashArray_get_type(CHashArray *self, long index){
     if(privateCHash_ensureArrayOrObject(self)){
         return CHASH_NOT_EXIST;
@@ -6357,6 +6436,14 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type){
 int CHash_ensure_Number(CHash *element){
     return private_chash_check_type(element, CHASH_NUMBER);
 }
+int CHash_ensure_Number_by_key(CHash *object, const char *key){
+    CHash *element = CHashObject_get(object,key);
+    return CHash_ensure_Number(element);
+}
+int CHash_ensure_Number_by_index(CHash *array, long index){
+    CHash  *element = CHashArray_get(array,index);
+    return CHash_ensure_Number(element);
+}
 
 int CHash_ensure_min(CHash *element, double  min){
     double  value = CHash_toNumber(element);
@@ -6391,7 +6478,7 @@ int CHash_ensure_max(CHash *element, double  max){
     if(Chash_errors(element)){
         return 1;
     }
-    if(value < max){
+    if(value > max){
         CHash_raise_error(
                 element,
                 CHASH_LOWER_NUMBER,
@@ -6445,6 +6532,8 @@ int CHash_ensure_String_by_index(CHash *array , long index){
 int CHash_ensure_Object(CHash *element){
     return private_chash_check_type(element,CHASH_OBJECT);
 }
+
+
 int CHash_ensure_Object_by_key(CHash *object , const char *key){
     CHashObject *current = CHashObject_get(object,key);
     return CHash_ensure_Object(current);
@@ -6452,6 +6541,31 @@ int CHash_ensure_Object_by_key(CHash *object , const char *key){
 int CHash_ensure_Object_by_index(CHash *array , long index){
     CHash *current = CHashArray_get(array,index);
     return CHash_ensure_Object(current);
+}
+
+int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys){
+    long size = CHash_get_size(object);
+    for(long i = 0; i < size; i++){
+        char *current_key = CHashObject_get_key_by_index(object,i);
+        if(CHashArray_find_String(keys, current_key) == -1){
+            CHash_raise_error(
+                    object,
+                    CHASH_INVALID_KEY,
+                    "key: #key# at #path#  its not inside #keys#",
+                    newCHashObject(
+                            "key", newCHashString(current_key),
+                            "keys",keys
+                    )
+            );
+            return 1;
+        }
+    }
+    return 0;
+}
+int CHash_ensure_only_keys_cleaning_args(CHashObject *object, CHashStringArray *keys){
+    int result = CHash_ensure_only_keys(object,keys);
+    CHash_free(keys);
+    return result;
 }
 
 int CHash_ensure_Array(CHash *element){
@@ -6519,6 +6633,10 @@ CHashArrayModule newCHashArrayModule(){
     self.set = CHashArray_set;
     self.remove = CHashArray_remove;
     self.get = CHashArray_get;
+    self.find = CHashArray_find;
+    self.find_Number =CHashArray_find_Number;
+    self.find_Bool = CHashArray_find_Bool;
+    self.find_String = CHashArray_find_String;
 
     self.get_type = CHashArray_get_type;
     self.getArray = CHashArray_getArray;
@@ -6535,11 +6653,40 @@ CHashValidatorModule newCHashValidatorModule(){
     CHashValidatorModule self = {0};
     self.raise_error = CHash_raise_error;
 
-    self.ensure_Array = CHash_ensure_Array;
-    self.ensure_Object = CHash_ensure_Object;
+
+    self.ensure_Number = CHash_ensure_Number;
+    self.ensure_Number_by_key = CHash_ensure_Number_by_key;
+    self.ensure_Number_by_index = CHash_ensure_Number_by_index;
+
+    self.ensure_min = CHash_ensure_min;
+    self.ensure_min_by_key = CHash_ensure_min_by_key;
+    self.ensure_min_by_index = CHash_ensure_min_by_index;
+
+    self.ensure_max = CHash_ensure_max;
+    self.ensure_max_by_key =CHash_ensure_max_by_key;
+    self.ensure_min_by_index =CHash_ensure_max_by_index;
+
+
+
     self.ensure_Bool = CHash_ensure_Bool;
-    self.ensure_Double = CHash_ensure_Number;
+    self.ensure_Bool_by_key = CHash_ensure_Bool_by_key;
+    self.ensure_Bool_by_index = CHash_ensure_Bool_by_index;
+
     self.ensure_String = CHash_ensure_String;
+    self.ensure_String_by_key = CHash_ensure_String_by_key;
+    self.ensure_String_by_index = CHash_ensure_String_by_index;
+
+    self.ensure_Object = CHash_ensure_Object;
+    self.ensure_Object_by_key = CHash_ensure_Object_by_key;
+    self.ensure_Object_by_index = CHash_ensure_Object_by_index;
+    self.ensure_only_keys =CHash_ensure_only_keys;
+    self.ensure_only_keys_cleaning_args =CHash_ensure_only_keys_cleaning_args;
+
+
+    self.ensure_Array = CHash_ensure_Array;
+    self.ensure_Array_by_key = CHash_ensure_Array_by_key;
+    self.ensure_Array_by_index = CHash_ensure_Array_by_index;
+
     return self;
 }
 

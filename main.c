@@ -47,7 +47,7 @@ void validate(CHash *element){
         validator.ensure_min_by_key(current,"height",0.5);
         validator.ensure_max_by_key(current,"height",2.5);
         validator.ensure_Bool_by_key(current,"married");
-        
+
     }
 }
 int main(){

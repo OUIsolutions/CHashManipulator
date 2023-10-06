@@ -137,7 +137,7 @@ int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys){
             CHash_raise_error(
                     object,
                     CHASH_INVALID_KEY,
-                    "#key# at #path#  its not inside #keys#",
+                    "key: #key# at #path#  its not inside #keys#",
                     newCHashObject(
                             "key", newCHashString(current_key),
                             "keys",keys
