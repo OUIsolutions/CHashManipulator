@@ -992,6 +992,7 @@ CHash * CHash_load_from_json_file(const char *filename);
 #define  CHASH_ELEMENT_IS_NULL 405
 #define  CHASH_LOWER_NUMBER 406
 #define  CHASH_INVALID_KEY 406
+#define  CHASH_HIGHER_THAN_MIN 407
 
 
 
@@ -1060,6 +1061,17 @@ int CHash_ensure_only_keys_cleaning_args(CHashObject *object, CHashStringArray *
 int CHash_ensure_Array(CHash *element);
 int CHash_ensure_Array_by_key(CHash *object , const char *key);
 int CHash_ensure_Array_by_index(CHash *array , long index);
+
+int CHash_ensure_min_size(CHash *iterable,long min);
+int CHash_ensure_min_size_by_key(CHash  *object, const char *key,long min);
+int CHash_ensure_min_size_by_index(CHash  *array, long index,long  min);
+
+
+int CHash_ensure_max_size(CHash *iterable,long max);
+int CHash_ensure_max_size_by_key(CHash  *object, const char *key,long max);
+int CHash_ensure_max_size_by_index(CHash  *array, long index,long  max);
+
+
 
 
 
@@ -1171,6 +1183,15 @@ typedef struct CHashValidatorModule {
     int (*ensure_Array)(CHash *element);
     int (*ensure_Array_by_key)(CHash *object , const char *key);
     int (*ensure_Array_by_index)(CHash *array , long index);
+
+    int (*ensure_min_size)(CHash *iterable,long min);
+    int (*ensure_min_size_by_key)(CHash  *object, const char *key,long min);
+    int (*ensure_min_size_by_index)(CHash  *array, long index,long  min);
+
+
+    int (*ensure_max_size)(CHash *iterable,long max);
+    int (*ensure_max_size_by_key)(CHash  *object, const char *key,long max);
+    int (*ensure_max_size_by_index)(CHash  *array, long index,long  max);
 
 
 }CHashValidatorModule;
@@ -6571,6 +6592,7 @@ int CHash_ensure_only_keys_cleaning_args(CHashObject *object, CHashStringArray *
 int CHash_ensure_Array(CHash *element){
     return private_chash_check_type(element,CHASH_ARRAY);
 }
+
 int CHash_ensure_Array_by_key(CHash *object , const char *key){
     CHash *current = CHashObject_get(object,key);
     return CHash_ensure_Array(current);
@@ -6580,6 +6602,62 @@ int CHash_ensure_Array_by_index(CHash *array , long index){
     CHash *current = CHashArray_get(array,index);
     return CHash_ensure_Array(current);
 }
+
+int CHash_ensure_min_size(CHash *iterable,long min){
+    long size = CHash_get_size(iterable);
+    if(size < min){
+        CHash_raise_error(
+                iterable,
+                CHASH_HIGHER_THAN_MIN,
+                "the element at #path# its lower than #min# ",
+                newCHashObject(
+                        "min", newCHashNumber(min)
+                )
+        );
+        return 1;
+    }
+    return  0;
+}
+
+int CHash_ensure_min_size_by_key(CHash  *object, const char *key,long min){
+    CHash  *element = CHashObject_get(object,key);
+    return CHash_ensure_min_size(element,min);
+}
+
+int CHash_ensure_min_size_by_index(CHash  *array, long index,long min){
+    CHash *element = CHashArray_get(array,index);
+    return CHash_ensure_min_size(element,min);
+}
+
+int CHash_ensure_max_size(CHash *iterable,long max){
+    long size = CHash_get_size(iterable);
+    if(size > max){
+
+        CHash_raise_error(
+                iterable,
+                CHASH_HIGHER_THAN_MIN,
+                "the element at #path# its higher than #max# ",
+                newCHashObject(
+                        "max", newCHashNumber(max)
+                )
+        );
+
+        return 1;
+    }
+    return  0;
+}
+
+int CHash_ensure_max_size_by_key(CHash  *object, const char *key,long max){
+    CHash  *element = CHashObject_get(object,key);
+    return CHash_ensure_max_size(element,max);
+}
+
+int CHash_ensure_max_size_by_index(CHash  *array, long index,long max){
+    CHash *element = CHashArray_get(array,index);
+    return CHash_ensure_max_size(element,max);
+}
+
+
 
 int privateCHash_ensureArrayOrObject(CHash *element){
     if(Chash_errors(element)){
@@ -6686,6 +6764,14 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_Array = CHash_ensure_Array;
     self.ensure_Array_by_key = CHash_ensure_Array_by_key;
     self.ensure_Array_by_index = CHash_ensure_Array_by_index;
+
+    self.ensure_min_size = CHash_ensure_min_size;
+    self.ensure_min_size_by_key = CHash_ensure_min_size_by_key;
+    self.ensure_min_size_by_index = CHash_ensure_min_size_by_index;
+
+    self.ensure_max_size = CHash_ensure_max_size;
+    self.ensure_max_size_by_key  = CHash_ensure_max_size_by_key;
+    self.ensure_max_size_by_index = CHash_ensure_max_size_by_index;
 
     return self;
 }
