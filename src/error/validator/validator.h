@@ -11,6 +11,8 @@ int CHash_ensure_minDouble_by_index(CHash *element,long index,double max);
 
 
 int CHash_ensure_maxDouble(CHash *element,double  max);
+int CHash_ensure_maxDouble_by_key(CHash *element,const char *key, double  max);
+int CHash_ensure_maxDouble_by_index(CHash *element,long index,double  max);
 
 
 int CHash_ensure_Long(CHash *element);

@@ -44,9 +44,9 @@ int CHash_ensure_minDouble_by_key(CHash *object,const char *key,double min){
     return CHash_ensure_minDouble(current,min);
 }
 
-int CHash_ensure_minDouble_by_index(CHash *array,long index,double max){
+int CHash_ensure_minDouble_by_index(CHash *array,long index,double min){
     CHash *current = CHashArray_get(array,index);
-    return CHash_ensure_minDouble(current,max);
+    return CHash_ensure_minDouble(current,min);
 }
 
 
@@ -68,7 +68,15 @@ int CHash_ensure_maxDouble(CHash *element,double  max){
     return 0;
 }
 
+int CHash_ensure_maxDouble_by_key(CHash *object,const char *key, double  max){
+    CHash * current = CHashObject_get(object,key);
+    return CHash_ensure_maxDouble(current,max);
+}
 
+int CHash_ensure_maxDouble_by_index(CHash *array,long index,double  max){
+    CHash *current = CHashArray_get(array,index);
+    return CHash_ensure_maxDouble(current,max);
+}
 
 int CHash_ensure_Long(CHash *element){
     return private_chash_check_type(element,CHASH_LONG);
