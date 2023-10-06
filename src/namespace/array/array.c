@@ -8,6 +8,7 @@ CHashArrayModule newCHashArrayModule(){
     self.remove = CHashArray_remove;
     self.get = CHashArray_get;
     self.foreach = CHashArray_foreach;
+    self.foreach_with_args = CHashArray_foreach_with_args;
     self.find = CHashArray_find;
     self.find_Number =CHashArray_find_Number;
     self.find_Bool = CHashArray_find_Bool;
