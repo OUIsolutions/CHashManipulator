@@ -31,7 +31,19 @@ CHash *create (){
     );
 
 }
-
+void validate(CHash *element){
+    validator.ensure_Array(element);
+    long size = hash.get_size(element);
+    for(long i = 0; i < size; i++){
+        CHashObject *current = array.getObject(element,i);
+        validator.ensure_String_by_key(current,"name");
+        validator.ensure_min_by_key(current,"age",0);
+        validator.ensure_max_by_key(current,"age",120);
+        validator.ensure_min_by_key(current,"height",0.5);
+        validator.ensure_max_by_key(current,"height",2.5);
+        validator.ensure_Bool_by_key(current,"married");
+    }
+}
 int main(){
     hash = newCHashNamespace();
     obj = hash.object;
@@ -39,32 +51,23 @@ int main(){
     validator = hash.validator;
 
     CHashArray *element = create();
-    
-    long size = hash.get_size(element);
-    for(int i = 0; i <size; i++){
-        CHashObject *current_person = array.getObject(element,i);
-        
-        char * name = obj.getString(current_person,"name");
-        long age = obj.getNumber(current_person,"age");
-        double height = obj.getNumber(current_person, "height");
-        bool married = obj.getBool(current_person,"married");
-
-        if(!hash.errors(element)){
-            // its safe to print anything here 
-            printf("-----------------------------------------------\n");
-            printf("\tname:%s\n",name);
-            printf("\tage:%ld\n",age);
-            printf("\tage:%ld\n",age);
-            printf("\tmarried:%s\n",married  ? "true": "false");
-        }
-        
-    }
-
+    validate(element);
     if(hash.errors(element)){
         char *menssage = hash.get_error_menssage(element);
         printf("%s\n",menssage);
+        hash.free(element);
+        return 0;
     }
 
+    long size = hash.get_size(element);
+    for(int i = 0; i <size; i++){
+        CHashObject *current_person = array.getObject(element,i);
+        printf("-----------------------------------------------\n");
+        printf("\tname:%s\n", obj.getString(current_person,"name"));
+        printf("\tage:%ld\n",(long)obj.getNumber(current_person,"age"));
+        printf("\tage:%lf\n",obj.getNumber(current_person, "height"));
+        printf("\tmarried:%s\n",obj.getBool(current_person,"married")  ? "true": "false");
+    }
 
     hash.free(element);
 

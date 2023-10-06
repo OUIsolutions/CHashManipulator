@@ -64,7 +64,7 @@ int CHash_ensure_max(CHash *element, double  max){
     if(Chash_errors(element)){
         return 1;
     }
-    if(value < max){
+    if(value > max){
         CHash_raise_error(
                 element,
                 CHASH_LOWER_NUMBER,
