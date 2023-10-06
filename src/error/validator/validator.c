@@ -201,7 +201,7 @@ int CHash_ensure_max_size(CHash *iterable,long max){
         CHash_raise_error(
                 iterable,
                 CHASH_HIGHER_THAN_MIN,
-                "the element at #path# its gier than #max# ",
+                "the element at #path# its higher than #max# ",
                 newCHashObject(
                         "max", newCHashNumber(max)
                 )
