@@ -236,14 +236,10 @@ CHashObject * CHashObject_getObject(CHashObject * self, const char *key){
 }
 
 
-long CHashObject_getLong(CHashObject * self, const char *key){
-    CHash *element = CHashObject_get(self,key);
-    return CHash_toLong(element);
-}
 
-double CHashObject_getDouble(CHashObject * self, const char *key){
+double CHashObject_getNumber(CHashObject * self, const char *key){
     CHash *element = CHashObject_get(self,key);
-    return CHash_toDouble(element);
+    return CHash_toNumber(element);
 }
 
 bool CHashObject_getBool(CHashObject * self, const char *key){

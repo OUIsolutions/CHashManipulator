@@ -5,8 +5,7 @@ enum{
     CHASH_NULL,
     CHASH_ARRAY,
     CHASH_OBJECT,
-    CHASH_LONG,
-    CHASH_DOUBLE,
+    CHASH_NUMBER,
     CHASH_BOOL,
     CHASH_STRING
 };

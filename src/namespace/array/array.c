@@ -12,8 +12,7 @@ CHashArrayModule newCHashArrayModule(){
     self.getArray = CHashArray_getArray;
     self.getObject = CHashArray_getObject;
     self.getString = CHashArray_getString;
-    self.getDouble = CHashArray_getDouble;
-    self.getLong = CHashArray_getLong;
+    self.getNumber = CHashArray_getNumber;
     self.getBool = CHashArray_getBool;
     return self;
 }

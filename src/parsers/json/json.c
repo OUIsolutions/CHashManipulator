@@ -34,18 +34,14 @@ cJSON * CHash_dump_to_cJSON(CHash *element){
         char *value  = CHash_toString(element);
         return cJSON_CreateString(value);
     }
-    if(type == CHASH_DOUBLE){
-        return cJSON_CreateNumber(CHash_toDouble(element));
+    if(type == CHASH_NUMBER){
+        return cJSON_CreateNumber(CHash_toNumber(element));
     }
 
     if(type == CHASH_BOOL){
         return cJSON_CreateBool(CHash_toBool(element));
     }
 
-    if(type == CHASH_LONG){
-        long value  = CHash_toLong(element);
-        return cJSON_CreateNumber((double)value);
-    }
 
 
     return cJSON_CreateNull();
@@ -118,7 +114,7 @@ CHash * CHash_load_from_cJSON(cJSON *element){
     }
 
     if(element->type == cJSON_Number){
-        return newCHashDouble(element->valuedouble);
+        return newCHashNumber(element->valuedouble);
     }
         return newCHashNULL();
 

@@ -1,27 +1,19 @@
 
 int private_chash_check_type(CHash *element, unsigned short  expected_type);
 
-int CHash_ensure_Double(CHash *element);
+int CHash_ensure_Number(CHash *element);
 int CHash_ensure_Double_by_key(CHash *object,const char *key);
 int CHash_ensure_Double_by_index(CHash *array,long index);
 
-int CHash_ensure_minDouble(CHash *element,double  min);
-int CHash_ensure_minDouble_by_key(CHash *object,const char *key,double min );
-int CHash_ensure_minDouble_by_index(CHash *array,long index,double max);
+int CHash_ensure_min(CHash *element, double  min);
+int CHash_ensure_min_by_key(CHash *object, const char *key, double min );
+int CHash_ensure_min_by_index(CHash *array, long index, double min);
 
 
-int CHash_ensure_maxDouble(CHash *element,double  max);
-int CHash_ensure_maxDouble_by_key(CHash *object,const char *key, double  max);
-int CHash_ensure_maxDouble_by_index(CHash *array,long index,double  max);
+int CHash_ensure_max(CHash *element, double  max);
+int CHash_ensure_max_by_key(CHash *object, const char *key, double  max);
+int CHash_ensure_max_by_index(CHash *array, long index, double  max);
 
-
-int CHash_ensure_Long(CHash *element);
-int CHash_ensure_long_by_key(CHash *object , const char *key);
-int CHash_ensure_long_by_index(CHash *array , long index);
-
-int CHash_ensure_minLong(CHash *element,long min);
-int CHash_ensure_minLong_by_key(CHash *object,const char *key, long min);
-int CHash_ensure_minLong_by_index(CHash *array,long  index, long min);
 
 
 

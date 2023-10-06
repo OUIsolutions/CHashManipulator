@@ -136,7 +136,7 @@ long privateCHashArray_convert_index(CHashArrayOrObject *self, long index){
                 CHASH_NOT_VALID_INDEX,
                 " index: #index# its not valid, at #path#",
                 newCHashObject(
-                        "index", newCHashLong(index)
+                        "index", newCHashNumber(index)
                 )
         );
         return -1;
@@ -208,14 +208,11 @@ CHashObject * CHashArray_getObject(CHashArrayOrObject * self, long index){
     return element;
 }
 
-long CHashArray_getLong(CHashArrayOrObject * self, long index){
-    CHashObject *element = CHashArray_get(self,index);
-    return CHash_toLong(element);
-}
 
-double CHashArray_getDouble(CHashArrayOrObject * self, long index){
+
+double CHashArray_getNumber(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
-    return CHash_toDouble(element);
+    return CHash_toNumber(element);
 }
 
 bool CHashArray_getBool(CHashArrayOrObject * self, long index){

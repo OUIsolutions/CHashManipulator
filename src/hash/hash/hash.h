@@ -18,7 +18,6 @@ typedef struct CHash{
     union {
         CTextStack  *private_value_stack;
         double private_value_double;
-        long private_value_long;
         bool private_value_bool;
         struct CHash **private_sub_elements;
     };

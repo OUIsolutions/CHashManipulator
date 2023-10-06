@@ -19,12 +19,12 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type){
     return 0;
 }
 
-int CHash_ensure_Double(CHash *element){
-    return private_chash_check_type(element,CHASH_DOUBLE);
+int CHash_ensure_Number(CHash *element){
+    return private_chash_check_type(element, CHASH_NUMBER);
 }
 
-int CHash_ensure_minDouble(CHash *element,double  min){
-    double  value = CHash_toDouble(element);
+int CHash_ensure_min(CHash *element, double  min){
+    double  value = CHash_toNumber(element);
     if(Chash_errors(element)){
         return 1;
     }
@@ -33,26 +33,26 @@ int CHash_ensure_minDouble(CHash *element,double  min){
                 element,
                 CHASH_LOWER_NUMBER,
                 "element at #path# of value #value# its lower than #number#",
-                newCHashObject("number", newCHashDouble(min))
+                newCHashObject("number", newCHashNumber(min))
         );
         return 1;
     }
     return 0;
 }
-int CHash_ensure_minDouble_by_key(CHash *object,const char *key,double min){
+int CHash_ensure_min_by_key(CHash *object, const char *key, double min){
     CHash * current = CHashObject_get(object,key);
-    return CHash_ensure_minDouble(current,min);
+    return CHash_ensure_min(current, min);
 }
 
-int CHash_ensure_minDouble_by_index(CHash *array,long index,double min){
+int CHash_ensure_min_by_index(CHash *array, long index, double min){
     CHash *current = CHashArray_get(array,index);
-    return CHash_ensure_minDouble(current,min);
+    return CHash_ensure_min(current, min);
 }
 
 
 
-int CHash_ensure_maxDouble(CHash *element,double  max){
-    double  value = CHash_toDouble(element);
+int CHash_ensure_max(CHash *element, double  max){
+    double  value = CHash_toNumber(element);
     if(Chash_errors(element)){
         return 1;
     }
@@ -61,65 +61,22 @@ int CHash_ensure_maxDouble(CHash *element,double  max){
                 element,
                 CHASH_LOWER_NUMBER,
                 "element at #path# of value #value# its lower than #number#",
-                newCHashObject("number", newCHashDouble(max))
+                newCHashObject("number", newCHashNumber(max))
         );
         return 1;
     }
     return 0;
 }
 
-int CHash_ensure_maxDouble_by_key(CHash *object,const char *key, double  max){
+int CHash_ensure_max_by_key(CHash *object, const char *key, double  max){
     CHash * current = CHashObject_get(object,key);
-    return CHash_ensure_maxDouble(current,max);
+    return CHash_ensure_max(current, max);
 }
 
-int CHash_ensure_maxDouble_by_index(CHash *array,long index,double  max){
+int CHash_ensure_max_by_index(CHash *array, long index, double  max){
     CHash *current = CHashArray_get(array,index);
-    return CHash_ensure_maxDouble(current,max);
+    return CHash_ensure_max(current, max);
 }
-
-int CHash_ensure_Long(CHash *element){
-    return private_chash_check_type(element,CHASH_LONG);
-
-}
-
-int CHash_ensure_long_by_key(CHash *object , const char *key){
-    CHash *current = CHashObject_get(object,key);
-    return CHash_ensure_Long(current);
-}
-
-int CHash_ensure_long_by_index(CHash *array , long index){
-    CHash *current = CHashArray_get(array,index);
-    return CHash_ensure_Long(current);
-}
-
-int CHash_ensure_minLong(CHash *element,long min){
-    long  value = CHash_toLong(element);
-    if(Chash_errors(element)){
-        return 1;
-    }
-    if(value < min){
-        CHash_raise_error(
-                element,
-                CHASH_LOWER_NUMBER,
-                "element at #path# of value #value# its lower than #number#",
-                newCHashObject("number", newCHashLong(min))
-        );
-        return 1;
-    }
-    return 0;
-}
-
-int CHash_ensure_minLong_by_key(CHash *object,const char *key, long min){
-    CHash *current = CHashObject_get(object,key);
-    return CHash_ensure_minLong(current,min);
-}
-
-int CHash_ensure_minLong_by_index(CHash *array,long index, long min){
-    CHash *current = CHashArray_get(array,index);
-    return CHash_ensure_minLong(current,min);
-}
-
 
 int CHash_ensure_Bool(CHash *element){
     return private_chash_check_type(element,CHASH_BOOL);

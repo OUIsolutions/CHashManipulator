@@ -6,11 +6,8 @@ CHashNamespace newCHashNamespace(){
     self.newBool = newCHashBool;
     self.toBool = CHash_toBool;
 
-    self.newDouble = newCHashDouble;
-    self.toDouble = CHash_toDouble;
-
-    self.newLong = newCHashLong;
-    self.toLong = CHash_toLong;
+    self.newNumber = newCHashNumber;
+    self.toNumerical = CHash_toNumber;
 
     self.newStackString = newCHashStackString;
     self.toStack = CHashtoStack;

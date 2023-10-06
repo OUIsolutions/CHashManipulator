@@ -33,9 +33,8 @@ CHashArray * CHashArray_getArray(CHashObject * self, long index);
 
 CHashObject * CHashArray_getObject(CHashObject * self, long index);
 
-long CHashArray_getLong(CHashObject * self, long index);
 
-double CHashArray_getDouble(CHashObject * self, long index);
+double CHashArray_getNumber(CHashArrayOrObject *self, long index);
 
 bool CHashArray_getBool(CHashObject * self, long index);
 

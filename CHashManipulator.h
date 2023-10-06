@@ -806,9 +806,9 @@ CHash * newCHashNULL();
 
 
 
-double  CHash_toDouble(CHash *element);
+double  CHash_toNumber(CHash *element);
 
-CHash * newCHashDouble(double value);
+CHash * newCHashNumber(double value);
 
 
 
@@ -872,7 +872,7 @@ CHashObject * CHashArray_getObject(CHashObject * self, long index);
 
 long CHashArray_getLong(CHashObject * self, long index);
 
-double CHashArray_getDouble(CHashObject * self, long index);
+double CHashArray_getNumber(CHashArrayOrObject *self, long index);
 
 bool CHashArray_getBool(CHashObject * self, long index);
 
@@ -919,7 +919,7 @@ CHashObject * CHashObject_getObject(CHashObject * self, const char *key);
 
 long CHashObject_getLong(CHashObject * self, const char *key);
 
-double CHashObject_getDouble(CHashObject * self, const char *key);
+double CHashObject_getNumber(CHashObject * self, const char *key);
 
 bool CHashObject_getBool(CHashObject * self, const char *key);
 
@@ -1021,7 +1021,7 @@ privateCHashError * privateCHashError_get_error(CHash *self);
 
 int private_chash_check_type(CHash *element, unsigned short  expected_type);
 
-int CHash_ensure_Double(CHash *element);
+int CHash_ensure_Number(CHash *element);
 
 int CHash_ensure_Long(CHash *element);
 int CHash_ensure_Bool(CHash *element);
@@ -5480,7 +5480,7 @@ CHash * newCHashLong(long value){
 
 
 
-double CHash_toDouble(CHash *element){
+double CHash_toNumber(CHash *element){
 
     if(CHash_ensure_Double(element)){
         return -1;
@@ -5490,7 +5490,7 @@ double CHash_toDouble(CHash *element){
 
 }
 
-CHash * newCHashDouble(double value){
+CHash * newCHashNumber(double value){
     CHash * self =  privatenewChash_raw();
     self->private_type = CHASH_DOUBLE;
     self->private_value_double = value;
@@ -5772,7 +5772,7 @@ long CHashArray_getLong(CHashArrayOrObject * self, long index){
     return CHash_toLong(element);
 }
 
-double CHashArray_getDouble(CHashArrayOrObject * self, long index){
+double CHashArray_getNumber(CHashArrayOrObject *self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toDouble(element);
 }
@@ -6032,7 +6032,7 @@ long CHashObject_getLong(CHashObject * self, const char *key){
     return CHash_toLong(element);
 }
 
-double CHashObject_getDouble(CHashObject * self, const char *key){
+double CHashObject_getNumber(CHashObject * self, const char *key){
     CHash *element = CHashObject_get(self,key);
     return CHash_toDouble(element);
 }
@@ -6383,7 +6383,7 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type){
     return 0;
 }
 
-int CHash_ensure_Double(CHash *element){
+int CHash_ensure_Number(CHash *element){
     return private_chash_check_type(element,CHASH_DOUBLE);
 }
 

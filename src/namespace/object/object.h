@@ -21,9 +21,8 @@ typedef struct CHashObjectModule{
 
     CHashObject * (*getObject)(CHashObject * self, const char *key);
 
-    long (*getLong)(CHashObject * self, const char *key);
 
-    double (*getDouble)(CHashObject * self, const char *key);
+    double (*getNumber)(CHashObject * self, const char *key);
 
     bool (*getBool)(CHashObject * self, const char *key);
 

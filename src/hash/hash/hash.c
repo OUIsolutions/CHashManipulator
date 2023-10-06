@@ -20,7 +20,7 @@ CHashArray * CHash_get_path(CHash *self){
     CHashArray  *path = CHash_get_path(self->private_father);
 
     if(self->private_reference_type == PRIVATE_CHASH_ARRAY_ITEM){
-        CHashArray_append(path, newCHashLong((long)self->private_index));
+        CHashArray_append(path, newCHashNumber(self->private_index));
     }
 
     if(self->private_reference_type == PRIVATE_CHASH_KEYVAL){
@@ -98,12 +98,9 @@ CHash * CHash_copy(CHash *self){
         return newCHashString(self->private_value_stack->rendered_text);
     }
     
-    if(self->private_type == CHASH_LONG){
-        return newCHashLong(self->private_value_long);
-    }
 
-    if(self->private_type == CHASH_DOUBLE){
-        return newCHashDouble(self->private_value_double);
+    if(self->private_type == CHASH_NUMBER){
+        return newCHashNumber(self->private_value_double);
     }
     
     if(self->private_type == CHASH_BOOL){

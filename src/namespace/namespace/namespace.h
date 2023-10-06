@@ -6,12 +6,8 @@ typedef struct CHashNamespace{
     bool (*toBool)(CHash *element);
 
 
-    CHash * (*newDouble)(double value);
-    double  (*toDouble)(CHash *element);
-
-
-    CHash * (*newLong)(long value);
-    long (*toLong)(CHash *element);
+    CHash * (*newNumber)(double value);
+    double  (*toNumerical)(CHash *element);
 
 
     CHash * (*newStackString)(CTextStack *element);

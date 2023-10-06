@@ -24,12 +24,8 @@ const char  *private_Chash_convert_type(long type){
         return "object";
     }
 
-    if(type == CHASH_LONG){
-        return "long";
-    }
-
-    if(type == CHASH_DOUBLE){
-        return "double";
+    if(type == CHASH_NUMBER){
+        return "numeber";
     }
 
     if(type == CHASH_BOOL){

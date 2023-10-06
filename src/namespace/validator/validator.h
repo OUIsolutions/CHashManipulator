@@ -5,7 +5,6 @@ typedef struct CHashValidatorModule {
 
     int (*ensure_Double)(CHash *element);
 
-    int (*ensure_Long)(CHash *element);
 
     int (*ensure_Bool)(CHash *element);
 
