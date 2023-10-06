@@ -26,7 +26,13 @@ void  CHashArray_remove(CHashArrayOrObject *self, long index);
 
 CHash * CHashArray_get(CHashArray *self, long index);
 
+long CHashArray_find(CHashArray *self, CHash *element);
+
+long CHashArray_find_cleanning_element(CHashArray *self, CHash *element);
+
+
 short CHashArray_get_type(CHashArray *self, long index);
+
 
 
 CHashArray * CHashArray_getArray(CHashObject * self, long index);

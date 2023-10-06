@@ -157,6 +157,23 @@ CHash * CHashArray_get(CHashArrayOrObject *self, long index){
     return self->private_sub_elements[formated_index];
 }
 
+long CHashArray_find(CHashArray *self, CHash *element){
+    long size = CHash_get_size(self);
+    for(long i = 0; i < size; i++){
+        CHash *current = CHashArray_get(self,i);
+        if(CHash_equals(current,element)){
+            return i;
+        }
+    }
+    return -1;
+}
+long CHashArray_find_cleanning_element(CHashArray *self, CHash *element){
+    long index = CHashArray_find(self,element);
+    CHash_free(element);
+    return index;
+}
+
+
 short CHashArray_get_type(CHashArray *self, long index){
     if(privateCHash_ensureArrayOrObject(self)){
         return CHASH_NOT_EXIST;

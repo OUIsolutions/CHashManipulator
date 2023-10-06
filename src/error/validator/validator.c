@@ -128,8 +128,13 @@ int CHash_ensure_Object_by_index(CHash *array , long index){
     CHash *current = CHashArray_get(array,index);
     return CHash_ensure_Object(current);
 }
-int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys){
 
+int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys){
+    long size = CHash_get_size(object);
+    for(long i = 0; i < size; i++){
+        char *current_key = CHashObject_get_key_by_index(object,i);
+
+    }
 }
 
 int CHash_ensure_Array(CHash *element){

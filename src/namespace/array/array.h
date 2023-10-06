@@ -8,6 +8,9 @@ typedef struct CHashArrayModule{
     void  (*set)(CHashArrayOrObject *self, long index,CHash *element);
     void  (*remove)(CHashArrayOrObject *self, long index);
     CHash * (*get)(CHashArrayOrObject *self, long position);
+    long (*find)(CHashArray *self, CHash *element);
+    long (*find_cleanning_element)(CHashArray *self, CHash *element);
+
     short (*get_type)(CHashArrayOrObject *self, long index);
 
     CHashArray * (*getArray)(CHashArrayOrObject * self, long index);
