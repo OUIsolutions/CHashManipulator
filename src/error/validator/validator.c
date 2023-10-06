@@ -23,14 +23,49 @@ int CHash_ensure_Double(CHash *element){
     return private_chash_check_type(element,CHASH_DOUBLE);
 }
 
-int CHash_ensure_Double_by_key(CHash *object,const char *key){
-    CHashObject *current = CHashObject_get(object,key);
-    return CHash_ensure_Double(current);
+int CHash_ensure_minDouble(CHash *element,double  min){
+    double  value = CHash_toDouble(element);
+    if(Chash_errors(element)){
+        return 1;
+    }
+    if(value < min){
+        CHash_raise_error(
+                element,
+                CHASH_LOWER_NUMBER,
+                "element at #path# of value #value# its lower than #number#",
+                newCHashObject("number", newCHashDouble(min))
+        );
+        return 1;
+    }
+    return 0;
+}
+int CHash_ensure_minDouble_by_key(CHash *object,const char *key,double min){
+    CHash * current = CHashObject_get(object,key);
+    return CHash_ensure_minDouble(current,min);
 }
 
-int CHash_ensure_Double_by_index(CHash *array,long index){
-    CHashArray *current = CHashArray_get(array,index);
-    return CHash_ensure_Double(current);
+int CHash_ensure_minDouble_by_index(CHash *array,long index,double max){
+    CHash *current = CHashArray_get(array,index);
+    return CHash_ensure_minDouble(current,max);
+}
+
+
+
+int CHash_ensure_maxDouble(CHash *element,double  max){
+    double  value = CHash_toDouble(element);
+    if(Chash_errors(element)){
+        return 1;
+    }
+    if(value < max){
+        CHash_raise_error(
+                element,
+                CHASH_LOWER_NUMBER,
+                "element at #path# of value #value# its lower than #number#",
+                newCHashObject("number", newCHashDouble(max))
+        );
+        return 1;
+    }
+    return 0;
 }
 
 
@@ -41,7 +76,7 @@ int CHash_ensure_Long(CHash *element){
 }
 
 int CHash_ensure_long_by_key(CHash *object , const char *key){
-    CHashObject *current = CHashObject_get(object,key);
+    CHash *current = CHashObject_get(object,key);
     return CHash_ensure_Long(current);
 }
 
@@ -95,7 +130,7 @@ int CHash_ensure_Array(CHash *element){
     return private_chash_check_type(element,CHASH_ARRAY);
 }
 int CHash_ensure_Array_by_key(CHash *object , const char *key){
-    CHashObject *current = CHashObject_get(object,key);
+    CHash *current = CHashObject_get(object,key);
     return CHash_ensure_Array(current);
 }
 
