@@ -857,6 +857,11 @@ void  CHashArray_remove(CHashArrayOrObject *self, long index);
 
 CHash * CHashArray_get(CHashArray *self, long index);
 
+void CHashArray_foreach(CHashArray *self,void  (*callback)(CHash *current));
+
+void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *current,va_list args),...);
+
+
 long CHashArray_find(CHashArray *self, CHash *element);
 
 
@@ -1131,6 +1136,7 @@ typedef struct CHashArrayModule{
     long (*find_Number)(CHashArray *self, double element);
     long (*find_Bool)(CHashArray *self, bool  element);
     long (*find_String)(CHashArray *self, const char *element);
+    void (*foreach)(CHashArray *self,void  (*callback)(CHash *current));
 
 
     short (*get_type)(CHashArrayOrObject *self, long index);
@@ -1156,14 +1162,14 @@ typedef struct CHashValidatorModule {
     int (*ensure_Number_by_index)(CHash *array, long index);
 
 
-    int (*ensure_min)(CHash *element, double  min);
-    int (*ensure_min_by_key)(CHash *object, const char *key, double min );
-    int (*ensure_min_by_index)(CHash *array, long index, double min);
+    int (*ensure_min_value)(CHash *element, double  min);
+    int (*ensure_min_value_by_key)(CHash *object, const char *key, double min );
+    int (*ensure_min_value_by_index)(CHash *array, long index, double min);
 
 
-    int (*ensure_max)(CHash *element, double  max);
-    int (*ensure_max_by_key)(CHash *object, const char *key, double  max);
-    int (*ensure_max_by_index)(CHash *array, long index, double  max);
+    int (*ensure_max_value)(CHash *element, double  max);
+    int (*ensure_max_value_by_key)(CHash *object, const char *key, double  max);
+    int (*ensure_max_value_by_index)(CHash *array, long index, double  max);
 
     int (*ensure_Bool)(CHash *element);
     int (*ensure_Bool_by_key)(CHash *object , const char *key);
@@ -5802,6 +5808,7 @@ long CHashArray_find_String(CHashArray *self, const char *element){
 }
 
 
+
 short CHashArray_get_type(CHashArray *self, long index){
     if(privateCHash_ensureArrayOrObject(self)){
         return CHASH_NOT_EXIST;
@@ -5869,6 +5876,43 @@ bool CHashArray_getBool(CHashArrayOrObject * self, long index){
 char  * CHashArray_getString(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toString(element);
+}
+
+
+
+
+void CHashArray_foreach(CHashArray *self,void  (*callback)(CHash *current)){
+    if(privateCHash_ensureArrayOrObject(self)){
+        return;
+    }
+    long size = CHash_get_size(self);
+    for(long i = 0; i < size;i++){
+
+        CHash *current = CHashArray_get(self,i);
+        callback(current);
+        if(Chash_errors(self)){
+            break;
+        }
+    }
+}
+void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *current,va_list args),...){
+
+    if(privateCHash_ensureArrayOrObject(self)){
+        return;
+    }
+    long size = CHash_get_size(self);
+
+    for(long i = 0; i < size;i++){
+        va_list  args;
+        va_start(args, NULL);
+        CHash *current = CHashArray_get(self,i);
+        callback(current,args);
+        va_end(args);
+        if(Chash_errors(self)){
+            break;
+        }
+    }
+
 }
 
 
@@ -6484,12 +6528,12 @@ int CHash_ensure_min_value(CHash *element, double  min){
 }
 int CHash_ensure_min_value_by_key(CHash *object, const char *key, double min){
     CHash * current = CHashObject_get(object,key);
-    return CHash_ensure_min(current, min);
+    return CHash_ensure_min_value(current, min);
 }
 
 int CHash_ensure_min_value_by_index(CHash *array, long index, double min){
     CHash *current = CHashArray_get(array,index);
-    return CHash_ensure_min(current, min);
+    return CHash_ensure_min_value(current, min);
 }
 
 
@@ -6513,12 +6557,12 @@ int CHash_ensure_max_value(CHash *element, double  max){
 
 int CHash_ensure_max_value_by_key(CHash *object, const char *key, double  max){
     CHash * current = CHashObject_get(object,key);
-    return CHash_ensure_max(current, max);
+    return CHash_ensure_max_value(current, max);
 }
 
 int CHash_ensure_max_value_by_index(CHash *array, long index, double  max){
     CHash *current = CHashArray_get(array,index);
-    return CHash_ensure_max(current, max);
+    return CHash_ensure_max_value(current, max);
 }
 
 int CHash_ensure_Bool(CHash *element){
@@ -6711,6 +6755,7 @@ CHashArrayModule newCHashArrayModule(){
     self.set = CHashArray_set;
     self.remove = CHashArray_remove;
     self.get = CHashArray_get;
+    self.foreach = CHashArray_foreach;
     self.find = CHashArray_find;
     self.find_Number =CHashArray_find_Number;
     self.find_Bool = CHashArray_find_Bool;
@@ -6736,13 +6781,13 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_Number_by_key = CHash_ensure_Number_by_key;
     self.ensure_Number_by_index = CHash_ensure_Number_by_index;
 
-    self.ensure_min = CHash_ensure_min;
-    self.ensure_min_by_key = CHash_ensure_min_by_key;
-    self.ensure_min_by_index = CHash_ensure_min_by_index;
+    self.ensure_min_value = CHash_ensure_min_value;
+    self.ensure_min_value_by_key = CHash_ensure_min_value_by_key;
+    self.ensure_min_value_by_index = CHash_ensure_min_value_by_index;
 
-    self.ensure_max = CHash_ensure_max;
-    self.ensure_max_by_key =CHash_ensure_max_by_key;
-    self.ensure_min_by_index =CHash_ensure_max_by_index;
+    self.ensure_max_value = CHash_ensure_max_value;
+    self.ensure_max_value_by_key =CHash_ensure_max_value_by_key;
+    self.ensure_max_value_by_index =CHash_ensure_max_value_by_index;
 
 
 

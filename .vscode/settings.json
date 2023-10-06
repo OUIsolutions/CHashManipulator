@@ -3,6 +3,8 @@
         "one.h": "c",
         "definition.h": "c",
         "declaration.h": "c",
-        "ctype.h": "c"
+        "ctype.h": "c",
+        "string_view": "c",
+        "system_error": "c"
     }
 }

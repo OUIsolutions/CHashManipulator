@@ -1,4 +1,5 @@
-#include "src/one.h"
+#include "../../../CHashManipulator.h"
+
 
 CHashNamespace hash;
 CHashObjectModule  obj;
@@ -9,13 +10,13 @@ CHash *create (){
     return newCHashArray(
 
             newCHashObject(
-                    "name",hash.newString("Matedddddddddddddddddds"),
-                    "age", hash.newNumber(26),
+                    "name",hash.newString("Mateuddddddddddsssssssssssssssssssssssssssssssssddddddddddddddddddddds"),
+                    "age", hash.newNumber(222),
                     "height",hash.newNumber(1.69),
                     "married",hash.newBool(true)
             ),
             newCHashObject(
-                    "name",hash.newString("second namesssssssssssssssssssssssssssssssssssssssssssssssssssss"),
+                    "name",hash.newString("second name"),
                     "age", hash.newNumber(42),
                     "height",hash.newNumber(2.5),
                     "married",hash.newBool(true)
