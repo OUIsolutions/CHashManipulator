@@ -31,29 +31,24 @@ CHash *create (){
     );
 
 }
-
+void validate_person(CHash *person){
+    validator.ensure_only_keys_cleaning_args(person, newCHashStringArray(
+            "name","age","height","married"
+    ));
+    validator.ensure_String_by_key(person,"name");
+    validator.ensure_min_size_by_key(person,"name",2);
+    validator.ensure_max_size_by_key(person,"name",30);
+    validator.ensure_min_value_by_key(person, "age", 0);
+    validator.ensure_max_value_by_key(person, "age", 120);
+    validator.ensure_min_value_by_key(person, "height", 0.5);
+    validator.ensure_max_value_by_key(person, "height", 2.5);
+    validator.ensure_Bool_by_key(person,"married");
+}
 void validate(CHash *element){
     validator.ensure_Array(element);
-
-
-    long size = hash.get_size(element);
-    for(long i = 0; i < size; i++){
-        CHashObject *current = array.getObject(element,i);
-
-        validator.ensure_only_keys_cleaning_args(current, newCHashStringArray(
-                "name","age","height","married"
-        ));
-
-        validator.ensure_String_by_key(current,"name");
-        validator.ensure_min_size_by_key(current,"name",2);
-        validator.ensure_max_size_by_key(current,"name",30);
-        validator.ensure_min_value_by_key(current, "age", 0);
-        validator.ensure_max_value_by_key(current, "age", 120);
-        validator.ensure_min_value_by_key(current, "height", 0.5);
-        validator.ensure_max_value_by_key(current, "height", 2.5);
-        validator.ensure_Bool_by_key(current,"married");
-    }
+    validator.foreach(element, validate_person);
 }
+
 int main(){
     hash = newCHashNamespace();
     obj = hash.object;
