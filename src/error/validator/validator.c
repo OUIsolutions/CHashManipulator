@@ -168,6 +168,62 @@ int CHash_ensure_Array_by_index(CHash *array , long index){
     return CHash_ensure_Array(current);
 }
 
+int CHash_ensure_min_size(CHash *iterable,long min){
+    long size = CHash_get_size(iterable);
+    if(size < min){
+        CHash_raise_error(
+                iterable,
+                CHASH_HIGHER_THAN_MIN,
+                "the element at #path# its lower than #min# ",
+                newCHashObject(
+                        "min", newCHashNumber(min)
+                )
+        );
+        return 1;
+    }
+    return  0;
+}
+
+int CHash_ensure_min_size_by_key(CHash  *object, const char *key,long min){
+    CHash  *element = CHashObject_get(object,key);
+    return CHash_ensure_min_size(element,min);
+}
+
+int CHash_ensure_min_size_by_index(CHash  *array, long index,long min){
+    CHash *element = CHashArray_get(array,index);
+    return CHash_ensure_min_size(element,min);
+}
+
+int CHash_ensure_max_size(CHash *iterable,long max){
+    long size = CHash_get_size(iterable);
+    if(size > max){
+
+        CHash_raise_error(
+                iterable,
+                CHASH_HIGHER_THAN_MIN,
+                "the element at #path# its gier than #max# ",
+                newCHashObject(
+                        "max", newCHashNumber(max)
+                )
+        );
+
+        return 1;
+    }
+    return  0;
+}
+
+int CHash_ensure_max_size_by_key(CHash  *object, const char *key,long max){
+    CHash  *element = CHashObject_get(object,key);
+    return CHash_ensure_max_size(element,max);
+}
+
+int CHash_ensure_max_size_by_index(CHash  *array, long index,long max){
+    CHash *element = CHashArray_get(array,index);
+    return CHash_ensure_max_size(element,max);
+}
+
+
+
 int privateCHash_ensureArrayOrObject(CHash *element){
     if(Chash_errors(element)){
         return 1;

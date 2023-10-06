@@ -37,6 +37,17 @@ int CHash_ensure_Array(CHash *element);
 int CHash_ensure_Array_by_key(CHash *object , const char *key);
 int CHash_ensure_Array_by_index(CHash *array , long index);
 
+int CHash_ensure_min_size(CHash *iterable,long min);
+int CHash_ensure_min_size_by_key(CHash  *object, const char *key,long min);
+int CHash_ensure_min_size_by_index(CHash  *array, long index,long  min);
+
+
+int CHash_ensure_max_size(CHash *iterable,long max);
+int CHash_ensure_max_size_by_key(CHash  *object, const char *key,long max);
+int CHash_ensure_max_size_by_index(CHash  *array, long index,long  max);
+
+
+
 
 
 int privateCHash_ensureArrayOrObject(CHash *element);
