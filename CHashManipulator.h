@@ -1137,6 +1137,7 @@ typedef struct CHashArrayModule{
     long (*find_Bool)(CHashArray *self, bool  element);
     long (*find_String)(CHashArray *self, const char *element);
     void (*foreach)(CHashArray *self,void  (*callback)(CHash *current));
+    void (*foreach_with_args)(CHashArray *self,void  (*callback)(CHash *current,va_list args),...);
 
 
     short (*get_type)(CHashArrayOrObject *self, long index);
@@ -6756,6 +6757,7 @@ CHashArrayModule newCHashArrayModule(){
     self.remove = CHashArray_remove;
     self.get = CHashArray_get;
     self.foreach = CHashArray_foreach;
+    self.foreach_with_args = CHashArray_foreach_with_args;
     self.find = CHashArray_find;
     self.find_Number =CHashArray_find_Number;
     self.find_Bool = CHashArray_find_Bool;
