@@ -32,7 +32,6 @@ void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *curr
 
 CHashArray * CHashArray_map(CHashArray *self,CHash* (*callback)(CHash *current));
 
-
 CHashArray * CHashArray_map_with_args(CHashArray *self,CHash* (*callback)(CHash *current,va_list args),...);
 
 

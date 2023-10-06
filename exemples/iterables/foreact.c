@@ -1,4 +1,7 @@
-#include "src/one.h"
+//
+// Created by mateusmoutinho on 06/10/23.
+//
+#include "CHashManipulator.h"
 
 CHashNamespace hash;
 CHashObjectModule  obj;
@@ -23,7 +26,7 @@ int main(){
     CHashArray *element = newCHashArray(
             newCHashNumber(10),
             newCHashString("aaaaaaaaaa")
-            );
+    );
     array.foreach(element,print_element);
 
     hash.free(element);

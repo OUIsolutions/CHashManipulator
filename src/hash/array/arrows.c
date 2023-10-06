@@ -36,9 +36,10 @@ void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *curr
 
 CHashArray * CHashArray_map(CHashArray *self,CHash* (*callback)(CHash *current)){
 
-    if(CHash_ensure_Array(self)){
+    if(privateCHash_ensureArrayOrObject(self)){
         return NULL;
     }
+
     CHashArray  *new_element = newCHashArrayEmpty();
 
     long size = CHash_get_size(self);
@@ -55,6 +56,7 @@ CHashArray * CHashArray_map(CHashArray *self,CHash* (*callback)(CHash *current))
     }
     return  new_element;
 }
+
 CHashArray * CHashArray_map_with_args(CHashArray *self,CHash* (*callback)(CHash *current,va_list args),...){
 
     if(CHash_ensure_Array(self)){

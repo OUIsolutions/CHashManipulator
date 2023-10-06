@@ -7,7 +7,7 @@ typedef struct CHashNamespace{
 
 
     CHash * (*newNumber)(double value);
-    double  (*toNumerical)(CHash *element);
+    double  (*toNumber)(CHash *element);
 
 
     CHash * (*newStackString)(CTextStack *element);

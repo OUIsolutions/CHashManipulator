@@ -861,6 +861,10 @@ void CHashArray_foreach(CHashArray *self,void  (*callback)(CHash *current));
 
 void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *current,va_list args),...);
 
+CHashArray * CHashArray_map(CHashArray *self,CHash* (*callback)(CHash *current));
+
+CHashArray * CHashArray_map_with_args(CHashArray *self,CHash* (*callback)(CHash *current,va_list args),...);
+
 
 long CHashArray_find(CHashArray *self, CHash *element);
 
@@ -1138,6 +1142,8 @@ typedef struct CHashArrayModule{
     long (*find_String)(CHashArray *self, const char *element);
     void (*foreach)(CHashArray *self,void  (*callback)(CHash *current));
     void (*foreach_with_args)(CHashArray *self,void  (*callback)(CHash *current,va_list args),...);
+    CHashArray * (*map)(CHashArray *self,CHash* (*callback)(CHash *current));
+    CHashArray * (*map_with_args)(CHashArray *self,CHash* (*callback)(CHash *current,va_list args),...);
 
 
     short (*get_type)(CHashArrayOrObject *self, long index);
@@ -1215,7 +1221,7 @@ typedef struct CHashNamespace{
 
 
     CHash * (*newNumber)(double value);
-    double  (*toNumerical)(CHash *element);
+    double  (*toNumber)(CHash *element);
 
 
     CHash * (*newStackString)(CTextStack *element);
@@ -5916,6 +5922,53 @@ void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *curr
 
 }
 
+CHashArray * CHashArray_map(CHashArray *self,CHash* (*callback)(CHash *current)){
+
+    if(privateCHash_ensureArrayOrObject(self)){
+        return NULL;
+    }
+
+    CHashArray  *new_element = newCHashArrayEmpty();
+
+    long size = CHash_get_size(self);
+    for(long i = 0; i < size;i++){
+
+        CHash *current = CHashArray_get(self,i);
+        CHash *created = callback(current);
+        if(Chash_errors(self)){
+            CHash_free(new_element);
+            CHash_free(created);
+            return NULL;
+        }
+        CHashArray_append_once(new_element,current);
+    }
+    return  new_element;
+}
+
+CHashArray * CHashArray_map_with_args(CHashArray *self,CHash* (*callback)(CHash *current,va_list args),...){
+
+    if(CHash_ensure_Array(self)){
+        return NULL;
+    }
+    CHashArray  *new_element = newCHashArrayEmpty();
+
+    long size = CHash_get_size(self);
+    for(long i = 0; i < size;i++){
+        va_list  args;
+        va_start(args, NULL);
+        CHash *current = CHashArray_get(self,i);
+        CHash *created = callback(current,args);
+        va_end(args);
+        if(Chash_errors(self)){
+            CHash_free(new_element);
+            CHash_free(created);
+            return NULL;
+        }
+        CHashArray_append_once(new_element,current);
+    }
+    return  new_element;
+}
+
 
 
 
@@ -6758,6 +6811,10 @@ CHashArrayModule newCHashArrayModule(){
     self.get = CHashArray_get;
     self.foreach = CHashArray_foreach;
     self.foreach_with_args = CHashArray_foreach_with_args;
+
+    self.map = CHashArray_map;
+    self.map_with_args = CHashArray_map_with_args;
+
     self.find = CHashArray_find;
     self.find_Number =CHashArray_find_Number;
     self.find_Bool = CHashArray_find_Bool;
@@ -6833,7 +6890,7 @@ CHashNamespace newCHashNamespace(){
     self.toBool = CHash_toBool;
 
     self.newNumber = newCHashNumber;
-    self.toNumerical = CHash_toNumber;
+    self.toNumber = CHash_toNumber;
 
     self.newStackString = newCHashStackString;
     self.toStack = CHashtoStack;

@@ -5,6 +5,7 @@ CHashNamespace hash;
 CHashObjectModule  obj;
 CHashArrayModule  array;
 CHashValidatorModule  validator;
+
 CHash *create (){
 
     return newCHashArray(
@@ -44,6 +45,7 @@ void validate_person(CHash *person){
     validator.ensure_max_value_by_key(person, "height", 2.5);
     validator.ensure_Bool_by_key(person,"married");
 }
+
 void validate(CHash *element){
     validator.ensure_Array(element);
     array.foreach(element, validate_person);

@@ -7,7 +7,7 @@ CHashNamespace newCHashNamespace(){
     self.toBool = CHash_toBool;
 
     self.newNumber = newCHashNumber;
-    self.toNumerical = CHash_toNumber;
+    self.toNumber = CHash_toNumber;
 
     self.newStackString = newCHashStackString;
     self.toStack = CHashtoStack;
