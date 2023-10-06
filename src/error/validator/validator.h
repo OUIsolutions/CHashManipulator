@@ -28,6 +28,8 @@ int CHash_ensure_String_by_index(CHash *array , long index);
 int CHash_ensure_Object(CHash *element);
 int CHash_ensure_Object_by_key(CHash *object , const char *key);
 int CHash_ensure_Object_by_index(CHash *array , long index);
+int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys);
+
 
 int CHash_ensure_Array(CHash *element);
 int CHash_ensure_Array_by_key(CHash *object , const char *key);

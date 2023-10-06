@@ -18,14 +18,14 @@ CHash *create (){
         newCHashObject(
                 "name",hash.newString("second name"),
                 "age", hash.newNumber(42),
-                "height",hash.newNumber(18.4),
+                "height",hash.newNumber(2.5),
                 "married",hash.newBool(true)
         ),
 
         newCHashObject(
                 "name",hash.newString("third name"),
                 "age", hash.newNumber(55),
-                "height",hash.newNumber(14.4),
+                "height",hash.newNumber(2.4),
                 "married",hash.newBool(false)
         )
     );
