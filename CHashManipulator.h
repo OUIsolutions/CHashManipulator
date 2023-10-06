@@ -761,7 +761,6 @@ typedef struct CHash{
     union {
         CTextStack  *private_value_stack;
         double private_value_double;
-        long private_value_long;
         bool private_value_bool;
         struct CHash **private_sub_elements;
     };
@@ -808,14 +807,9 @@ CHash * newCHashNULL();
 
 double  CHash_toNumber(CHash *element);
 
+
+
 CHash * newCHashNumber(double value);
-
-
-
-
-long CHash_toLong(CHash *element);
-
-CHash * newCHashLong(long value);
 
 
 
@@ -870,7 +864,6 @@ CHashArray * CHashArray_getArray(CHashObject * self, long index);
 
 CHashObject * CHashArray_getObject(CHashObject * self, long index);
 
-long CHashArray_getLong(CHashObject * self, long index);
 
 double CHashArray_getNumber(CHashArrayOrObject *self, long index);
 
@@ -917,7 +910,6 @@ CHashArray * CHashObject_getArray(CHashObject * self, const char *key);
 
 CHashObject * CHashObject_getObject(CHashObject * self, const char *key);
 
-long CHashObject_getLong(CHashObject * self, const char *key);
 
 double CHashObject_getNumber(CHashObject * self, const char *key);
 
@@ -936,8 +928,7 @@ enum{
     CHASH_NULL,
     CHASH_ARRAY,
     CHASH_OBJECT,
-    CHASH_LONG,
-    CHASH_DOUBLE,
+    CHASH_NUMBER,
     CHASH_BOOL,
     CHASH_STRING
 };
@@ -988,6 +979,7 @@ CHash * CHash_load_from_json_file(const char *filename);
 #define  CHASH_NOT_ITERABLE 403
 #define CHASH_NOT_VALID_INDEX 404
 #define  CHASH_ELEMENT_IS_NULL 405
+#define  CHASH_LOWER_NUMBER 406
 
 
 
@@ -1022,15 +1014,36 @@ privateCHashError * privateCHashError_get_error(CHash *self);
 int private_chash_check_type(CHash *element, unsigned short  expected_type);
 
 int CHash_ensure_Number(CHash *element);
+int CHash_ensure_Double_by_key(CHash *object,const char *key);
+int CHash_ensure_Double_by_index(CHash *array,long index);
 
-int CHash_ensure_Long(CHash *element);
+int CHash_ensure_min(CHash *element, double  min);
+int CHash_ensure_min_by_key(CHash *object, const char *key, double min );
+int CHash_ensure_min_by_index(CHash *array, long index, double min);
+
+
+int CHash_ensure_max(CHash *element, double  max);
+int CHash_ensure_max_by_key(CHash *object, const char *key, double  max);
+int CHash_ensure_max_by_index(CHash *array, long index, double  max);
+
+
+
+
 int CHash_ensure_Bool(CHash *element);
+int CHash_ensure_Bool_by_key(CHash *object , const char *key);
+int CHash_ensure_Bool_by_index(CHash *array , long index);
 
 int CHash_ensure_String(CHash *element);
+int CHash_ensure_String_by_key(CHash *object , const char *key);
+int CHash_ensure_String_by_index(CHash *array , long index);
 
 int CHash_ensure_Object(CHash *element);
+int CHash_ensure_Object_by_key(CHash *object , const char *key);
+int CHash_ensure_Object_by_index(CHash *array , long index);
 
 int CHash_ensure_Array(CHash *element);
+int CHash_ensure_Array_by_key(CHash *object , const char *key);
+int CHash_ensure_Array_by_index(CHash *array , long index);
 
 int privateCHash_ensureArrayOrObject(CHash *element);
 
@@ -1060,9 +1073,8 @@ typedef struct CHashObjectModule{
 
     CHashObject * (*getObject)(CHashObject * self, const char *key);
 
-    long (*getLong)(CHashObject * self, const char *key);
 
-    double (*getDouble)(CHashObject * self, const char *key);
+    double (*getNumber)(CHashObject * self, const char *key);
 
     bool (*getBool)(CHashObject * self, const char *key);
 
@@ -1089,8 +1101,8 @@ typedef struct CHashArrayModule{
 
     CHashArray * (*getArray)(CHashArrayOrObject * self, long index);
     CHashObject * (*getObject)(CHashArrayOrObject * self, long index);
-    long (*getLong)(CHashArrayOrObject * self, long index);
-    double (*getDouble)(CHashArrayOrObject * self, long index);
+
+    double (*getNumber)(CHashArrayOrObject * self, long index);
     bool (*getBool)(CHashArrayOrObject * self, long index);
     char  * (*getString)(CHashArrayOrObject * self, long index);
 
@@ -1105,7 +1117,6 @@ typedef struct CHashValidatorModule {
 
     int (*ensure_Double)(CHash *element);
 
-    int (*ensure_Long)(CHash *element);
 
     int (*ensure_Bool)(CHash *element);
 
@@ -1128,12 +1139,8 @@ typedef struct CHashNamespace{
     bool (*toBool)(CHash *element);
 
 
-    CHash * (*newDouble)(double value);
-    double  (*toDouble)(CHash *element);
-
-
-    CHash * (*newLong)(long value);
-    long (*toLong)(CHash *element);
+    CHash * (*newNumber)(double value);
+    double  (*toNumerical)(CHash *element);
 
 
     CHash * (*newStackString)(CTextStack *element);
@@ -5321,7 +5328,7 @@ CHashArray * CHash_get_path(CHash *self){
     CHashArray  *path = CHash_get_path(self->private_father);
 
     if(self->private_reference_type == PRIVATE_CHASH_ARRAY_ITEM){
-        CHashArray_append(path, newCHashLong((long)self->private_index));
+        CHashArray_append(path, newCHashNumber(self->private_index));
     }
 
     if(self->private_reference_type == PRIVATE_CHASH_KEYVAL){
@@ -5399,12 +5406,9 @@ CHash * CHash_copy(CHash *self){
         return newCHashString(self->private_value_stack->rendered_text);
     }
     
-    if(self->private_type == CHASH_LONG){
-        return newCHashLong(self->private_value_long);
-    }
 
-    if(self->private_type == CHASH_DOUBLE){
-        return newCHashDouble(self->private_value_double);
+    if(self->private_type == CHASH_NUMBER){
+        return newCHashNumber(self->private_value_double);
     }
     
     if(self->private_type == CHASH_BOOL){
@@ -5462,37 +5466,19 @@ CHash * newCHashNULL(){
 
 
 
-long CHash_toLong(CHash *element){
-    if(CHash_ensure_Long(element)){
-        return -1;
-    }
-    return element->private_value_long;
-}
-
-CHash * newCHashLong(long value){
-    CHash * self =  privatenewChash_raw();
-    self->private_type = CHASH_LONG;
-    self->private_value_long = value;
-    return self;
-}
-
-
-
-
-
 double CHash_toNumber(CHash *element){
 
-    if(CHash_ensure_Double(element)){
+    if(CHash_ensure_Number(element)){
         return -1;
     }
-
     return element->private_value_double;
 
 }
 
+
 CHash * newCHashNumber(double value){
     CHash * self =  privatenewChash_raw();
-    self->private_type = CHASH_DOUBLE;
+    self->private_type = CHASH_NUMBER;
     self->private_value_double = value;
     return self;
 }
@@ -5695,7 +5681,7 @@ long privateCHashArray_convert_index(CHashArrayOrObject *self, long index){
                 CHASH_NOT_VALID_INDEX,
                 " index: #index# its not valid, at #path#",
                 newCHashObject(
-                        "index", newCHashLong(index)
+                        "index", newCHashNumber(index)
                 )
         );
         return -1;
@@ -5767,14 +5753,11 @@ CHashObject * CHashArray_getObject(CHashArrayOrObject * self, long index){
     return element;
 }
 
-long CHashArray_getLong(CHashArrayOrObject * self, long index){
-    CHashObject *element = CHashArray_get(self,index);
-    return CHash_toLong(element);
-}
 
-double CHashArray_getNumber(CHashArrayOrObject *self, long index){
+
+double CHashArray_getNumber(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
-    return CHash_toDouble(element);
+    return CHash_toNumber(element);
 }
 
 bool CHashArray_getBool(CHashArrayOrObject * self, long index){
@@ -6027,14 +6010,10 @@ CHashObject * CHashObject_getObject(CHashObject * self, const char *key){
 }
 
 
-long CHashObject_getLong(CHashObject * self, const char *key){
-    CHash *element = CHashObject_get(self,key);
-    return CHash_toLong(element);
-}
 
 double CHashObject_getNumber(CHashObject * self, const char *key){
     CHash *element = CHashObject_get(self,key);
-    return CHash_toDouble(element);
+    return CHash_toNumber(element);
 }
 
 bool CHashObject_getBool(CHashObject * self, const char *key){
@@ -6078,12 +6057,8 @@ const char  *private_Chash_convert_type(long type){
         return "object";
     }
 
-    if(type == CHASH_LONG){
-        return "long";
-    }
-
-    if(type == CHASH_DOUBLE){
-        return "double";
+    if(type == CHASH_NUMBER){
+        return "numeber";
     }
 
     if(type == CHASH_BOOL){
@@ -6131,18 +6106,14 @@ cJSON * CHash_dump_to_cJSON(CHash *element){
         char *value  = CHash_toString(element);
         return cJSON_CreateString(value);
     }
-    if(type == CHASH_DOUBLE){
-        return cJSON_CreateNumber(CHash_toDouble(element));
+    if(type == CHASH_NUMBER){
+        return cJSON_CreateNumber(CHash_toNumber(element));
     }
 
     if(type == CHASH_BOOL){
         return cJSON_CreateBool(CHash_toBool(element));
     }
 
-    if(type == CHASH_LONG){
-        long value  = CHash_toLong(element);
-        return cJSON_CreateNumber((double)value);
-    }
 
 
     return cJSON_CreateNull();
@@ -6215,7 +6186,7 @@ CHash * CHash_load_from_cJSON(cJSON *element){
     }
 
     if(element->type == cJSON_Number){
-        return newCHashDouble(element->valuedouble);
+        return newCHashNumber(element->valuedouble);
     }
         return newCHashNULL();
 
@@ -6384,27 +6355,118 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type){
 }
 
 int CHash_ensure_Number(CHash *element){
-    return private_chash_check_type(element,CHASH_DOUBLE);
+    return private_chash_check_type(element, CHASH_NUMBER);
+}
+
+int CHash_ensure_min(CHash *element, double  min){
+    double  value = CHash_toNumber(element);
+    if(Chash_errors(element)){
+        return 1;
+    }
+    if(value < min){
+        CHash_raise_error(
+                element,
+                CHASH_LOWER_NUMBER,
+                "element at #path# of value #value# its lower than #number#",
+                newCHashObject("number", newCHashNumber(min))
+        );
+        return 1;
+    }
+    return 0;
+}
+int CHash_ensure_min_by_key(CHash *object, const char *key, double min){
+    CHash * current = CHashObject_get(object,key);
+    return CHash_ensure_min(current, min);
+}
+
+int CHash_ensure_min_by_index(CHash *array, long index, double min){
+    CHash *current = CHashArray_get(array,index);
+    return CHash_ensure_min(current, min);
+}
+
+
+
+int CHash_ensure_max(CHash *element, double  max){
+    double  value = CHash_toNumber(element);
+    if(Chash_errors(element)){
+        return 1;
+    }
+    if(value < max){
+        CHash_raise_error(
+                element,
+                CHASH_LOWER_NUMBER,
+                "element at #path# of value #value# its lower than #number#",
+                newCHashObject("number", newCHashNumber(max))
+        );
+        return 1;
+    }
+    return 0;
+}
+
+int CHash_ensure_max_by_key(CHash *object, const char *key, double  max){
+    CHash * current = CHashObject_get(object,key);
+    return CHash_ensure_max(current, max);
+}
+
+int CHash_ensure_max_by_index(CHash *array, long index, double  max){
+    CHash *current = CHashArray_get(array,index);
+    return CHash_ensure_max(current, max);
+}
+
+int CHash_ensure_Bool(CHash *element){
+    return private_chash_check_type(element,CHASH_BOOL);
+
+}
+
+int CHash_ensure_Bool_by_key(CHash *object , const char *key){
+    CHashObject *current = CHashObject_get(object,key);
+    return CHash_ensure_Bool(current);
+}
+
+int CHash_ensure_Bool_by_index(CHash *array , long index){
+    CHash *current = CHashArray_get(array,index);
+    return CHash_ensure_Bool(current);
 }
 
 int CHash_ensure_String(CHash *element){
     return private_chash_check_type(element,CHASH_STRING);
 }
-int CHash_ensure_Long(CHash *element){
-    return private_chash_check_type(element,CHASH_LONG);
 
+int CHash_ensure_String_by_key(CHash *object , const char *key){
+    CHashObject *current = CHashObject_get(object,key);
+    return CHash_ensure_String(current);
 }
-int CHash_ensure_Bool(CHash *element){
-    return private_chash_check_type(element,CHASH_BOOL);
+
+int CHash_ensure_String_by_index(CHash *array , long index){
+    CHash *current = CHashArray_get(array,index);
+    return CHash_ensure_String(current);
 }
 
 int CHash_ensure_Object(CHash *element){
     return private_chash_check_type(element,CHASH_OBJECT);
 }
+int CHash_ensure_Object_by_key(CHash *object , const char *key){
+    CHashObject *current = CHashObject_get(object,key);
+    return CHash_ensure_Object(current);
+}
+int CHash_ensure_Object_by_index(CHash *array , long index){
+    CHash *current = CHashArray_get(array,index);
+    return CHash_ensure_Object(current);
+}
 
 int CHash_ensure_Array(CHash *element){
     return private_chash_check_type(element,CHASH_ARRAY);
 }
+int CHash_ensure_Array_by_key(CHash *object , const char *key){
+    CHash *current = CHashObject_get(object,key);
+    return CHash_ensure_Array(current);
+}
+
+int CHash_ensure_Array_by_index(CHash *array , long index){
+    CHash *current = CHashArray_get(array,index);
+    return CHash_ensure_Array(current);
+}
+
 int privateCHash_ensureArrayOrObject(CHash *element){
     if(Chash_errors(element)){
         return 1;
@@ -6441,9 +6503,8 @@ CHashObjectModule newCHashObjectModule(){
     self.get = CHashObject_get;
     self.getArray = CHashObject_getArray;
     self.getObject = CHashObject_getObject;
-    self.getLong = CHashObject_getLong;
     self.getBool = CHashObject_getBool;
-    self.getDouble = CHashObject_getDouble;
+    self.getNumber = CHashObject_getNumber;
     self.getString = CHashObject_getString;
 
     return self;
@@ -6463,8 +6524,7 @@ CHashArrayModule newCHashArrayModule(){
     self.getArray = CHashArray_getArray;
     self.getObject = CHashArray_getObject;
     self.getString = CHashArray_getString;
-    self.getDouble = CHashArray_getDouble;
-    self.getLong = CHashArray_getLong;
+    self.getNumber = CHashArray_getNumber;
     self.getBool = CHashArray_getBool;
     return self;
 }
@@ -6478,8 +6538,7 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_Array = CHash_ensure_Array;
     self.ensure_Object = CHash_ensure_Object;
     self.ensure_Bool = CHash_ensure_Bool;
-    self.ensure_Long = CHash_ensure_Long;
-    self.ensure_Double = CHash_ensure_Double;
+    self.ensure_Double = CHash_ensure_Number;
     self.ensure_String = CHash_ensure_String;
     return self;
 }
@@ -6493,11 +6552,8 @@ CHashNamespace newCHashNamespace(){
     self.newBool = newCHashBool;
     self.toBool = CHash_toBool;
 
-    self.newDouble = newCHashDouble;
-    self.toDouble = CHash_toDouble;
-
-    self.newLong = newCHashLong;
-    self.toLong = CHash_toLong;
+    self.newNumber = newCHashNumber;
+    self.toNumerical = CHash_toNumber;
 
     self.newStackString = newCHashStackString;
     self.toStack = CHashtoStack;
