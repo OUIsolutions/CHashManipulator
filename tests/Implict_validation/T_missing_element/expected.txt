@@ -2,6 +2,6 @@
 -----------------------------------------------
 	name:mateus
 	age:26
-	age:26
+	height:1.690000
 	married:true
 element of key:"married" at [1] not exist

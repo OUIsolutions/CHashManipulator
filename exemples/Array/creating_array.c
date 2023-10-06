@@ -9,8 +9,8 @@ CHashArrayModule  array;
 CHashObject *create (){
     return newCHashArray(
             hash.newString("aaa"),
-            hash.newLong(26),
-            hash.newDouble(20)
+            hash.newNumber(26),
+            hash.newNumber(20)
     );
 }
 
@@ -21,8 +21,8 @@ int main(){
 
     CHashArray *element = create();
     char *name  = array.getString(element,0);
-    long age = array.getLong(element,1);
-    double height = array.getDouble(element,2);
+    long age = array.getNumber(element,1);
+    double height = array.getNumber(element,2);
 
     if(!hash.errors(element)){
         printf("name: %s\n",name);

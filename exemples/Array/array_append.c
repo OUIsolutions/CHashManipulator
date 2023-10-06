@@ -12,8 +12,8 @@ CHashValidatorModule validator;
 CHashObject *create (){
     return newCHashArray(
             hash.newString("aaa"),
-            hash.newLong(26),
-            hash.newDouble(20),
+            hash.newNumber(26),
+            hash.newNumber(20),
             hash.newBool(true)
     );
 }

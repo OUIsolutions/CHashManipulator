@@ -1,0 +1,16 @@
+ 
+-----------------------------------------------
+	name:mateus
+	age:26
+	height:1.690000
+	married:true
+-----------------------------------------------
+	name:second name
+	age:42
+	height:18.400000
+	married:true
+-----------------------------------------------
+	name:third name
+	age:55
+	height:14.400000
+	married:false
