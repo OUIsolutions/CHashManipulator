@@ -10,8 +10,8 @@ CHash *create (){
     return  
     newCHashObject(
                 "name",hash.newString("mateus"),
-                "age", hash.newLong(26),
-                "height",hash.newDouble(1.69),
+                "age", hash.newNumber(26),
+                "height",hash.newNumber(1.69),
                 "married",hash.newBool(true)
         );
 
@@ -30,8 +30,8 @@ int main(){
         CHashObject *current_person = array.getObject(element,i);
         
         char * name = obj.getString(current_person,"name");
-        long age = obj.getLong(current_person,"age");
-        double height = obj.getDouble(current_person,"height");
+        long age = obj.getNumber(current_person,"age");
+        double height = obj.getNumber(current_person,"height");
         bool married = obj.getBool(current_person,"married");
 
         if(!hash.errors(element)){
@@ -39,7 +39,7 @@ int main(){
             printf("-----------------------------------------------\n");
             printf("\tname:%s\n",name);
             printf("\tage:%ld\n",age);
-            printf("\tage:%ld\n",age);
+            printf("\theight:%lf\n",height);
             printf("\tmarried:%s\n",married  ? "true": "false");
         }
         
