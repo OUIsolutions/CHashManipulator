@@ -157,6 +157,7 @@ int CHash_ensure_only_keys_cleaning_args(CHashObject *object, CHashStringArray *
 int CHash_ensure_Array(CHash *element){
     return private_chash_check_type(element,CHASH_ARRAY);
 }
+
 int CHash_ensure_Array_by_key(CHash *object , const char *key){
     CHash *current = CHashObject_get(object,key);
     return CHash_ensure_Array(current);

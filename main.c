@@ -31,8 +31,11 @@ CHash *create (){
     );
 
 }
+
 void validate(CHash *element){
     validator.ensure_Array(element);
+
+
     long size = hash.get_size(element);
     for(long i = 0; i < size; i++){
         CHashObject *current = array.getObject(element,i);
