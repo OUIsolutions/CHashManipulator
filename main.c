@@ -46,7 +46,7 @@ void validate_person(CHash *person){
 }
 void validate(CHash *element){
     validator.ensure_Array(element);
-    validator.foreach(element, validate_person);
+    array.foreach(element, validate_person);
 }
 
 int main(){

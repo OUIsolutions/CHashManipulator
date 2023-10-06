@@ -12,6 +12,7 @@ typedef struct CHashArrayModule{
     long (*find_Number)(CHashArray *self, double element);
     long (*find_Bool)(CHashArray *self, bool  element);
     long (*find_String)(CHashArray *self, const char *element);
+    void (*foreach)(CHashArray *self,void  (*callback)(CHash *current));
 
 
     short (*get_type)(CHashArrayOrObject *self, long index);
