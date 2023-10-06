@@ -28,6 +28,9 @@ CHash * CHashArray_get(CHashArray *self, long index);
 
 void CHashArray_foreach(CHashArray *self,void  (*callback)(CHash *current));
 
+void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *current,va_list args),...);
+
+
 long CHashArray_find(CHashArray *self, CHash *element);
 
 

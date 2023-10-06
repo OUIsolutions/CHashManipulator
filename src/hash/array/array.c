@@ -189,6 +189,7 @@ long CHashArray_find_String(CHashArray *self, const char *element){
 }
 
 
+
 short CHashArray_get_type(CHashArray *self, long index){
     if(privateCHash_ensureArrayOrObject(self)){
         return CHASH_NOT_EXIST;
