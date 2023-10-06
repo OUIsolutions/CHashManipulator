@@ -36,6 +36,11 @@ void validate(CHash *element){
     long size = hash.get_size(element);
     for(long i = 0; i < size; i++){
         CHashObject *current = array.getObject(element,i);
+
+        validator.ensure_only_keys_cleaning_args(current, newCHashStringArray(
+                "name","age","height","married"
+        ));
+
         validator.ensure_String_by_key(current,"name");
         validator.ensure_min_by_key(current,"age",0);
         validator.ensure_max_by_key(current,"age",120);
