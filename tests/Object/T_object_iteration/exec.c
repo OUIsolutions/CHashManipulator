@@ -13,8 +13,8 @@ CHashValidatorModule validator;
 CHashObject *create (){
     return newCHashObject(
             "name", hash.newString("aaa"),
-            "age", hash.newLong(26),
-            "height",hash.newDouble(20),
+            "age", hash.newNumber(26),
+            "height",hash.newNumber(20),
             "maried",hash.newBool(true)
     );
 }
@@ -43,12 +43,10 @@ int main(){
             printf("%s",obj.getString(profile,key));
         }
 
-        if(type == CHASH_DOUBLE){
-            printf("%lf",obj.getDouble(profile,key));
+        if(type == CHASH_NUMBER){
+            printf("%lf",obj.getNumber(profile,key));
         }
-        if(type == CHASH_LONG){
-            printf("%ld",obj.getLong(profile,key));
-        }
+
         if(type == CHASH_BOOL){
             printf("%s",obj.getBool(profile,key)  ? "true":"false");
         }

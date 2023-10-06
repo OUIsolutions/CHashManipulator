@@ -11,8 +11,8 @@ CHashValidatorModule  validator;
 CHashObject *create (){
     return newCHashObject(
             "name", hash.newString("aaa"),
-            "age", hash.newLong(26),
-            "height",hash.newDouble(20),
+            "age", hash.newNumber(26),
+            "height",hash.newNumber(20),
             "maried",hash.newBool(true)
     );
 }
@@ -33,8 +33,8 @@ int main(){
     }
 
     CHashObject_set(profile,
-        "age", newCHashLong(18),
-        "maried", newCHashBool(false)
+        "age", hash.newNumber(18),
+        "maried", hash.newBool(false)
     );
 
     hash.print(profile);

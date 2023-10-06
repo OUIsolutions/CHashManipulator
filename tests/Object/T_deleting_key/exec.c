@@ -11,8 +11,8 @@ CHashArrayModule  array;
 CHashObject *create (){
     return newCHashObject(
             "name", hash.newString("aaa"),
-            "age", hash.newLong(26),
-            "height",hash.newDouble(20),
+            "age", hash.newNumber(26),
+            "height",hash.newNumber(20),
             "maried",hash.newBool(true)
     );
 }
