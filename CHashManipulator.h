@@ -1030,14 +1030,14 @@ int CHash_ensure_Number(CHash *element);
 int CHash_ensure_Number_by_key(CHash *object, const char *key);
 int CHash_ensure_Number_by_index(CHash *array, long index);
 
-int CHash_ensure_min(CHash *element, double  min);
-int CHash_ensure_min_by_key(CHash *object, const char *key, double min );
-int CHash_ensure_min_by_index(CHash *array, long index, double min);
+int CHash_ensure_min_value(CHash *element, double  min);
+int CHash_ensure_min_value_by_key(CHash *object, const char *key, double min );
+int CHash_ensure_min_value_by_index(CHash *array, long index, double min);
 
 
-int CHash_ensure_max(CHash *element, double  max);
-int CHash_ensure_max_by_key(CHash *object, const char *key, double  max);
-int CHash_ensure_max_by_index(CHash *array, long index, double  max);
+int CHash_ensure_max_value(CHash *element, double  max);
+int CHash_ensure_max_value_by_key(CHash *object, const char *key, double  max);
+int CHash_ensure_max_value_by_index(CHash *array, long index, double  max);
 
 
 
@@ -6466,7 +6466,7 @@ int CHash_ensure_Number_by_index(CHash *array, long index){
     return CHash_ensure_Number(element);
 }
 
-int CHash_ensure_min(CHash *element, double  min){
+int CHash_ensure_min_value(CHash *element, double  min){
     double  value = CHash_toNumber(element);
     if(Chash_errors(element)){
         return 1;
@@ -6482,19 +6482,19 @@ int CHash_ensure_min(CHash *element, double  min){
     }
     return 0;
 }
-int CHash_ensure_min_by_key(CHash *object, const char *key, double min){
+int CHash_ensure_min_value_by_key(CHash *object, const char *key, double min){
     CHash * current = CHashObject_get(object,key);
     return CHash_ensure_min(current, min);
 }
 
-int CHash_ensure_min_by_index(CHash *array, long index, double min){
+int CHash_ensure_min_value_by_index(CHash *array, long index, double min){
     CHash *current = CHashArray_get(array,index);
     return CHash_ensure_min(current, min);
 }
 
 
 
-int CHash_ensure_max(CHash *element, double  max){
+int CHash_ensure_max_value(CHash *element, double  max){
     double  value = CHash_toNumber(element);
     if(Chash_errors(element)){
         return 1;
@@ -6511,12 +6511,12 @@ int CHash_ensure_max(CHash *element, double  max){
     return 0;
 }
 
-int CHash_ensure_max_by_key(CHash *object, const char *key, double  max){
+int CHash_ensure_max_value_by_key(CHash *object, const char *key, double  max){
     CHash * current = CHashObject_get(object,key);
     return CHash_ensure_max(current, max);
 }
 
-int CHash_ensure_max_by_index(CHash *array, long index, double  max){
+int CHash_ensure_max_value_by_index(CHash *array, long index, double  max){
     CHash *current = CHashArray_get(array,index);
     return CHash_ensure_max(current, max);
 }

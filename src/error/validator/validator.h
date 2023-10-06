@@ -5,14 +5,14 @@ int CHash_ensure_Number(CHash *element);
 int CHash_ensure_Number_by_key(CHash *object, const char *key);
 int CHash_ensure_Number_by_index(CHash *array, long index);
 
-int CHash_ensure_min(CHash *element, double  min);
-int CHash_ensure_min_by_key(CHash *object, const char *key, double min );
-int CHash_ensure_min_by_index(CHash *array, long index, double min);
+int CHash_ensure_min_value(CHash *element, double  min);
+int CHash_ensure_min_value_by_key(CHash *object, const char *key, double min );
+int CHash_ensure_min_value_by_index(CHash *array, long index, double min);
 
 
-int CHash_ensure_max(CHash *element, double  max);
-int CHash_ensure_max_by_key(CHash *object, const char *key, double  max);
-int CHash_ensure_max_by_index(CHash *array, long index, double  max);
+int CHash_ensure_max_value(CHash *element, double  max);
+int CHash_ensure_max_value_by_key(CHash *object, const char *key, double  max);
+int CHash_ensure_max_value_by_index(CHash *array, long index, double  max);
 
 
 

@@ -9,13 +9,13 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_Number_by_key = CHash_ensure_Number_by_key;
     self.ensure_Number_by_index = CHash_ensure_Number_by_index;
 
-    self.ensure_min = CHash_ensure_min;
-    self.ensure_min_by_key = CHash_ensure_min_by_key;
-    self.ensure_min_by_index = CHash_ensure_min_by_index;
+    self.ensure_min_value = CHash_ensure_min_value;
+    self.ensure_min_value_by_key = CHash_ensure_min_value_by_key;
+    self.ensure_min_value_by_index = CHash_ensure_min_value_by_index;
 
-    self.ensure_max = CHash_ensure_max;
-    self.ensure_max_by_key =CHash_ensure_max_by_key;
-    self.ensure_min_by_index =CHash_ensure_max_by_index;
+    self.ensure_max_value = CHash_ensure_max_value;
+    self.ensure_max_value_by_key =CHash_ensure_max_value_by_key;
+    self.ensure_max_value_by_index =CHash_ensure_max_value_by_index;
 
 
 

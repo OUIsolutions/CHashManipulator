@@ -47,10 +47,10 @@ void validate(CHash *element){
         validator.ensure_String_by_key(current,"name");
         validator.ensure_min_size_by_key(current,"name",2);
         validator.ensure_max_size_by_key(current,"name",30);
-        validator.ensure_min_by_key(current,"age",0);
-        validator.ensure_max_by_key(current,"age",120);
-        validator.ensure_min_by_key(current,"height",0.5);
-        validator.ensure_max_by_key(current,"height",2.5);
+        validator.ensure_min_value_by_key(current, "age", 0);
+        validator.ensure_max_value_by_key(current, "age", 120);
+        validator.ensure_min_value_by_key(current, "height", 0.5);
+        validator.ensure_max_value_by_key(current, "height", 2.5);
         validator.ensure_Bool_by_key(current,"married");
     }
 }
