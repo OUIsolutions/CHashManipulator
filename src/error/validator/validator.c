@@ -22,6 +22,7 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type){
 int CHash_ensure_Double(CHash *element){
     return private_chash_check_type(element,CHASH_DOUBLE);
 }
+
 int CHash_ensure_Double_by_key(CHash *object,const char *key){
     CHashObject *current = CHashObject_get(object,key);
     return CHash_ensure_Double(current);
@@ -67,10 +68,12 @@ int CHash_ensure_Bool_by_index(CHash *array , long index){
 int CHash_ensure_String(CHash *element){
     return private_chash_check_type(element,CHASH_STRING);
 }
+
 int CHash_ensure_String_by_key(CHash *object , const char *key){
     CHashObject *current = CHashObject_get(object,key);
     return CHash_ensure_String(current);
 }
+
 int CHash_ensure_String_by_index(CHash *array , long index){
     CHash *current = CHashArray_get(array,index);
     return CHash_ensure_String(current);

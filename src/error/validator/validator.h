@@ -2,6 +2,7 @@
 int private_chash_check_type(CHash *element, unsigned short  expected_type);
 
 int CHash_ensure_Double(CHash *element);
+
 int CHash_ensure_Double_by_key(CHash *object,const char *key);
 int CHash_ensure_Double_by_index(CHash *array,long index);
 
