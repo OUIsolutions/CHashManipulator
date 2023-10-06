@@ -30,6 +30,9 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_Object = CHash_ensure_Object;
     self.ensure_Object_by_key = CHash_ensure_Object_by_key;
     self.ensure_Object_by_index = CHash_ensure_Object_by_index;
+    self.ensure_only_keys =CHash_ensure_only_keys;
+    self.ensure_only_keys_cleaning_args =CHash_ensure_only_keys_cleaning_args;
+
 
     self.ensure_Array = CHash_ensure_Array;
     self.ensure_Array_by_key = CHash_ensure_Array_by_key;

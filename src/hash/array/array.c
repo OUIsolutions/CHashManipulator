@@ -167,9 +167,24 @@ long CHashArray_find(CHashArray *self, CHash *element){
     }
     return -1;
 }
-long CHashArray_find_cleanning_element(CHashArray *self, CHash *element){
-    long index = CHashArray_find(self,element);
-    CHash_free(element);
+long CHashArray_find_Number(CHashArray *self, double element){
+    CHash *created = newCHashNumber(element);
+    long index = CHashArray_find(self,created);
+    CHash_free(created);
+    return index;
+}
+
+long CHashArray_find_Bool(CHashArray *self, bool  element){
+    CHash *created = newCHashBool(element);
+    long index = CHashArray_find(self,created);
+    CHash_free(created);
+    return index;
+}
+
+long CHashArray_find_String(CHashArray *self, const char *element){
+    CHash *created = newCHashString(element);
+    long index = CHashArray_find(self,created);
+    CHash_free(created);
     return index;
 }
 

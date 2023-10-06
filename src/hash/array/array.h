@@ -28,7 +28,12 @@ CHash * CHashArray_get(CHashArray *self, long index);
 
 long CHashArray_find(CHashArray *self, CHash *element);
 
-long CHashArray_find_cleanning_element(CHashArray *self, CHash *element);
+
+long CHashArray_find_Number(CHashArray *self, double element);
+
+long CHashArray_find_Bool(CHashArray *self, bool  element);
+
+long CHashArray_find_String(CHashArray *self, const char *element);
 
 
 short CHashArray_get_type(CHashArray *self, long index);

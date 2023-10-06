@@ -9,7 +9,10 @@ typedef struct CHashArrayModule{
     void  (*remove)(CHashArrayOrObject *self, long index);
     CHash * (*get)(CHashArrayOrObject *self, long position);
     long (*find)(CHashArray *self, CHash *element);
-    long (*find_cleanning_element)(CHashArray *self, CHash *element);
+    long (*find_Number)(CHashArray *self, double element);
+    long (*find_Bool)(CHashArray *self, bool  element);
+    long (*find_String)(CHashArray *self, const char *element);
+
 
     short (*get_type)(CHashArrayOrObject *self, long index);
 

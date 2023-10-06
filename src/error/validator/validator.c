@@ -133,8 +133,25 @@ int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys){
     long size = CHash_get_size(object);
     for(long i = 0; i < size; i++){
         char *current_key = CHashObject_get_key_by_index(object,i);
-
+        if(CHashArray_find_String(keys, current_key) == -1){
+            CHash_raise_error(
+                    object,
+                    CHASH_INVALID_KEY,
+                    "#key# at #path#  its not inside #keys#",
+                    newCHashObject(
+                            "key", newCHashString(current_key),
+                            "keys",keys
+                    )
+            );
+            return 1;
+        }
     }
+    return 0;
+}
+int CHash_ensure_only_keys_cleaning_args(CHashObject *object, CHashStringArray *keys){
+    int result = CHash_ensure_only_keys(object,keys);
+    CHash_free(keys);
+    return result;
 }
 
 int CHash_ensure_Array(CHash *element){
