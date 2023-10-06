@@ -10,7 +10,7 @@ CHash *create (){
     return newCHashArray(
         
         newCHashObject(
-                "name",hash.newString("2"),
+                "name",hash.newString("Mateus"),
                 "age", hash.newNumber(26),
                 "height",hash.newNumber(1.69),
                 "married",hash.newBool(true)
