@@ -1,4 +1,4 @@
-#include "../../../CHashManipulator.h"
+#include "CHashManipulator.h"
 
 CHashNamespace hash;
 
