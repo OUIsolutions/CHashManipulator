@@ -81,3 +81,27 @@ int main(){
 ## Arrays
 
 ### Creating an Array
+<!--codeof:exemples/Array/creating_array.c-->
+
+
+### Appending Value inside an Array 
+<!--codeof:exemples/Array/array_append.c-->
+
+### Deleting Value from Array 
+<!--codeof:exemples/Array/array_delete.c-->
+
+### Seting Value inside an Array
+<!--codeof:exemples/Array/array_set.c-->
+
+
+## Objects
+
+### Creating an Object
+<!--codeof:exemples/Object/creating_object.c-->
+
+### Iterating over an Object
+<!--codeof:exemples/Object/object_iteration.c-->
+
+### Deleting an Key
+<!--codeof:exemples/Object/deleting_key.c-->
+
