@@ -67,6 +67,7 @@ void validate_and_format_person(CHash *person){
     validator.ensure_max_value_by_key(person, "height", 2.5);
     validator.ensure_Bool_by_key(person,"married");
     CHashStringArray * phones = obj.getArray(person,"phones");
+    validator.ensure_all_types(phones, CHASH_STRING);
     array.foreach(phones,validate_and_format_phone);
 }
 

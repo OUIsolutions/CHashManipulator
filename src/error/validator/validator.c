@@ -193,14 +193,14 @@ int CHash_ensure_Array_by_index(CHash *array , long index){
     return CHash_ensure_Array(current);
 }
 
-int CHash_ensure_all(CHash *element, short expected_type){
+int CHash_ensure_all_types(CHash *element, short expected_type){
 
     if(privateCHash_ensureArrayOrObject(element)){
         return 1;
     }
     long size = CHash_get_size(element);
     for(long i = 0; i < size; i++){
-        CHash  *current = CHashArray_get(element,i);;
+        CHash  *current = CHashArray_get(element,i);
         if(private_chash_check_type(current,expected_type)){
             return 1;
         }
