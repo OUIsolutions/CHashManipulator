@@ -1,4 +1,4 @@
-#include "src/one.h"
+#include "../../../CHashManipulator.h"
 
 CHashNamespace hash;
 
@@ -10,9 +10,8 @@ int main(){
         "name",hash.newString("Mateus"),
         "age",hash.newNumber(26)
     );
-    char *result = hash.dump_to_json_string(element);
-    printf("%s",result);
-    free(result);
+    
+    hash.dump_to_json_file("side_effect/out.json");
 
     hash.free(element);
 
