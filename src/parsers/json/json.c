@@ -55,7 +55,7 @@ char * CHash_dump_to_json_string(CHash * element){
     return result;
 }
 
-int  CHash_dumps_to_json_file(CHash *element,const char *filename){
+int  CHash_dump_to_json_file(CHash *element,const char *filename){
     char *content = CHash_dump_to_json_string(element);
     if(!content){
         return 1;

@@ -1216,6 +1216,17 @@ CHashValidatorModule newCHashValidatorModule();
 
 typedef struct CHashNamespace{
 
+
+    CHash * (*load_from_cJSON)(cJSON *element);
+    CHash * (*load_from_json_strimg)(const char *element);
+    CHash * (*load_from_json_file)(const char *filename);
+
+
+    cJSON * (*dump_to_cJSON)(CHash *element);
+    char * (*dump_to_json_string)(CHash * element);
+    int  (*dump_to_json_file)(CHash *element,const char *filename);
+
+
     CHash * (*newBool)(bool value);
     bool (*toBool)(CHash *element);
 
@@ -6325,7 +6336,7 @@ char * CHash_dump_to_json_string(CHash * element){
     return result;
 }
 
-int  CHash_dumps_to_json_file(CHash *element,const char *filename){
+int  CHash_dump_to_json_file(CHash *element,const char *filename){
     char *content = CHash_dump_to_json_string(element);
     if(!content){
         return 1;
@@ -6885,6 +6896,14 @@ CHashValidatorModule newCHashValidatorModule(){
 
 CHashNamespace newCHashNamespace(){
     CHashNamespace self = {0};
+
+    self.load_from_cJSON = CHash_load_from_cJSON;
+    self.load_from_json_strimg  = CHash_load_from_json_strimg;
+    self.load_from_json_file = CHash_load_from_json_file;
+
+    self.dump_to_cJSON = CHash_dump_to_cJSON;
+    self.dump_to_json_string = CHash_dump_to_json_string;
+    self.dump_to_json_file = CHash_dump_to_json_file;
 
     self.newBool = newCHashBool;
     self.toBool = CHash_toBool;

@@ -10,7 +10,7 @@ CHashNamespace newCHashNamespace(){
     self.dump_to_cJSON = CHash_dump_to_cJSON;
     self.dump_to_json_string = CHash_dump_to_json_string;
     self.dump_to_json_file = CHash_dump_to_json_file;
-    
+
     self.newBool = newCHashBool;
     self.toBool = CHash_toBool;
 

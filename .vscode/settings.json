@@ -5,6 +5,7 @@
         "declaration.h": "c",
         "ctype.h": "c",
         "string_view": "c",
-        "system_error": "c"
+        "system_error": "c",
+        "chashmanipulator.h": "c"
     }
 }
