@@ -27,8 +27,8 @@ CHash *create (){
                     "height",hash.newNumber(2.5),
                     "married",hash.newBool(true),
                     "phones",newCHashStringArray(
-                        "+55(11) 12345 1234 ",
-                        "+55(11) 12345 5555 "
+                        "+55 11 12345 1234 ",
+                        "+55 11 12345 5555 "
                     )
             ),
 
@@ -47,11 +47,11 @@ CHash *create (){
 }
 
 void validate_and_format_phone(CHash *phone){
+
     CTextStack *t = hash.toStack(phone);
-    ctext.stack.self_replace(t,"+","");
-    ctext.stack.self_replace(t,"(","");
-    ctext.stack.self_replace(t,")","");
-    ctext.stack.self_replace(t," ","");
+    CHashStringArray  *invalids = newCHashStringArray("+","(",")"," ");
+
+
 
 }
 void validate_and_format_person(CHash *person){
@@ -66,9 +66,8 @@ void validate_and_format_person(CHash *person){
     validator.ensure_min_value_by_key(person, "height", 0.5);
     validator.ensure_max_value_by_key(person, "height", 2.5);
     validator.ensure_Bool_by_key(person,"married");
-    CHashStringArray * phones = obj.getArray(perror,"phones");
+    CHashStringArray * phones = obj.getArray(person,"phones");
     array.foreach(phones,validate_and_format_phone);
-
 }
 
 void validate_and_format(CHash *element){
@@ -84,7 +83,7 @@ int main(){
     ctext = newCTextNamespace();
 
     CHashArray *element = create();
-    validate(element);
+    validate_and_format(element);
     if(hash.errors(element)){
         char *menssage = hash.get_error_menssage(element);
         printf("%s\n",menssage);
@@ -92,6 +91,7 @@ int main(){
     else{
         char * formated = hash.dump_to_json_string(element);
         printf("%s",formated);
+        free(formated);
     }
 
     hash.free(element);

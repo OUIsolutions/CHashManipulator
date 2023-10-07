@@ -105,6 +105,31 @@ int CHash_ensure_String(CHash *element){
     return private_chash_check_type(element,CHASH_STRING);
 }
 
+int Chash_ensure_only_chars(CHash *element, const char *seq){
+    if(CHash_ensure_String(element)){
+        return 1;
+    }
+    CTextStack *seq_stack = newCTextStack_string(seq);
+    CTextStack *element_stack = CHashtoStack(element);
+    for(int i=0; i < element_stack->size; i++){
+        char current_char = element_stack->rendered_text[i];
+        if(CTextStack_index_of_char(seq_stack,current_char) == -1){
+            CTextStack *char_stack = newCTextStack("","");
+            CTextStack_format(char_stack,"%c",current_char);
+            CHash_raise_error(
+                    element,
+                    CHASH_NOT_IN_VALID_CHARS,
+                    "char :#char# at #path#  its not inside #valid_chars#",
+                    newCHashObject(
+                            "char", newCHashStackString(char_stack),
+                            "valid_chars", newCHashStackString(seq_stack)
+                    )
+            );
+        }
+    }
+    CTextStack_free(seq_stack);
+    return 0;
+}
 int CHash_ensure_String_by_key(CHash *object , const char *key){
     CHashObject *current = CHashObject_get(object,key);
     return CHash_ensure_String(current);
@@ -168,6 +193,20 @@ int CHash_ensure_Array_by_index(CHash *array , long index){
     return CHash_ensure_Array(current);
 }
 
+int CHash_ensure_all(CHash *element, short expected_type){
+
+    if(privateCHash_ensureArrayOrObject(element)){
+        return 1;
+    }
+    long size = CHash_get_size(element);
+    for(long i = 0; i < size; i++){
+        CHash  *current = CHashArray_get(element,i);;
+        if(private_chash_check_type(current,expected_type)){
+            return 1;
+        }
+    }
+    return  0;
+}
 int CHash_ensure_min_size(CHash *iterable,long min){
     long size = CHash_get_size(iterable);
     if(size < min){
