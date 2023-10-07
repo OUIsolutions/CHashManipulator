@@ -3,6 +3,14 @@
 CHashNamespace newCHashNamespace(){
     CHashNamespace self = {0};
 
+    self.load_from_cJSON = CHash_load_from_cJSON;
+    self.load_from_json_strimg  = CHash_load_from_json_strimg;
+    self.load_from_json_file = CHash_load_from_json_file;
+
+    self.dump_to_cJSON = CHash_dump_to_cJSON;
+    self.dump_to_json_string = CHash_dump_to_json_string;
+    self.dump_to_json_file = CHash_dump_to_json_file;
+    
     self.newBool = newCHashBool;
     self.toBool = CHash_toBool;
 

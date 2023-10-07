@@ -2,6 +2,17 @@
 
 typedef struct CHashNamespace{
 
+
+    CHash * (*load_from_cJSON)(cJSON *element);
+    CHash * (*load_from_json_strimg)(const char *element);
+    CHash * (*load_from_json_file)(const char *filename);
+
+
+    cJSON * (*dump_to_cJSON)(CHash *element);
+    char * (*dump_to_json_string)(CHash * element);
+    int  (*dump_to_json_file)(CHash *element,const char *filename);
+
+
     CHash * (*newBool)(bool value);
     bool (*toBool)(CHash *element);
 
