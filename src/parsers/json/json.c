@@ -124,6 +124,15 @@ CHash * CHash_load_from_cJSON(cJSON *element){
 
 CHash * CHash_load_from_json_strimg(const char *content){
     cJSON *parsed = cJSON_Parse(content);
+    if(!parsed){
+        CHash *null_element = newCHashNULL();
+        CHash_raise_error(null_element,CHASH_NOT_VALID_JSON,
+                          "content #content# its not an valid json",
+                          newCHashObject("content", newCHashString(content))
+        );
+        return  null_element;
+    }
+
     CHash *result =CHash_load_from_cJSON(parsed);
     cJSON_Delete(parsed);
     return result;
@@ -131,9 +140,17 @@ CHash * CHash_load_from_json_strimg(const char *content){
 
 CHash * CHash_load_from_json_file(const char *filename){
     char *content = privateCHash_read_file(filename);
+    if(!content){
+        CHash *null_element = newCHashNULL();
+        CHash_raise_error(null_element,CHASH_FILE_NOT_FOUND,"file at #path# not found",
+                          newCHashObject("path", newCHashString(filename))
+        );
+        return  null_element;
+    }
 
     CHash *result =  CHash_load_from_json_strimg(content);
     free(content);
+
     return result;
 }
 
