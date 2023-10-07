@@ -423,8 +423,27 @@ int main(){
 }
 ~~~
 
-### Validation 
+## Validation 
 With The Validation system you can test parts of the data struct to ensure everything
 its correct
 
 <!--codeof:exemples/ExplictValidation/Correct.c-->
+
+## JSON 
+You also can use json loading and dumping functions to parse values from/to jsons 
+
+### Loading from Json File
+<!--codeof:exemples/jsons/load_from_json_file.c-->
+
+
+### Loading from Json String
+<!--codeof:exemples/jsons/load_from_json_string.c-->
+
+
+### Dumping to Json File 
+<!--codeof:exemples/jsons/dumping_to_json_file.c-->
+
+
+### Dumping to Json String
+<!--codeof:exemples/jsons/dumping_to_json_string.c-->
+
