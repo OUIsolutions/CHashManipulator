@@ -4,7 +4,8 @@ CHashNamespace hash;
 
 int main(){
     hash = newCHashNamespace();
-    CHash *element = hash.load_from_json_strimg("{\"name\":\"Mateus\",\"age\":26}");
+
+    CHash *element = hash.load_from_json_file("side_effect/test.json");
     if(hash.errors(element)){
         printf("%s",hash.get_error_menssage(element));
     }
