@@ -536,6 +536,9 @@ int main(){
 
 }
 ~~~
+
+### Loading from Json String
+
 <!--codeof:exemples/jsons/load_from_json_string.c-->
 ~~~c
 #include "CHashManipulator.h"
@@ -558,6 +561,7 @@ int main(){
 
 }
 ~~~
+### Dumping to Json File
 <!--codeof:exemples/jsons/dumping_to_json_file.c-->
 ~~~c
 #include "CHashManipulator.h"
@@ -579,6 +583,7 @@ int main(){
 
 }
 ~~~
+### Dumping to Json String
 <!--codeof:exemples/jsons/dumping_to_json_string.c-->
 ~~~c
 #include "CHashManipulator.h"
