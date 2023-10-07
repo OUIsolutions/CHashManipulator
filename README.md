@@ -123,6 +123,8 @@ int main(){
 
 }
 ~~~
+
+### Appending Values to an Array
 <!--codeof:exemples/Array/array_append.c-->
 ~~~c
 
@@ -171,6 +173,7 @@ int main(){
 
 }
 ~~~
+### Deleting Element inside an Array
 <!--codeof:exemples/Array/array_delete.c-->
 ~~~c
 
@@ -217,6 +220,7 @@ int main(){
 
 }
 ~~~
+### Setting Values inside an Array
 <!--codeof:exemples/Array/array_set.c-->
 ~~~c
 
@@ -311,6 +315,7 @@ int main(){
 
 }
 ~~~
+### Generating an Object Iteration
 <!--codeof:exemples/Object/object_iteration.c-->
 ~~~c
 
@@ -373,6 +378,7 @@ int main(){
 
 }
 ~~~
+### Deleting an value of an object by Key
 <!--codeof:exemples/Object/deleting_key.c-->
 ~~~c
 
@@ -416,3 +422,9 @@ int main(){
 
 }
 ~~~
+
+### Validation 
+With The Validation system you can test parts of the data struct to ensure everything
+its correct
+
+<!--codeof:exemples/ExplictValidation/Correct.c-->
