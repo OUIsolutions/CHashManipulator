@@ -5,7 +5,7 @@ CHashNamespace hash;
 int main(){
     hash = newCHashNamespace();
 
-    CHash *element = hash.load_from_json_file("side_effect/test.json");
+    CHash *element = hash.load_from_json_file("side_effect/invalid.json");
     if(hash.errors(element)){
         printf("%s",hash.get_error_menssage(element));
     }
