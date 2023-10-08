@@ -50,7 +50,7 @@ int main(){
         double height = obj.getNumber(current_person,"height");
         bool married = obj.getBool(current_person,"married");
 
-        if(!hash.errors(element)){
+        CHash_protected(element){
             // its safe to print anything here 
             printf("-----------------------------------------------\n");
             printf("\tname:%s\n",name);
@@ -60,8 +60,7 @@ int main(){
         }
         
     }
-
-    if(hash.errors(element)){
+    CHash_catch(element){
         char *menssage = hash.get_error_menssage(element);
         printf("%s\n",menssage);
     }
