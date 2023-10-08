@@ -19,6 +19,8 @@ CHashNamespace newCHashNamespace(){
 
     self.newStackString = newCHashStackString;
     self.toStack = CHashtoStack;
+    self.set_String = CHash_set_String;
+    self.set_Stack = CHash_set_Stack;
 
     self.newString = newCHashString;
     self.toString = CHash_toString;

@@ -23,6 +23,8 @@ typedef struct CHashNamespace{
 
     CHash * (*newStackString)(CTextStack *element);
     CTextStack  *(*toStack)(CHash *element);
+    void (*set_String)(CHash *self, const char *value);
+    void (*set_Stack)(CHash *self,CTextStack *element);
 
 
     CHash * (*newString)(const char *value);

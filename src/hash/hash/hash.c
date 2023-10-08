@@ -41,6 +41,7 @@ bool CHash_equals(CHash *element1, CHash *element2){
 }
 
 void privateCHash_free_values(CHash *self){
+
     if(self->private_type == CHASH_STRING){
         CTextStack_free(self->private_value_stack);
     }
