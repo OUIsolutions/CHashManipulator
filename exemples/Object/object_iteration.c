@@ -26,7 +26,7 @@ int main(){
     validator = hash.validator;
     CHashArray *profile = create();
     validator.ensure_Object(profile);
-    if(hash.errors(profile)){
+    CHash_catch(profile){
         printf("%s\n",hash.get_error_menssage(profile));
         hash.free(profile);
         return 1;

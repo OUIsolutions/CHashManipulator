@@ -206,11 +206,12 @@ int main(){
     array.remove(element,-1);
 
 
-    if(!hash.errors(element)){
+    CHash_protected(element){
         hash.print(element);
 
     }
-    else{
+
+    CHash_catch(element){
         printf("%s",hash.get_error_menssage(element));
 
     }
@@ -299,14 +300,14 @@ int main(){
     double height = obj.getNumber(profile,"height");
     bool maried = obj.getBool(profile,"maried");
 
-    if(!hash.errors(profile)){
+    CHash_protected(profile){
         printf("name: %s\n",name);
         printf("age %ld\n",age);
         printf("heigh %lf\n",height);
         printf("maried %s\n", maried ? "true":"false");
     }
 
-    else{
+    CHash_catch(profile){
         char *menssage = hash.get_error_menssage(profile);
         printf("%s",menssage);
     }
@@ -345,7 +346,7 @@ int main(){
     validator = hash.validator;
     CHashArray *profile = create();
     validator.ensure_Object(profile);
-    if(hash.errors(profile)){
+    CHash_catch(profile){
         printf("%s\n",hash.get_error_menssage(profile));
         hash.free(profile);
         return 1;
@@ -408,10 +409,11 @@ int main(){
 
     obj.remove(profile,"maried");
 
-    if(!hash.errors(profile)){
+    CHash_protected(profile){
         hash.print(profile);
     }
-    else{
+
+    CHash_catch(profile){
         printf("%s\n",hash.get_error_menssage(profile));
 
     }

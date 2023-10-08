@@ -27,14 +27,14 @@ int main(){
     double height = obj.getNumber(profile,"height");
     bool maried = obj.getBool(profile,"maried");
 
-    if(!hash.errors(profile)){
+    CHash_protected(profile){
         printf("name: %s\n",name);
         printf("age %ld\n",age);
         printf("heigh %lf\n",height);
         printf("maried %s\n", maried ? "true":"false");
     }
 
-    else{
+    CHash_catch(profile){
         char *menssage = hash.get_error_menssage(profile);
         printf("%s",menssage);
     }

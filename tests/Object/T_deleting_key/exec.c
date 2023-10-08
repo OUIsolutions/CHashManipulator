@@ -26,10 +26,11 @@ int main(){
 
     obj.remove(profile,"maried");
 
-    if(!hash.errors(profile)){
+    CHash_protected(profile){
         hash.print(profile);
     }
-    else{
+
+    CHash_catch(profile){
         printf("%s\n",hash.get_error_menssage(profile));
 
     }

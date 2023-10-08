@@ -29,11 +29,12 @@ int main(){
     array.remove(element,-1);
 
 
-    if(!hash.errors(element)){
+    CHash_protected(element){
         hash.print(element);
 
     }
-    else{
+
+    CHash_catch(element){
         printf("%s",hash.get_error_menssage(element));
 
     }

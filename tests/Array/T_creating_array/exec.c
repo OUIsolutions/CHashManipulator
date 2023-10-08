@@ -24,13 +24,13 @@ int main(){
     long age = array.getNumber(element,1);
     double height = array.getNumber(element,2);
 
-    if(!hash.errors(element)){
+    CHash_protected(element){
         printf("name: %s\n",name);
         printf("age %ld\n",age);
         printf("heigh %lf\n",height);
     }
 
-    else{
+    CHash_catch(element){
         char *menssage = hash.get_error_menssage(element);
         printf("%s",menssage);
     }
