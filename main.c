@@ -46,12 +46,25 @@ CHash *create (){
 
 }
 
+void remove_invalid(CHash *invalid,va_list args){
+    CTextStack *phone = (CTextStack*)va_arg(args,void*);
+    ctext.stack.self_replace(phone,hash.toString(invalid),"");
+    CTextStack *formated = newCTextStack_string_empty();
+    ctext.stack.format(
+        formated,
+        "%tc+(%tc)%tc %tc",
+        ctext.stack.substr(phone,0,2),
+        ctext.stack.substr(phone,2,5),
+        ctext.stack.substr(phone,4,5),
+        ctext.stack.substr(phone,5,6)
+    );
+    printf("%s\n",formated->rendered_text);
+}
 void validate_and_format_phone(CHash *phone){
-
-    CTextStack *t = hash.toStack(phone);
+    CTextStack *phone_stack = hash.toStack(phone);
     CHashStringArray  *invalids = newCHashStringArray("+","(",")"," ");
-
-
+    array.foreach_with_args(invalids,remove_invalid,phone_stack);
+    hash.free(invalids);
 
 }
 void validate_and_format_person(CHash *person){
@@ -68,7 +81,7 @@ void validate_and_format_person(CHash *person){
     validator.ensure_Bool_by_key(person,"married");
     CHashStringArray * phones = obj.getArray(person,"phones");
     validator.ensure_all_String(phones);
-    //array.foreach(phones,validate_and_format_phone);
+    array.foreach(phones,validate_and_format_phone);
 }
 
 void validate_and_format(CHash *element){
