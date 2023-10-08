@@ -5961,7 +5961,7 @@ void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *curr
 
     for(long i = 0; i < size;i++){
         va_list  args;
-        va_start(args, NULL);
+        va_start(args, callback);
         CHash *current = CHashArray_get(self,i);
         callback(current,args);
         va_end(args);
@@ -6005,7 +6005,7 @@ CHashArray * CHashArray_map_with_args(CHashArray *self,CHash* (*callback)(CHash 
     long size = CHash_get_size(self);
     for(long i = 0; i < size;i++){
         va_list  args;
-        va_start(args, NULL);
+        va_start(args, callback);
         CHash *current = CHashArray_get(self,i);
         CHash *created = callback(current,args);
         va_end(args);
