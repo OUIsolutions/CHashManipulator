@@ -45,34 +45,30 @@ int main(){
     array  = hash.array;
     validator = hash.validator;
 
-    CHashArray *element = create();
-    
-    long size = hash.get_size(element);
-    for(int i = 0; i <size; i++){
-        CHashObject *current_person = array.getObject(element,i);
-        
-        char * name = obj.getString(current_person,"name");
-        long age = obj.getNumber(current_person,"age");
-        double height = obj.getNumber(current_person,"height");
-        bool married = obj.getBool(current_person,"married");
+    CHashArray *all_persons = create();
 
-        CHash_protected(element){
-            // its safe to print anything here 
+    CHash_for_in(person,all_persons,{
+
+        char * name = obj.getString(person,"name");
+        long age = obj.getNumber(person,"age");
+        double height = obj.getNumber(person,"height");
+        bool married = obj.getBool(person,"married");
+
+        CHash_protected(person){
+            // its safe to print anything here
             printf("-----------------------------------------------\n");
             printf("\tname:%s\n",name);
             printf("\tage:%ld\n",age);
             printf("\theight:%lf\n",height);
             printf("\tmarried:%s\n",married  ? "true": "false");
         }
-        
-    }
-    CHash_catch(element){
-        char *menssage = hash.get_error_menssage(element);
+    });
+
+    CHash_catch(all_persons){
+        char *menssage = hash.get_error_menssage(all_persons);
         printf("%s\n",menssage);
     }
-
-
-    hash.free(element);
+    hash.free(all_persons);
 
 }
 ~~~
