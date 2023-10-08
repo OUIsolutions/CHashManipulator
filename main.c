@@ -1,9 +1,13 @@
 #include "src/one.h"
 
-#define CHash_for_in(var,array, scope){                                                                             \
+#define CHash_for_in(var,array, scope){                                           \
         long private_size = CHash_get_size(array);                                \   
         for(int private_iter = 0; private_iter < private_size; private_iter++){   \
-                var = CHashArray_get(array,private_iter);                         \
+                CHash *var = CHashArray_get(array,private_iter);                  \
+                                                                                    \
+                if(Chash_errors(var)){                                             \
+                    break;                                                         \
+                }                                                                  \
                 scope                                                              \
         }                                                                          \
     }
@@ -52,15 +56,15 @@ CHash *create (){
 
 }
 
-void remove_invalid(CHash *invalid,va_list args){
-    CTextStack *phone = (CTextStack*)va_arg(args,void*);
-    ctext.stack.self_replace(phone,hash.toString(invalid),"");
-}
 
 void validate_and_format_phone(CHash *phone){
     CTextStack *phone_stack = hash.toStack(phone);
     CHashStringArray  *invalids = newCHashStringArray("+","(",")"," ");
-    array.foreach_with_args(invalids,remove_invalid,phone_stack);
+
+    CHash_for_in(invalid, invalids, {    
+        ctext.stack.self_replace(phone_stack,hash.toString(invalid),"");
+    });
+
     hash.free(invalids);
     validator.ensure_size(phone,13);
 
@@ -69,7 +73,7 @@ void validate_and_format_phone(CHash *phone){
 
 void validate_and_format(CHash *persons_array){
     validator.ensure_Array(persons_array);
-    CHash_for_in(CHash *person, persons_array,{
+    CHash_for_in(person, persons_array,{
            validator.ensure_only_keys_cleaning_args(person, newCHashStringArray(
                   "name","age","height","married","phones"
            ));
@@ -83,6 +87,7 @@ void validate_and_format(CHash *persons_array){
             validator.ensure_Bool_by_key(person,"married");
             CHashStringArray * phones = obj.getArray(person,"phones");
             validator.ensure_all_String(phones);  
+
     });
 }
 
