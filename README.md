@@ -551,13 +551,15 @@ int main(){
     hash = newCHashNamespace();
 
     CHash *element = hash.load_from_json_strimg("{\"name\":\"Mateus\",\"age\":26}");
-    if(hash.errors(element)){
+    
+    CHash_protected(element){
+        hash.print(element);
+    }
+
+    CHash_catch(element){
         printf("%s",hash.get_error_menssage(element));
     }
-    else{
-        hash.print(element);
 
-    }
 
     hash.free(element);
 

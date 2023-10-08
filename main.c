@@ -83,6 +83,8 @@ void validate_and_format(CHash *element){
 }
 
 int main(){
+    
+
     hash = newCHashNamespace();
     obj = hash.object;
     array  = hash.array;
