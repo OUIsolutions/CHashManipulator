@@ -25,7 +25,7 @@ const char  *private_Chash_convert_type(long type){
     }
 
     if(type == CHASH_NUMBER){
-        return "numeber";
+        return "number";
     }
 
     if(type == CHASH_BOOL){

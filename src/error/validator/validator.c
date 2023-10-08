@@ -207,6 +207,17 @@ int CHash_ensure_all_types(CHash *element, short expected_type){
     }
     return  0;
 }
+
+int CHash_ensure_all_String(CHash *element){
+    return CHash_ensure_all_types(element,CHASH_STRING);
+}
+int CHash_ensure_all_Numbers(CHash *element){
+    return CHash_ensure_all_types(element,CHASH_NUMBER);
+}
+int CHash_ensure_all_Bool(CHash *element){
+    return CHash_ensure_all_types(element,CHASH_BOOL);
+}
+
 int CHash_ensure_min_size(CHash *iterable,long min){
     long size = CHash_get_size(iterable);
     if(size < min){

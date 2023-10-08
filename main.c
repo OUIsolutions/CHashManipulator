@@ -16,9 +16,9 @@ CHash *create (){
                     "age", hash.newNumber(26),
                     "height",hash.newNumber(1.69),
                     "married",hash.newBool(true),
-                    "phones",newCHashStringArray(
-                        "+55(11) 12345 1234 ",
-                        "+55(11) 12345 5555 "
+                    "phones", newCHashStringArray(
+                            "+55 11 12345 1234 ",
+                            "+55 11 12345 5555 "
                     )
             ),
             newCHashObject(
@@ -56,7 +56,7 @@ void validate_and_format_phone(CHash *phone){
 }
 void validate_and_format_person(CHash *person){
     validator.ensure_only_keys_cleaning_args(person, newCHashStringArray(
-            "name","age","height","married"
+            "name","age","height","married","phones"
     ));
     validator.ensure_String_by_key(person,"name");
     validator.ensure_min_size_by_key(person,"name",2);
@@ -67,8 +67,8 @@ void validate_and_format_person(CHash *person){
     validator.ensure_max_value_by_key(person, "height", 2.5);
     validator.ensure_Bool_by_key(person,"married");
     CHashStringArray * phones = obj.getArray(person,"phones");
-    validator.ensure_all_types(phones, CHASH_STRING);
-    array.foreach(phones,validate_and_format_phone);
+    validator.ensure_all_String(phones);
+    //array.foreach(phones,validate_and_format_phone);
 }
 
 void validate_and_format(CHash *element){

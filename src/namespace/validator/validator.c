@@ -39,7 +39,9 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_Array_by_index = CHash_ensure_Array_by_index;
 
     self.ensure_all_types = CHash_ensure_all_types;
-
+    self.ensure_all_String  = CHash_ensure_all_String;
+    self.ensure_all_Bool = CHash_ensure_all_Bool;
+    self.ensure_all_Numbers = CHash_ensure_all_Numbers;
     self.ensure_min_size = CHash_ensure_min_size;
     self.ensure_min_size_by_key = CHash_ensure_min_size_by_key;
     self.ensure_min_size_by_index = CHash_ensure_min_size_by_index;

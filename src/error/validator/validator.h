@@ -38,7 +38,11 @@ int CHash_ensure_only_keys_cleaning_args(CHashObject *object, CHashStringArray *
 int CHash_ensure_Array(CHash *element);
 int CHash_ensure_Array_by_key(CHash *object , const char *key);
 int CHash_ensure_Array_by_index(CHash *array , long index);
+
 int CHash_ensure_all_types(CHash *element, short expected_type);
+int CHash_ensure_all_String(CHash *element);
+int CHash_ensure_all_Numbers(CHash *element);
+int CHash_ensure_all_Bool(CHash *element);
 
 
 int CHash_ensure_min_size(CHash *iterable,long min);

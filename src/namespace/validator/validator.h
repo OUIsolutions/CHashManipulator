@@ -37,6 +37,9 @@ typedef struct CHashValidatorModule {
     int (*ensure_Array_by_index)(CHash *array , long index);
 
     int (*ensure_all_types)(CHash *element, short expected_type);
+    int (*ensure_all_String)(CHash *element);
+    int (*ensure_all_Numbers)(CHash *element);
+    int (*ensure_all_Bool)(CHash *element);
 
 
     int (*ensure_min_size)(CHash *iterable,long min);
