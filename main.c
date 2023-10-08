@@ -48,11 +48,11 @@ CHash *create (){
 
 void validate_and_format_phone(CHash *phone){
     CTextStack *phone_stack = hash.toStack(phone);
-    CHashStringArray  *invalids = newCHashStringArray("+","(",")"," ");
-
+    CHashStringArray  *invalids = newCHashStringArray("+","(",")"," ","-");
     CHash_for_in(invalid, invalids, {    
         ctext.stack.self_replace(phone_stack,hash.toString(invalid),"");
     });
+
 
     hash.free(invalids);
     validator.ensure_size(phone,13);
@@ -63,10 +63,12 @@ void validate_and_format_phone(CHash *phone){
 void validate_and_format(CHash *persons_array){
     validator.ensure_Array(persons_array);
     CHash_for_in(person, persons_array,{
-           validator.ensure_only_keys_cleaning_args(person, newCHashStringArray(
+            validator.ensure_only_keys_cleaning_args(person, newCHashStringArray(
                   "name","age","height","married","phones"
-           ));
+            ));
+            
             validator.ensure_String_by_key(person,"name");
+
             validator.ensure_min_size_by_key(person,"name",2);
             validator.ensure_max_size_by_key(person,"name",30);
             validator.ensure_min_value_by_key(person, "age", 0);
