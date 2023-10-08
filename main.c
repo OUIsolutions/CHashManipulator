@@ -1,10 +1,10 @@
 #include "src/one.h"
 
-#define CHash_for_in(var,array, scope){                                           \
-        long private_size = CHash_get_size(array);                                \   
-        for(int private_iter = 0; private_iter < private_size; private_iter++){   \
-                CHash *var = CHashArray_get(array,private_iter);                  \
-                                                                                    \
+#define CHash_for_in(var,array, scope){                                            \
+        long private_size = CHash_get_size(array);                                 \
+        for(int private_iter = 0; private_iter < private_size; private_iter++){    \
+                CHash *var = CHashArray_get(array,private_iter);                   \
+                                                                                   \
                 if(Chash_errors(var)){                                             \
                     break;                                                         \
                 }                                                                  \
@@ -114,7 +114,7 @@ int main(){
 
     CHash_protected(element){
         char * formated = hash.dump_to_json_string(element);
-        printf("%s",formated);
+        printf("%s\n",formated);
         free(formated);
     }
 
