@@ -37,7 +37,7 @@ CHash *create (){
                     "height",hash.newNumber(2.4),
                     "married",hash.newBool(false),
                     "phones",newCHashStringArray(
-                            "+55 11  12345 1234 ",
+                            "+55 11            12345 1234 ",
                             "+55 11  12345 5555 "
                     )
             )
@@ -66,7 +66,7 @@ void validate_and_format_phone(CHash *phone){
             ctext.stack.substr(phone_stack,4,9),
             ctext.stack.substr(phone_stack,9,-1)
     );
-    printf("%s\n",formated->rendered_text);
+    hash.set_Stack(phone,formated);
 }
 
 void validate_and_format(CHash *persons_array){
