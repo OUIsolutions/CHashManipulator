@@ -1,13 +1,12 @@
 #include "src/one.h"
 
-#define CHash_for_in(var,array, scope)                                            \
-    {                                                                             \
+#define CHash_for_in(var,array, scope){                                                                             \
         long private_size = CHash_get_size(array);                                \   
         for(int private_iter = 0; private_iter < private_size; private_iter++){   \
                 var = CHashArray_get(array,private_iter);                         \
                 scope                                                              \
         }                                                                          \
-    }\
+    }
 
 CHashNamespace hash;
 CHashObjectModule  obj;
@@ -71,9 +70,9 @@ void validate_and_format_phone(CHash *phone){
 void validate_and_format(CHash *element){
     validator.ensure_Array(element);
     CHash_for_in(CHash *person, element,{
-            validator.ensure_only_keys_cleaning_args(person, newCHashStringArray(
+           validator.ensure_only_keys_cleaning_args(person, newCHashStringArray(
                   "name","age","height","married","phones"
-            ));
+           ));
            validator.ensure_String_by_key(person,"name");
             validator.ensure_min_size_by_key(person,"name",2);
             validator.ensure_max_size_by_key(person,"name",30);
