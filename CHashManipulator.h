@@ -793,6 +793,8 @@ CHash * privateCHash_copy_if_its_an_reference(CHash *self);
 
 void CHash_free(CHash *self);
 
+void privateCHash_free_values(CHash *self);
+
 bool CHash_equals(CHash *element1, CHash *element2);
 
 long CHash_get_size(CHash *self);
@@ -1214,6 +1216,7 @@ typedef struct CHashValidatorModule {
     int (*ensure_String)(CHash *element);
     int (*ensure_String_by_key)(CHash *object , const char *key);
     int (*ensure_String_by_index)(CHash *array , long index);
+    int (*ensure_only_chars)(CHash *element, const char *seq);
 
     int (*ensure_Object)(CHash *element);
     int (*ensure_Object_by_key)(CHash *object , const char *key);
@@ -5479,7 +5482,21 @@ bool CHash_equals(CHash *element1, CHash *element2){
     return equal;
 }
 
+void privateCHash_free_values(CHash *self){
+    if(self->private_type == CHASH_STRING){
+        CTextStack_free(self->private_value_stack);
+    }
 
+    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
+        long size = self->private_size;
+        for(int i = 0; i < size; i++){
+            CHash * current = self->private_sub_elements[i];
+            CHash_free(current);
+        }
+        free(self->private_sub_elements);
+    }
+
+}
 void CHash_free(CHash *self){
     if(!self){
         return;
@@ -5494,20 +5511,7 @@ void CHash_free(CHash *self){
         }
     }
 
-
-    if(self->private_type == CHASH_STRING){
-        CTextStack_free(self->private_value_stack);
-    }
-
-    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
-        long size = self->private_size;
-        for(int i = 0; i < size; i++){
-            CHash * current = self->private_sub_elements[i];
-            CHash_free(current);
-        }
-        free(self->private_sub_elements);
-    }
-
+    privateCHash_free_values(self);
 
     free(self);
 }
@@ -6728,6 +6732,8 @@ int Chash_ensure_only_chars(CHash *element, const char *seq){
                             "valid_chars", newCHashStackString(seq_stack)
                     )
             );
+            return 1;
+
         }
     }
     CTextStack_free(seq_stack);
@@ -7004,6 +7010,7 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_String = CHash_ensure_String;
     self.ensure_String_by_key = CHash_ensure_String_by_key;
     self.ensure_String_by_index = CHash_ensure_String_by_index;
+    self.ensure_only_chars = Chash_ensure_only_chars;
 
     self.ensure_Object = CHash_ensure_Object;
     self.ensure_Object_by_key = CHash_ensure_Object_by_key;

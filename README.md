@@ -22,6 +22,7 @@ CHash *create (){
                 "height",hash.newNumber(1.69),
                 "married",hash.newBool(true)
         ),
+
         newCHashObject(
                 "name",hash.newString("second name"),
                 "age", hash.newNumber(42),
