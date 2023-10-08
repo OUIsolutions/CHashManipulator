@@ -50,6 +50,8 @@ CHash * privateCHash_copy_if_its_an_reference(CHash *self);
 
 void CHash_free(CHash *self);
 
+void privateCHash_free_values(CHash *self);
+
 bool CHash_equals(CHash *element1, CHash *element2);
 
 long CHash_get_size(CHash *self);

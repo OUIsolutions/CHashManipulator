@@ -26,6 +26,7 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_String = CHash_ensure_String;
     self.ensure_String_by_key = CHash_ensure_String_by_key;
     self.ensure_String_by_index = CHash_ensure_String_by_index;
+    self.ensure_only_chars = Chash_ensure_only_chars;
 
     self.ensure_Object = CHash_ensure_Object;
     self.ensure_Object_by_key = CHash_ensure_Object_by_key;

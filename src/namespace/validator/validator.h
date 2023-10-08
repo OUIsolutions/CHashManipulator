@@ -24,6 +24,7 @@ typedef struct CHashValidatorModule {
     int (*ensure_String)(CHash *element);
     int (*ensure_String_by_key)(CHash *object , const char *key);
     int (*ensure_String_by_index)(CHash *array , long index);
+    int (*ensure_only_chars)(CHash *element, const char *seq);
 
     int (*ensure_Object)(CHash *element);
     int (*ensure_Object_by_key)(CHash *object , const char *key);

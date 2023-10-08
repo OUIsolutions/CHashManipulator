@@ -125,6 +125,8 @@ int Chash_ensure_only_chars(CHash *element, const char *seq){
                             "valid_chars", newCHashStackString(seq_stack)
                     )
             );
+            return 1;
+
         }
     }
     CTextStack_free(seq_stack);

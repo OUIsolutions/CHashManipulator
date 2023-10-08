@@ -40,7 +40,21 @@ bool CHash_equals(CHash *element1, CHash *element2){
     return equal;
 }
 
+void privateCHash_free_values(CHash *self){
+    if(self->private_type == CHASH_STRING){
+        CTextStack_free(self->private_value_stack);
+    }
 
+    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
+        long size = self->private_size;
+        for(int i = 0; i < size; i++){
+            CHash * current = self->private_sub_elements[i];
+            CHash_free(current);
+        }
+        free(self->private_sub_elements);
+    }
+
+}
 void CHash_free(CHash *self){
     if(!self){
         return;
@@ -55,20 +69,7 @@ void CHash_free(CHash *self){
         }
     }
 
-
-    if(self->private_type == CHASH_STRING){
-        CTextStack_free(self->private_value_stack);
-    }
-
-    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
-        long size = self->private_size;
-        for(int i = 0; i < size; i++){
-            CHash * current = self->private_sub_elements[i];
-            CHash_free(current);
-        }
-        free(self->private_sub_elements);
-    }
-
+    privateCHash_free_values(self);
 
     free(self);
 }
