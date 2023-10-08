@@ -17,7 +17,7 @@ CHash *create (){
                     "height",hash.newNumber(1.69),
                     "married",hash.newBool(true),
                     "phones", newCHashStringArray(
-                            "+55 11 12345 1234 ",
+                            "+55(11 12345 1234 ",
                             "+55 11 12345 5555 "
                     )
             ),
@@ -49,21 +49,14 @@ CHash *create (){
 void remove_invalid(CHash *invalid,va_list args){
     CTextStack *phone = (CTextStack*)va_arg(args,void*);
     ctext.stack.self_replace(phone,hash.toString(invalid),"");
-    CTextStack *formated = newCTextStack_string_empty();
-    ctext.stack.format(
-        formated,
-        "%tc+(%tc)%tc %tc",
-        ctext.stack.substr(phone,0,2),
-        ctext.stack.substr(phone,2,5),
-        ctext.stack.substr(phone,4,5),
-        ctext.stack.substr(phone,5,6)
-    );
-    printf("%s\n",formated->rendered_text);
 }
+
 void validate_and_format_phone(CHash *phone){
     CTextStack *phone_stack = hash.toStack(phone);
     CHashStringArray  *invalids = newCHashStringArray("+","(",")"," ");
     array.foreach_with_args(invalids,remove_invalid,phone_stack);
+
+
     hash.free(invalids);
 
 }
@@ -102,11 +95,13 @@ int main(){
         char *menssage = hash.get_error_menssage(element);
         printf("%s\n",menssage);
     }
-    else{
+
+     CHash_protected(element){
         char * formated = hash.dump_to_json_string(element);
         printf("%s",formated);
         free(formated);
     }
+
 
     hash.free(element);
 

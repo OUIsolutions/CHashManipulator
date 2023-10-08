@@ -13,6 +13,7 @@ void privateCHashError_free(privateCHashError *self);
 
 bool Chash_errors(CHash *self);
 
+#define CHash_protected(element) if(!Chash_errors(element))
 
 void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
