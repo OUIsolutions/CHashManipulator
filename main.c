@@ -67,9 +67,9 @@ void validate_and_format_phone(CHash *phone){
     
 }
 
-void validate_and_format(CHash *element){
-    validator.ensure_Array(element);
-    CHash_for_in(CHash *person, element,{
+void validate_and_format(CHash *persons_array){
+    validator.ensure_Array(persons_array);
+    CHash_for_in(CHash *person, persons_array,{
            validator.ensure_only_keys_cleaning_args(person, newCHashStringArray(
                   "name","age","height","married","phones"
            ));
