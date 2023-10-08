@@ -91,12 +91,14 @@ int main(){
 
     CHashArray *element = create();
     validate_and_format(element);
-    if(hash.errors(element)){
+
+
+    CHash_catch(element){
         char *menssage = hash.get_error_menssage(element);
         printf("%s\n",menssage);
     }
 
-     CHash_protected(element){
+    CHash_protected(element){
         char * formated = hash.dump_to_json_string(element);
         printf("%s",formated);
         free(formated);
