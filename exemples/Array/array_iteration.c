@@ -47,7 +47,7 @@ int main(){
 
     }
 
-    if(hash.errors(element)){
+   CHash_catch(element){
         printf("%s",hash.get_error_menssage(element));
     }
 
