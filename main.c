@@ -57,8 +57,8 @@ void validate_and_format_phone(CHash *phone){
     array.foreach_with_args(invalids,remove_invalid,phone_stack);
     hash.free(invalids);
     validator.ensure_size(phone,13);
-    
 
+    
 }
 void validate_and_format_person(CHash *person){
     validator.ensure_only_keys_cleaning_args(person, newCHashStringArray(
