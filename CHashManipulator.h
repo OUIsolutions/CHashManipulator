@@ -892,6 +892,18 @@ bool CHashArray_getBool(CHashObject * self, long index);
 char  * CHashArray_getString(CHashObject * self, long index);
 
 
+#define CHash_for_in(var,array, scope){                                            \
+        long private_size = CHash_get_size(array);                                 \
+        for(int private_iter = 0; private_iter < private_size; private_iter++){    \
+                CHash *var = CHashArray_get(array,private_iter);                   \
+                                                                                   \
+                if(Chash_errors(var)){                                             \
+                    break;                                                         \
+                }                                                                  \
+                scope                                                              \
+        }                                                                          \
+    }
+
 
 
 
@@ -1089,6 +1101,9 @@ int CHash_ensure_min_size(CHash *iterable,long min);
 int CHash_ensure_min_size_by_key(CHash  *object, const char *key,long min);
 int CHash_ensure_min_size_by_index(CHash  *array, long index,long  min);
 
+int CHash_ensure_size(CHash *iterable,long size);
+int CHash_ensure_size_by_key(CHash  *object, const char *key,long size);
+int CHash_ensure_size_by_index(CHash  *array, long index,long  size);
 
 int CHash_ensure_max_size(CHash *iterable,long max);
 int CHash_ensure_max_size_by_key(CHash  *object, const char *key,long max);
@@ -1220,6 +1235,10 @@ typedef struct CHashValidatorModule {
     int (*ensure_min_size)(CHash *iterable,long min);
     int (*ensure_min_size_by_key)(CHash  *object, const char *key,long min);
     int (*ensure_min_size_by_index)(CHash  *array, long index,long  min);
+
+    int (*ensure_size)(CHash *iterable,long size);
+    int (*ensure_size_by_key)(CHash  *object, const char *key,long size);
+    int (*ensure_size_by_index)(CHash  *array, long index,long  size);
 
 
     int (*ensure_max_size)(CHash *iterable,long max);
@@ -6828,6 +6847,33 @@ int CHash_ensure_min_size_by_index(CHash  *array, long index,long min){
     return CHash_ensure_min_size(element,min);
 }
 
+
+int CHash_ensure_size(CHash *iterable,long size){
+    long iterable_size = CHash_get_size(iterable);
+    if(iterable_size != size){
+        CHash_raise_error(
+                iterable,
+                CHASH_HIGHER_THAN_MIN,
+                "the element at #path# has diferent size than #size# ",
+                newCHashObject(
+                        "size", newCHashNumber(size)
+                )
+        );
+        return 1;
+    }
+    return  0;
+}
+
+int CHash_ensure_size_by_key(CHash  *object, const char *key,long size){
+    CHash  *element = CHashObject_get(object,key);
+    return CHash_ensure_size(element,size);
+}
+
+int CHash_ensure_size_by_index(CHash  *array, long index,long size){
+    CHash *element = CHashArray_get(array,index);
+    return CHash_ensure_size(element,size);
+}
+
 int CHash_ensure_max_size(CHash *iterable,long max){
     long size = CHash_get_size(iterable);
     if(size > max){
@@ -6977,6 +7023,10 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_min_size = CHash_ensure_min_size;
     self.ensure_min_size_by_key = CHash_ensure_min_size_by_key;
     self.ensure_min_size_by_index = CHash_ensure_min_size_by_index;
+
+    self.ensure_size = CHash_ensure_size;
+    self.ensure_size_by_key= CHash_ensure_size_by_key;
+    self.ensure_size_by_index = CHash_ensure_size_by_index;
 
     self.ensure_max_size = CHash_ensure_max_size;
     self.ensure_max_size_by_key  = CHash_ensure_max_size_by_key;
