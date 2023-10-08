@@ -244,6 +244,33 @@ int CHash_ensure_min_size_by_index(CHash  *array, long index,long min){
     return CHash_ensure_min_size(element,min);
 }
 
+
+int CHash_ensure_size(CHash *iterable,long size){
+    long iterable_size = CHash_get_size(iterable);
+    if(iterable_size != size){
+        CHash_raise_error(
+                iterable,
+                CHASH_HIGHER_THAN_MIN,
+                "the element at #path# has diferent size than #size# ",
+                newCHashObject(
+                        "size", newCHashNumber(size)
+                )
+        );
+        return 1;
+    }
+    return  0;
+}
+
+int CHash_ensure_size_by_key(CHash  *object, const char *key,long size){
+    CHash  *element = CHashObject_get(object,key);
+    return CHash_ensure_size(element,size);
+}
+
+int CHash_ensure_size_by_index(CHash  *array, long index,long size){
+    CHash *element = CHashArray_get(array,index);
+    return CHash_ensure_size(element,size);
+}
+
 int CHash_ensure_max_size(CHash *iterable,long max){
     long size = CHash_get_size(iterable);
     if(size > max){

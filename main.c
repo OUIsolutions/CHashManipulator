@@ -83,8 +83,19 @@ void validate_and_format(CHash *element){
 }
 
 int main(){
+
+    int r = 0;
+    t1:
+        printf("%ld\n",r);
+        if(r < 20){
+            r+=1;
+            goto t1;
+        }
+
     
 
+
+/*
     hash = newCHashNamespace();
     obj = hash.object;
     array  = hash.array;
@@ -106,5 +117,5 @@ int main(){
     }
 
     hash.free(element);
-
+*/
 }

@@ -49,6 +49,9 @@ int CHash_ensure_min_size(CHash *iterable,long min);
 int CHash_ensure_min_size_by_key(CHash  *object, const char *key,long min);
 int CHash_ensure_min_size_by_index(CHash  *array, long index,long  min);
 
+int CHash_ensure_size(CHash *iterable,long min);
+int CHash_ensure_size_by_key(CHash  *object, const char *key,long min);
+int CHash_ensure_size_by_index(CHash  *array, long index,long  min);
 
 int CHash_ensure_max_size(CHash *iterable,long max);
 int CHash_ensure_max_size_by_key(CHash  *object, const char *key,long max);
