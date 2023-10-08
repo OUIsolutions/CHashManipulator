@@ -46,9 +46,9 @@ typedef struct CHashValidatorModule {
     int (*ensure_min_size_by_key)(CHash  *object, const char *key,long min);
     int (*ensure_min_size_by_index)(CHash  *array, long index,long  min);
 
-    int (*ensure_size)(CHash *iterable,long min);
-    int (*ensure_size_by_key)(CHash  *object, const char *key,long min);
-    int (*ensure_size_by_index)(CHash  *array, long index,long  min);
+    int (*ensure_size)(CHash *iterable,long size);
+    int (*ensure_size_by_key)(CHash  *object, const char *key,long size);
+    int (*ensure_size_by_index)(CHash  *array, long index,long  size);
 
 
     int (*ensure_max_size)(CHash *iterable,long max);

@@ -56,7 +56,7 @@ void validate_and_format_phone(CHash *phone){
     CHashStringArray  *invalids = newCHashStringArray("+","(",")"," ");
     array.foreach_with_args(invalids,remove_invalid,phone_stack);
     hash.free(invalids);
-    validator.ensure_size(phone_stack,12);
+    validator.ensure_size(phone,13);
     
 
 }
@@ -83,7 +83,7 @@ void validate_and_format(CHash *element){
 }
 
 int main(){
-
+    /*
     int r = 0;
     t1:
         printf("%ld\n",r);
@@ -91,11 +91,9 @@ int main(){
             r+=1;
             goto t1;
         }
-
+    */
     
 
-
-/*
     hash = newCHashNamespace();
     obj = hash.object;
     array  = hash.array;
@@ -117,5 +115,5 @@ int main(){
     }
 
     hash.free(element);
-*/
+
 }

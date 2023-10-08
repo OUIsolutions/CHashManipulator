@@ -49,7 +49,7 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_size = CHash_ensure_size;
     self.ensure_size_by_key= CHash_ensure_size_by_key;
     self.ensure_size_by_index = CHash_ensure_size_by_index;
-    
+
     self.ensure_max_size = CHash_ensure_max_size;
     self.ensure_max_size_by_key  = CHash_ensure_max_size_by_key;
     self.ensure_max_size_by_index = CHash_ensure_max_size_by_index;
