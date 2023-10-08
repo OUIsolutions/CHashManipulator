@@ -55,9 +55,9 @@ void validate_and_format_phone(CHash *phone){
     CTextStack *phone_stack = hash.toStack(phone);
     CHashStringArray  *invalids = newCHashStringArray("+","(",")"," ");
     array.foreach_with_args(invalids,remove_invalid,phone_stack);
-
-
     hash.free(invalids);
+    validator.ensure_size(phone_stack,12);
+    
 
 }
 void validate_and_format_person(CHash *person){
