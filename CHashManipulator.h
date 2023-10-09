@@ -7029,7 +7029,7 @@ int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys){
                     "key: #key# at #path#  its not inside #keys#",
                     newCHashObject(
                             "key", newCHashString(current_key),
-                            "keys",keys
+                            "keys", CHash_copy(keys)
                     )
             );
             return 1;
