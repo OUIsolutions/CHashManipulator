@@ -877,11 +877,11 @@ CHash * CHashArray_get(CHashArray *self, long index);
 void CHashArray_foreach(CHashArray *self,void  (*callback)(CHash *current));
 
 void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *current,va_list args),...);
-
+/*
 CHashArray * CHashArray_map(CHashArray *self,CHash* (*callback)(CHash *current));
 
 CHashArray * CHashArray_map_with_args(CHashArray *self,CHash* (*callback)(CHash *current,va_list args),...);
-
+*/
 
 long CHashArray_find(CHashArray *self, CHash *element);
 
@@ -1193,8 +1193,8 @@ typedef struct CHashArrayModule{
     long (*find_String)(CHashArray *self, const char *element);
     void (*foreach)(CHashArray *self,void  (*callback)(CHash *current));
     void (*foreach_with_args)(CHashArray *self,void  (*callback)(CHash *current,va_list args),...);
-    CHashArray * (*map)(CHashArray *self,CHash* (*callback)(CHash *current));
-    CHashArray * (*map_with_args)(CHashArray *self,CHash* (*callback)(CHash *current,va_list args),...);
+    //CHashArray * (*map)(CHashArray *self,CHash* (*callback)(CHash *current));
+    //CHashArray * (*map_with_args)(CHashArray *self,CHash* (*callback)(CHash *current,va_list args),...);
 
 
     short (*get_type)(CHashArrayOrObject *self, long index);
@@ -6109,7 +6109,7 @@ void CHashArray_foreach_with_args(CHashArray *self,void  (*callback)(CHash *curr
     }
 
 }
-
+/*
 CHashArray * CHashArray_map(CHashArray *self,CHash* (*callback)(CHash *current)){
 
     if(privateCHash_ensureArrayOrObject(self)){
@@ -6156,7 +6156,7 @@ CHashArray * CHashArray_map_with_args(CHashArray *self,CHash* (*callback)(CHash 
     }
     return  new_element;
 }
-
+*/
 
 
 
@@ -7130,8 +7130,8 @@ CHashArrayModule newCHashArrayModule(){
     self.foreach = CHashArray_foreach;
     self.foreach_with_args = CHashArray_foreach_with_args;
 
-    self.map = CHashArray_map;
-    self.map_with_args = CHashArray_map_with_args;
+    //self.map = CHashArray_map;
+    //self.map_with_args = CHashArray_map_with_args;
 
     self.find = CHashArray_find;
     self.find_Number =CHashArray_find_Number;
