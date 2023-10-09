@@ -6,6 +6,13 @@ bool CHash_toBool(CHash *element){
     }
     return element->private_value_bool;
 }
+void CHash_set_Bool(CHash *self, bool value){
+    if(CHash_ensure_Bool(self)){
+        return;
+    }
+    privateCHash_free_values(self);
+    self->private_value_bool = value;
+}
 
 
 CHash * newCHashBool(bool value){

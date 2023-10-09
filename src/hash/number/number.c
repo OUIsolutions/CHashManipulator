@@ -9,6 +9,15 @@ double CHash_toNumber(CHash *element){
 
 }
 
+void CHash_set_Number(CHash *self,double  value){
+    if(Chash_errors(self)){
+        return;
+    }
+    privateCHash_free_values(self);
+    self->private_value_double = value;
+}
+
+
 
 CHash * newCHashNumber(double value){
     CHash * self =  privatenewChash_raw();

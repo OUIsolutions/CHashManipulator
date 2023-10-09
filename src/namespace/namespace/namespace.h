@@ -15,10 +15,12 @@ typedef struct CHashNamespace{
 
     CHash * (*newBool)(bool value);
     bool (*toBool)(CHash *element);
+    void (*set_Bool)(CHash *self, bool value);
 
 
     CHash * (*newNumber)(double value);
     double  (*toNumber)(CHash *element);
+    void (*set_Number)(CHash *self,double  value);
 
 
     CHash * (*newStackString)(CTextStack *element);
