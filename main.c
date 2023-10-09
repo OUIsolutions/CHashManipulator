@@ -12,7 +12,7 @@ CHash *create (){
     return newCHashArray(
 
             newCHashObject(
-                    "name",hash.newString("Mateus"),
+                    "name",hash.newString("Mateus       Moutinho Queiroz"),
                     "age", hash.newNumber(26),
                     "height",hash.newNumber(1.69),
                     "married",hash.newBool(true),
@@ -79,15 +79,16 @@ void validate_and_format(CHash *persons_array){
 
         validator.ensure_String_by_key(person,"name");
         validator.ensure_min_size_by_key(person,"name",2);
-        validator.ensure_max_size_by_key(person,"name",30);
+
         CHash_protected(person){
             CHash *name = obj.get(person,"name");   
             CTextArray *separated = CTextArray_split(hash.toString(name)," ");
             CTextStack *formated = CTextArray_join(separated," ");
+            CTextArray_free(separated);
             stack.self_captalize(formated);
-            hash.set_Stack(person,formated);
+            hash.set_Stack(name,formated);
         }
-
+        validator.ensure_max_size_by_key(person,"name",30);
         validator.ensure_min_value_by_key(person, "age", 0);
         validator.ensure_max_value_by_key(person, "age", 120);
         validator.ensure_min_value_by_key(person, "height", 0.5);
