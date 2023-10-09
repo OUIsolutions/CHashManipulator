@@ -1,3 +1,5 @@
+#define  CHASH_CODE "code"
+#define  CHASH_MESSAGE "message"
 
 #define  CHASH_FILE_NOT_FOUND 300
 #define  CHASH_NOT_VALID_JSON 301

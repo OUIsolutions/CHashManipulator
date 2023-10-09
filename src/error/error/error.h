@@ -10,6 +10,11 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
 
 CTextStack * privateCHashError_create_menssage(CHashObject *args, int error_code, const char *error_mensage);
 
+void CHash_generate_custom_error(CHash  *self, CHashArray *error);
+
+void CHash_generate_custom_error_cleaning_args(CHash  *self, CHashArray *error);
+
+
 void privateCHashError_free(privateCHashError *self);
 
 bool Chash_errors(CHash *self);

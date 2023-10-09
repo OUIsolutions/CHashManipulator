@@ -1022,6 +1022,8 @@ CHash * CHash_load_from_json_file(const char *filename);
 
 
 
+#define  CHASH_CODE "code"
+#define  CHASH_MESSAGE "message"
 
 #define  CHASH_FILE_NOT_FOUND 300
 #define  CHASH_NOT_VALID_JSON 301
@@ -1048,6 +1050,11 @@ typedef struct privateCHashError{
 privateCHashError * privatenewCHashError(CHashObject *args, int error_code, const char *error_menssage);
 
 CTextStack * privateCHashError_create_menssage(CHashObject *args, int error_code, const char *error_mensage);
+
+void CHash_generate_custom_error(CHash  *self, CHashArray *error);
+
+void CHash_generate_custom_error_cleaning_args(CHash  *self, CHashArray *error);
+
 
 void privateCHashError_free(privateCHashError *self);
 
@@ -1223,6 +1230,8 @@ typedef struct CHashValidatorModule {
 
     void (*raise_error_by_key)(CHash *self,const char *key, int error_code,const char *error_menssage, CHash *args);
     void (*raise_error_by_index)(CHash *self,long index, int error_code,const char *error_menssage, CHash *args);
+    void (*generate_custom_error)(CHash  *self, CHashArray *error);
+    void (*generate_custom_error_cleaning_args)(CHash  *self, CHashArray *error);
 
     int (*ensure_Number)(CHash *element);
     int (*ensure_Number_by_key)(CHash *object, const char *key);
@@ -6659,6 +6668,38 @@ CTextStack * privateCHashError_create_menssage(CHashObject *args, int error_code
     return error;
 }
 
+void CHash_generate_custom_error(CHash  *self, CHashArray *errors){
+    if(!self){
+        return;
+    }
+    if(!Chash_errors(self)){
+        return;
+    }
+    long  size = CHash_get_size(errors);
+    long error_code = CHash_get_error_code(self);
+
+    for(int i =0; i < size; i++){
+        CHashObject  *current_object = CHashArray_get(errors,i);
+        int code = (int)CHashObject_getNumber(current_object,"code");
+        char *menssage = CHashObject_getString(current_object,"message");
+
+        if(!Chash_errors(errors) && error_code == code){
+          privateCHashError *generated_errror = (privateCHashError*)self->private_error;
+            free(generated_errror->error_mensage);
+            generated_errror->error_mensage = privateCHashError_create_menssage(
+                    generated_errror->args,
+                    code,
+                    menssage
+                    );
+            break;
+        }
+    }
+}
+
+void CHash_generate_custom_error_cleaning_args(CHash  *self, CHashArray *error){
+    CHash_generate_custom_error(self,error);
+    CHash_free(error);
+}
 
 privateCHashError * privateCHashError_get_error(CHash *self){
 
@@ -7195,6 +7236,8 @@ CHashValidatorModule newCHashValidatorModule(){
     self.raise_error = CHash_raise_error;
     self.raise_error_by_key = CHash_raise_error_by_key;
     self.raise_error_by_index = CHash_raise_error_by_index;
+    self.generate_custom_error = CHash_generate_custom_error;
+    self.generate_custom_error_cleaning_args = CHash_generate_custom_error_cleaning_args;
 
     self.ensure_Number = CHash_ensure_Number;
     self.ensure_Number_by_key = CHash_ensure_Number_by_key;

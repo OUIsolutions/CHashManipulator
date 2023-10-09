@@ -5,6 +5,8 @@ typedef struct CHashValidatorModule {
 
     void (*raise_error_by_key)(CHash *self,const char *key, int error_code,const char *error_menssage, CHash *args);
     void (*raise_error_by_index)(CHash *self,long index, int error_code,const char *error_menssage, CHash *args);
+    void (*generate_custom_error)(CHash  *self, CHashArray *error);
+    void (*generate_custom_error_cleaning_args)(CHash  *self, CHashArray *error);
 
     int (*ensure_Number)(CHash *element);
     int (*ensure_Number_by_key)(CHash *object, const char *key);

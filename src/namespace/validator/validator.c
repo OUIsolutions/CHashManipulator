@@ -5,6 +5,8 @@ CHashValidatorModule newCHashValidatorModule(){
     self.raise_error = CHash_raise_error;
     self.raise_error_by_key = CHash_raise_error_by_key;
     self.raise_error_by_index = CHash_raise_error_by_index;
+    self.generate_custom_error = CHash_generate_custom_error;
+    self.generate_custom_error_cleaning_args = CHash_generate_custom_error_cleaning_args;
 
     self.ensure_Number = CHash_ensure_Number;
     self.ensure_Number_by_key = CHash_ensure_Number_by_key;

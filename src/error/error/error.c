@@ -26,6 +26,38 @@ CTextStack * privateCHashError_create_menssage(CHashObject *args, int error_code
     return error;
 }
 
+void CHash_generate_custom_error(CHash  *self, CHashArray *errors){
+    if(!self){
+        return;
+    }
+    if(!Chash_errors(self)){
+        return;
+    }
+    long  size = CHash_get_size(errors);
+    long error_code = CHash_get_error_code(self);
+
+    for(int i =0; i < size; i++){
+        CHashObject  *current_object = CHashArray_get(errors,i);
+        int code = (int)CHashObject_getNumber(current_object,"code");
+        char *menssage = CHashObject_getString(current_object,"message");
+
+        if(!Chash_errors(errors) && error_code == code){
+          privateCHashError *generated_errror = (privateCHashError*)self->private_error;
+            free(generated_errror->error_mensage);
+            generated_errror->error_mensage = privateCHashError_create_menssage(
+                    generated_errror->args,
+                    code,
+                    menssage
+                    );
+            break;
+        }
+    }
+}
+
+void CHash_generate_custom_error_cleaning_args(CHash  *self, CHashArray *error){
+    CHash_generate_custom_error(self,error);
+    CHash_free(error);
+}
 
 privateCHashError * privateCHashError_get_error(CHash *self){
 
