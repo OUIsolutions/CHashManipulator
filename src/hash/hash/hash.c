@@ -76,6 +76,40 @@ void CHash_free(CHash *self){
 }
 
 
+void CHash_set(CHash *self,CHash *element){
+    if(Chash_errors(self)){
+        return;
+    }
+    privateCHash_free_values(self);
+    CHash  *target_element = privateCHash_copy_if_its_an_reference(element);
+
+    self->private_type = target_element->private_type;
+    self->private_size = target_element->private_size;
+
+    if(self->private_type == CHASH_STRING){
+        self->private_value_stack = target_element->private_value_stack;
+    }
+
+    if(self->private_type == CHASH_BOOL){
+        self->private_value_bool = target_element->private_value_bool;
+    }
+
+    if(self->private_type == CHASH_NUMBER){
+        self->private_value_double = target_element->private_value_double;
+    }
+
+    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
+        self->private_sub_elements = target_element->private_sub_elements;
+        for (int i = 0; i < self->private_size; i++){
+            CHash  *current = self->private_sub_elements[i];
+            current->private_father = self->private_father;
+        }
+    }
+
+    free(target_element);
+
+}
+
 long CHash_get_size(CHash *self){
     if(Chash_errors(self)){
        return -1;

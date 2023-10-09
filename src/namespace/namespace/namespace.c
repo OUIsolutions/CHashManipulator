@@ -11,6 +11,8 @@ CHashNamespace newCHashNamespace(){
     self.dump_to_json_string = CHash_dump_to_json_string;
     self.dump_to_json_file = CHash_dump_to_json_file;
 
+    self.set =CHash_set;
+
     self.newBool = newCHashBool;
     self.toBool = CHash_toBool;
     self.set_Bool = CHash_set_Bool;
