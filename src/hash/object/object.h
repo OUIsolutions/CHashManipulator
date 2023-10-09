@@ -43,3 +43,4 @@ bool CHashObject_getBool(CHashObject * self, const char *key);
 char  * CHashObject_getString(CHashObject * self, const char *key);
 
 
+CTextStack * CHashObject_getStack(CHashObject * self, const char *key);

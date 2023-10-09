@@ -60,6 +60,7 @@ bool CHashArray_getBool(CHashObject * self, long index);
 
 char  * CHashArray_getString(CHashObject * self, long index);
 
+CTextStack  * CHashArray_getStack(CHashObject * self, long index);
 
 #define CHash_for_in(var,array, scope){                                            \
         long private_size = CHash_get_size(array);                                 \

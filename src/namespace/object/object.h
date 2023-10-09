@@ -21,13 +21,10 @@ typedef struct CHashObjectModule{
 
     CHashObject * (*getObject)(CHashObject * self, const char *key);
 
-
     double (*getNumber)(CHashObject * self, const char *key);
-
     bool (*getBool)(CHashObject * self, const char *key);
-
     char  * (*getString)(CHashObject * self, const char *key);
-
+    CTextStack * (*getStack)(CHashObject * self, const char *key);
 
 
 

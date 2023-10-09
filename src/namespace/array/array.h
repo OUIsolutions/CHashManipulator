@@ -26,6 +26,7 @@ typedef struct CHashArrayModule{
     double (*getNumber)(CHashArrayOrObject * self, long index);
     bool (*getBool)(CHashArrayOrObject * self, long index);
     char  * (*getString)(CHashArrayOrObject * self, long index);
+    CTextStack  * (*getStack)(CHashObject * self, long index);
 
 }CHashArrayModule;
 

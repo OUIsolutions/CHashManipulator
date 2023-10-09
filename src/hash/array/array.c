@@ -258,3 +258,7 @@ char  * CHashArray_getString(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toString(element);
 }
+CTextStack  * CHashArray_getStack(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHashtoStack(element);
+}

@@ -252,5 +252,8 @@ char  * CHashObject_getString(CHashObject * self, const char *key){
     return CHash_toString(element);
 }
 
-
+CTextStack * CHashObject_getStack(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHashtoStack(element);
+}
 
