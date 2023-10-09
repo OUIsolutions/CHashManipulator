@@ -3,6 +3,9 @@
 typedef struct CHashValidatorModule {
     void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
+    void (*raise_error_by_key)(CHash *self,const char *key, int error_code,const char *error_menssage, CHash *args);
+    void (*raise_error_by_index)(CHash *self,long index, int error_code,const char *error_menssage, CHash *args);
+
     int (*ensure_Number)(CHash *element);
     int (*ensure_Number_by_key)(CHash *object, const char *key);
     int (*ensure_Number_by_index)(CHash *array, long index);

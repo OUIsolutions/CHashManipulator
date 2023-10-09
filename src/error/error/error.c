@@ -74,6 +74,36 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
     
 }
 
+void CHash_raise_error_by_key(CHash *self,const char *key, int error_code,const char *error_menssage, CHash *args){
+    if(Chash_errors(self)){return;}
+
+    CHash *formated_args = args;
+
+    if(!args){
+        formated_args = newCHashObjectEmpty();
+    }
+    CHashArray *path = CHash_get_path(self);
+    CHashArray_append_once(path, newCHashString(key));
+    CHashObject_set_once(formated_args,"path",path);
+    CHash_raise_error(self,error_code,error_menssage,formated_args);
+}
+
+
+void CHash_raise_error_by_index(CHash *self,long index, int error_code,const char *error_menssage, CHash *args){
+    if(Chash_errors(self)){return;}
+
+    CHash *formated_args = args;
+
+    if(!args){
+        formated_args = newCHashObjectEmpty();
+    }
+    CHashArray *path = CHash_get_path(self);
+    CHashArray_append_once(path, newCHashNumber((double)index));
+    CHashObject_set_once(formated_args,"path",path);
+    CHash_raise_error(self,error_code,error_menssage,formated_args);
+}
+
+
 void privateCHashError_free(privateCHashError *self){
     CTextStack_free(self->error_mensage);
     CHash_free(self->args);

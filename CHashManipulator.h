@@ -1059,6 +1059,10 @@ bool Chash_errors(CHash *self);
 
 void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CHash *args);
 
+void CHash_raise_error_by_key(CHash *self,const char *key, int error_code,const char *error_menssage, CHash *args);
+
+void CHash_raise_error_by_index(CHash *self,long index, int error_code,const char *error_menssage, CHash *args);
+
 
 char * CHash_get_error_menssage(CHash *self);
 
@@ -1215,6 +1219,9 @@ CHashArrayModule newCHashArrayModule();
 
 typedef struct CHashValidatorModule {
     void (*raise_error)(CHash *self,int error_code,const char *error_menssage, CHash *args);
+
+    void (*raise_error_by_key)(CHash *self,const char *key, int error_code,const char *error_menssage, CHash *args);
+    void (*raise_error_by_index)(CHash *self,long index, int error_code,const char *error_menssage, CHash *args);
 
     int (*ensure_Number)(CHash *element);
     int (*ensure_Number_by_key)(CHash *object, const char *key);
@@ -6699,6 +6706,36 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
     
 }
 
+void CHash_raise_error_by_key(CHash *self,const char *key, int error_code,const char *error_menssage, CHash *args){
+    if(Chash_errors(self)){return;}
+
+    CHash *formated_args = args;
+
+    if(!args){
+        formated_args = newCHashObjectEmpty();
+    }
+    CHashArray *path = CHash_get_path(self);
+    CHashArray_append_once(path, newCHashString(key));
+    CHashObject_set_once(formated_args,"path",path);
+    CHash_raise_error(self,error_code,error_menssage,formated_args);
+}
+
+
+void CHash_raise_error_by_index(CHash *self,long index, int error_code,const char *error_menssage, CHash *args){
+    if(Chash_errors(self)){return;}
+
+    CHash *formated_args = args;
+
+    if(!args){
+        formated_args = newCHashObjectEmpty();
+    }
+    CHashArray *path = CHash_get_path(self);
+    CHashArray_append_once(path, newCHashNumber((double)index));
+    CHashObject_set_once(formated_args,"path",path);
+    CHash_raise_error(self,error_code,error_menssage,formated_args);
+}
+
+
 void privateCHashError_free(privateCHashError *self){
     CTextStack_free(self->error_mensage);
     CHash_free(self->args);
@@ -7153,7 +7190,8 @@ CHashArrayModule newCHashArrayModule(){
 CHashValidatorModule newCHashValidatorModule(){
     CHashValidatorModule self = {0};
     self.raise_error = CHash_raise_error;
-
+    self.raise_error_by_key = CHash_raise_error_by_key;
+    self.raise_error_by_index = CHash_raise_error_by_index;
 
     self.ensure_Number = CHash_ensure_Number;
     self.ensure_Number_by_key = CHash_ensure_Number_by_key;

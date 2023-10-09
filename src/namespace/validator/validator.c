@@ -3,7 +3,8 @@
 CHashValidatorModule newCHashValidatorModule(){
     CHashValidatorModule self = {0};
     self.raise_error = CHash_raise_error;
-
+    self.raise_error_by_key = CHash_raise_error_by_key;
+    self.raise_error_by_index = CHash_raise_error_by_index;
 
     self.ensure_Number = CHash_ensure_Number;
     self.ensure_Number_by_key = CHash_ensure_Number_by_key;
