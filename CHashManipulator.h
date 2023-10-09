@@ -539,6 +539,9 @@ void CTextStack_self_trim(struct CTextStack *self);
 struct CTextStack *CTextStack_lower(struct CTextStack *self);
 void CTextStack_self_lower(struct CTextStack *self);
 
+struct CTextStack *CTextStack_captalize(struct CTextStack *self);
+void CTextStack_self_captalize(struct CTextStack *self);
+
 struct CTextStack *CTextStack_upper(struct CTextStack *self);
 void CTextStack_self_upper(struct CTextStack *self);
 
@@ -675,6 +678,8 @@ typedef struct CTextStackModule{
     struct CTextStack * (*upper)(struct CTextStack *self);
     void(*self_upper)(struct CTextStack *self);
 
+    struct CTextStack *(*captalize)(struct CTextStack *self);
+    void (*self_captalize)(struct CTextStack *self);
 
     struct CTextStack * (*reverse)(struct CTextStack *self);
     void(*self_reverse)(struct CTextStack *self);
@@ -898,6 +903,7 @@ bool CHashArray_getBool(CHashObject * self, long index);
 
 char  * CHashArray_getString(CHashObject * self, long index);
 
+CTextStack  * CHashArray_getStack(CHashObject * self, long index);
 
 #define CHash_for_in(var,array, scope){                                            \
         long private_size = CHash_get_size(array);                                 \
@@ -957,6 +963,7 @@ bool CHashObject_getBool(CHashObject * self, const char *key);
 char  * CHashObject_getString(CHashObject * self, const char *key);
 
 
+CTextStack * CHashObject_getStack(CHashObject * self, const char *key);
 
 
 
@@ -1023,6 +1030,7 @@ CHash * CHash_load_from_json_file(const char *filename);
 #define  CHASH_INVALID_KEY 406
 #define  CHASH_HIGHER_THAN_MIN 407
 #define  CHASH_NOT_IN_VALID_CHARS 408
+#define  CHASH_NOT_LONG 409
 
 
 
@@ -1063,6 +1071,11 @@ int private_chash_check_type(CHash *element, unsigned short  expected_type);
 int CHash_ensure_Number(CHash *element);
 int CHash_ensure_Number_by_key(CHash *object, const char *key);
 int CHash_ensure_Number_by_index(CHash *array, long index);
+
+int CHash_ensure_Long(CHash *element);
+int CHash_ensure_Long_by_key(CHash *object, const char *key);
+int CHash_ensure_Long_by_index(CHash *array, long index);
+
 
 int CHash_ensure_min_value(CHash *element, double  min);
 int CHash_ensure_min_value_by_key(CHash *object, const char *key, double min );
@@ -1148,13 +1161,10 @@ typedef struct CHashObjectModule{
 
     CHashObject * (*getObject)(CHashObject * self, const char *key);
 
-
     double (*getNumber)(CHashObject * self, const char *key);
-
     bool (*getBool)(CHashObject * self, const char *key);
-
     char  * (*getString)(CHashObject * self, const char *key);
-
+    CTextStack * (*getStack)(CHashObject * self, const char *key);
 
 
 
@@ -1190,6 +1200,7 @@ typedef struct CHashArrayModule{
     double (*getNumber)(CHashArrayOrObject * self, long index);
     bool (*getBool)(CHashArrayOrObject * self, long index);
     char  * (*getString)(CHashArrayOrObject * self, long index);
+    CTextStack  * (*getStack)(CHashObject * self, long index);
 
 }CHashArrayModule;
 
@@ -1204,6 +1215,9 @@ typedef struct CHashValidatorModule {
     int (*ensure_Number_by_key)(CHash *object, const char *key);
     int (*ensure_Number_by_index)(CHash *array, long index);
 
+    int (*ensure_Long)(CHash *element);
+    int (*ensure_Long_by_key)(CHash *object, const char *key);
+    int (*ensure_Long_by_index)(CHash *array, long index);
 
     int (*ensure_min_value)(CHash *element, double  min);
     int (*ensure_min_value_by_key)(CHash *object, const char *key, double min );
@@ -4673,6 +4687,37 @@ struct CTextStack *CTextStack_upper(struct CTextStack *self){
     return new_element;
 }
 
+struct CTextStack *CTextStack_captalize(struct CTextStack *self){
+    CTextStack *new_element = newCTextStack(self->line_breaker,self->separator);
+    new_element->ident_level = self->ident_level;
+    if(self->size  ==0){
+        return  new_element;
+    }
+
+    CTextStack_format(new_element,"%c", toupper(self->rendered_text[0]));
+
+    for(long i =1; i < self->size; i++){
+        char  last = self->rendered_text[i-1];
+        char current = self->rendered_text[i];
+
+
+        if(last == ' '){
+            CTextStack_format(new_element,"%c",toupper(current));
+        }
+        else{
+            CTextStack_format(new_element,"%c", tolower(current));
+
+        }
+
+    }
+    return new_element;
+}
+
+void CTextStack_self_captalize(struct CTextStack *self){
+    CTextStack *new_stack = CTextStack_captalize(self);
+    private_CTextStack_parse_ownership(self,new_stack);
+}
+
 
 void CTextStack_self_upper(struct CTextStack *self){
     CTextStack *new_stack = CTextStack_upper(self);
@@ -5355,6 +5400,9 @@ CTextStackModule newCTextStackModule(){
     self.upper = CTextStack_upper;
     self.self_upper = CTextStack_self_upper;
 
+    self.captalize = CTextStack_captalize;
+    self.self_captalize = CTextStack_self_captalize;
+
     self.starts_with = CTextStack_starts_with;
     self.ends_with = CTextStack_ends_with;
 
@@ -5963,7 +6011,10 @@ char  * CHashArray_getString(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toString(element);
 }
-
+CTextStack  * CHashArray_getStack(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHashtoStack(element);
+}
 
 
 
@@ -6303,7 +6354,10 @@ char  * CHashObject_getString(CHashObject * self, const char *key){
     return CHash_toString(element);
 }
 
-
+CTextStack * CHashObject_getStack(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHashtoStack(element);
+}
 
 
 
@@ -6662,6 +6716,33 @@ int CHash_ensure_Number_by_index(CHash *array, long index){
     CHash  *element = CHashArray_get(array,index);
     return CHash_ensure_Number(element);
 }
+int CHash_ensure_Long(CHash *element){
+    double value = CHash_toNumber(element);
+    if(Chash_errors(element)){
+        return 1;
+    }
+
+    double rest = value - (double)(long)value;
+    if(rest != 0){
+        CHash_raise_error(
+                element,
+                CHASH_NOT_LONG,
+                "element at #path# of its an double instead of long",
+                NULL
+        );
+        return 1;
+    }
+
+    return  0;
+}
+int CHash_ensure_Long_by_key(CHash *object, const char *key){
+    CHash *element = CHashObject_get(object,key);
+    return CHash_ensure_Long(element);
+}
+int CHash_ensure_Long_by_index(CHash *array, long index){
+    CHash  *element = CHashArray_get(array,index);
+    return CHash_ensure_Long(element);
+}
 
 int CHash_ensure_min_value(CHash *element, double  min){
     double  value = CHash_toNumber(element);
@@ -6974,6 +7055,7 @@ CHashObjectModule newCHashObjectModule(){
     self.getBool = CHashObject_getBool;
     self.getNumber = CHashObject_getNumber;
     self.getString = CHashObject_getString;
+    self.getStack = CHashObject_getStack;
 
     return self;
 }
@@ -7002,6 +7084,7 @@ CHashArrayModule newCHashArrayModule(){
     self.getArray = CHashArray_getArray;
     self.getObject = CHashArray_getObject;
     self.getString = CHashArray_getString;
+    self.getStack  = CHashArray_getStack;
     self.getNumber = CHashArray_getNumber;
     self.getBool = CHashArray_getBool;
     return self;
@@ -7017,6 +7100,10 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_Number = CHash_ensure_Number;
     self.ensure_Number_by_key = CHash_ensure_Number_by_key;
     self.ensure_Number_by_index = CHash_ensure_Number_by_index;
+
+    self.ensure_Long = CHash_ensure_Long;
+    self.ensure_Long_by_key = CHash_ensure_Long_by_key;
+    self.ensure_Long_by_index = CHash_ensure_Long_by_index;
 
     self.ensure_min_value = CHash_ensure_min_value;
     self.ensure_min_value_by_key = CHash_ensure_min_value_by_key;

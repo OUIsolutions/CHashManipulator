@@ -1,18 +1,18 @@
  
 [{
-		"name":	"Mateus",
+		"name":	"Mateus Moutinho Queiroz",
 		"age":	26,
 		"height":	1.69,
 		"married":	true,
 		"phones":	["55+ (11) 12345 1234", "55+ (11) 12345 5555"]
 	}, {
-		"name":	"second name",
+		"name":	"Second Name",
 		"age":	42,
 		"height":	2.5,
 		"married":	true,
 		"phones":	["55+ (11) 12345 1234", "55+ (11) 12345 5555"]
 	}, {
-		"name":	"third name",
+		"name":	"Third Name",
 		"age":	55,
 		"height":	2.4,
 		"married":	false,
