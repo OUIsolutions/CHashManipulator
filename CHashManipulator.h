@@ -6727,13 +6727,18 @@ bool Chash_errors(CHash *self){
 
 void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CHash *args){
 
-    if(Chash_errors(self)){return;}
+
+    if(Chash_errors(self)){
+        CHash_free(args);
+        return;
+    }
 
     CHash *formated_args = args;
 
     if(!args){
         formated_args = newCHashObjectEmpty();
     }
+
     CHashObject_set_default(formated_args,  "path", CHash_get_path(self));
     CHashObject_set_default(formated_args,"value", CHash_copy(self));
     CHashObject_set_default(formated_args,"type",newCHashString(private_Chash_convert_type(self->private_type)));
@@ -7073,6 +7078,9 @@ int CHash_ensure_all_Bool(CHash *element){
 }
 
 int CHash_ensure_min_size(CHash *iterable,long min){
+    if(Chash_errors(iterable)){
+        return  1;
+    }
     long size = CHash_get_size(iterable);
     if(size < min){
         CHash_raise_error(
@@ -7100,6 +7108,9 @@ int CHash_ensure_min_size_by_index(CHash  *array, long index,long min){
 
 
 int CHash_ensure_size(CHash *iterable,long size){
+    if(Chash_errors(iterable)){
+        return  1;
+    }
     long iterable_size = CHash_get_size(iterable);
     if(iterable_size != size){
         CHash_raise_error(
@@ -7126,6 +7137,9 @@ int CHash_ensure_size_by_index(CHash  *array, long index,long size){
 }
 
 int CHash_ensure_max_size(CHash *iterable,long max){
+    if(Chash_errors(iterable)){
+        return  1;
+    }
     long size = CHash_get_size(iterable);
     if(size > max){
 
