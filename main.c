@@ -6,6 +6,7 @@ CHashObjectModule  obj;
 CHashArrayModule  array;
 CHashValidatorModule  validator;
 CTextStackModule  stack;
+CTextArrayModule stackArray;
 CHash *create (){
 
     return newCHashArray(
@@ -81,6 +82,7 @@ void validate_and_format(CHash *persons_array){
         validator.ensure_max_size_by_key(person,"name",30);
         CHash_protected(person){
             CTextStack *name = obj.getStack(person,"name");
+            CTextArray *separated = stackArray.
         }
         validator.ensure_min_value_by_key(person, "age", 0);
         validator.ensure_max_value_by_key(person, "age", 120);
