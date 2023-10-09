@@ -42,8 +42,9 @@ void CHash_generate_custom_error(CHash  *self, CHashArray *errors){
         char *menssage = CHashObject_getString(current_object,"message");
 
         if(!Chash_errors(errors) && error_code == code){
-          privateCHashError *generated_errror = (privateCHashError*)self->private_error;
-            free(generated_errror->error_mensage);
+          privateCHashError *generated_errror = privateCHashError_get_error(self);
+
+            CTextStack_free(generated_errror->error_mensage);
             generated_errror->error_mensage = privateCHashError_create_menssage(
                     generated_errror->args,
                     code,
@@ -51,7 +52,9 @@ void CHash_generate_custom_error(CHash  *self, CHashArray *errors){
                     );
             break;
         }
+
     }
+
 }
 
 void CHash_generate_custom_error_cleaning_args(CHash  *self, CHashArray *error){
