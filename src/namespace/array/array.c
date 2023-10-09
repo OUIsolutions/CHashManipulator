@@ -10,8 +10,8 @@ CHashArrayModule newCHashArrayModule(){
     self.foreach = CHashArray_foreach;
     self.foreach_with_args = CHashArray_foreach_with_args;
 
-    self.map = CHashArray_map;
-    self.map_with_args = CHashArray_map_with_args;
+    //self.map = CHashArray_map;
+    //self.map_with_args = CHashArray_map_with_args;
 
     self.find = CHashArray_find;
     self.find_Number =CHashArray_find_Number;
