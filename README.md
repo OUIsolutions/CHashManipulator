@@ -313,7 +313,7 @@ int main(){
 
 }
 ~~~
-### Generating an Object Iteration
+### Object Iteration
 <!--codeof:exemples/Object/object_iteration.c-->
 ~~~c
 
@@ -376,6 +376,9 @@ int main(){
 
 }
 ~~~
+
+
+
 ### Deleting an value of an object by Key
 <!--codeof:exemples/Object/deleting_key.c-->
 ~~~c
