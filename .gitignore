@@ -1,6 +1,6 @@
 # Prerequisites
 *.d
-
+artigo.md
 # Object files
 *.o
 *.ko
