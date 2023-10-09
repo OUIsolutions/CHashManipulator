@@ -10,7 +10,7 @@ Be aware that memory failures and bugs may occur
 Like all OUI libs, CHashManipulator is single file, and just add the file ""CHashManipulator.h" 
 to your directory and compile it with gcc or clang.
 
-If you want, you can also include the entire "src" folder in your directory and run it from "src/one.h"
+If you want, you can also include the entire "src" folder in your directory and include  it from "src/one.h"
 
 ## An Quick guide
 <!--codeof:exemples/Implict_validation/correct.c-->
