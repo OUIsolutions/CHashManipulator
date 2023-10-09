@@ -12,6 +12,7 @@
 *.ilk
 *.map
 *.exp
+main.c
 
 # Precompiled Headers
 *.gch
