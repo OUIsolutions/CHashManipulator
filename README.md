@@ -7,7 +7,9 @@ This library is still in Beta
 Be aware that memory failures and bugs may occur
 
 ## Installation
-Like all OUI libs, CHashManipulator is single file, and just add the file ""CHashManipulator.h" to your directory and compile it with gcc or clang
+Like all OUI libs, CHashManipulator is single file, and just add the file ""CHashManipulator.h" 
+to your directory and compile it with gcc or clang.
+
 If you want, you can also include the entire "src" folder in your directory and run it from "src/one.h"
 
 ## An Quick guide
