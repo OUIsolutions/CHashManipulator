@@ -436,8 +436,70 @@ int main(){
 
 }
 ~~~
+### Dealing with optional values 
+<!--codeof:exemples/Object/verify_if_exist.c-->
+~~~c
+#include "CHashManipulator.h"
 
-### Deleting an value of an object by Key
+CHashNamespace hash;
+CHashObjectModule  obj;
+CHashArrayModule  array;
+CHashValidatorModule  validator;
+
+
+
+int main(){
+    hash = newCHashNamespace();
+    obj = hash.object;
+    array  = hash.array;
+    validator = hash.validator;
+
+    CHashArray *person = newCHashObject(
+        "name",hash.newString("aaaaaaaaa")
+    );
+
+    if(obj.exist(person,"name")){
+        char *name = obj.getString(person,"name");
+        printf("%s\n",name);
+    }
+
+
+    hash.free(person);
+
+}
+~~~
+### Setting Default values 
+<!--codeof:exemples/Object/default.c-->
+~~~c
+#include "CHashManipulator.h"
+
+CHashNamespace hash;
+CHashObjectModule  obj;
+CHashArrayModule  array;
+CHashValidatorModule  validator;
+
+
+
+int main(){
+    hash = newCHashNamespace();
+    obj = hash.object;
+    array  = hash.array;
+    validator = hash.validator;
+
+    CHashArray *person = newCHashObject(
+        "nothing",hash.newString("aaaaaaaaa")
+    );
+
+    obj.set_default(person,"name",hash.newString("default string"));
+    char *name = obj.getString(person,"name");
+    printf("%s\n",name);
+    
+
+
+    hash.free(person);
+
+}
+~~~
 <!--codeof:exemples/Object/deleting_key.c-->
 ~~~c
 
