@@ -1,0 +1,12 @@
+ 
+code: 500
+menssage: my custom error at ["name"] with "aaaa"
+args:
+{
+	"arg1":	"aaaa",
+	"path":	["name"],
+	"value":	{
+		"name":	"aaaaaaaaa"
+	},
+	"type":	"object"
+}
