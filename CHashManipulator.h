@@ -798,6 +798,8 @@ CHash * privateCHash_copy_if_its_an_reference(CHash *self);
 
 void CHash_free(CHash *self);
 
+void CHash_set(CHash *self,CHash *element);
+
 void privateCHash_free_values(CHash *self);
 
 bool CHash_equals(CHash *element1, CHash *element2);
@@ -814,6 +816,7 @@ CHash * newCHashNULL();
 
 double  CHash_toNumber(CHash *element);
 
+void CHash_set_Number(CHash *self,double  value);
 
 
 CHash * newCHashNumber(double value);
@@ -822,6 +825,8 @@ CHash * newCHashNumber(double value);
 
 
 bool CHash_toBool(CHash *element);
+
+void CHash_set_Bool(CHash *self, bool value);
 
 CHash * newCHashBool(bool value);
 
@@ -1286,14 +1291,17 @@ typedef struct CHashNamespace{
     cJSON * (*dump_to_cJSON)(CHash *element);
     char * (*dump_to_json_string)(CHash * element);
     int  (*dump_to_json_file)(CHash *element,const char *filename);
+    void (*set)(CHash *self,CHash *element);
 
 
     CHash * (*newBool)(bool value);
     bool (*toBool)(CHash *element);
+    void (*set_Bool)(CHash *self, bool value);
 
 
     CHash * (*newNumber)(double value);
     double  (*toNumber)(CHash *element);
+    void (*set_Number)(CHash *self,double  value);
 
 
     CHash * (*newStackString)(CTextStack *element);
@@ -5573,6 +5581,40 @@ void CHash_free(CHash *self){
 }
 
 
+void CHash_set(CHash *self,CHash *element){
+    if(Chash_errors(self)){
+        return;
+    }
+    privateCHash_free_values(self);
+    CHash  *target_element = privateCHash_copy_if_its_an_reference(element);
+
+    self->private_type = target_element->private_type;
+    self->private_size = target_element->private_size;
+
+    if(self->private_type == CHASH_STRING){
+        self->private_value_stack = target_element->private_value_stack;
+    }
+
+    if(self->private_type == CHASH_BOOL){
+        self->private_value_bool = target_element->private_value_bool;
+    }
+
+    if(self->private_type == CHASH_NUMBER){
+        self->private_value_double = target_element->private_value_double;
+    }
+
+    if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
+        self->private_sub_elements = target_element->private_sub_elements;
+        for (int i = 0; i < self->private_size; i++){
+            CHash  *current = self->private_sub_elements[i];
+            current->private_father = self->private_father;
+        }
+    }
+
+    free(target_element);
+
+}
+
 long CHash_get_size(CHash *self){
     if(Chash_errors(self)){
        return -1;
@@ -5666,6 +5708,15 @@ double CHash_toNumber(CHash *element){
 
 }
 
+void CHash_set_Number(CHash *self,double  value){
+    if(Chash_errors(self)){
+        return;
+    }
+    privateCHash_free_values(self);
+    self->private_value_double = value;
+}
+
+
 
 CHash * newCHashNumber(double value){
     CHash * self =  privatenewChash_raw();
@@ -5683,6 +5734,13 @@ bool CHash_toBool(CHash *element){
         return false;
     }
     return element->private_value_bool;
+}
+void CHash_set_Bool(CHash *self, bool value){
+    if(CHash_ensure_Bool(self)){
+        return;
+    }
+    privateCHash_free_values(self);
+    self->private_value_bool = value;
 }
 
 
@@ -7168,11 +7226,15 @@ CHashNamespace newCHashNamespace(){
     self.dump_to_json_string = CHash_dump_to_json_string;
     self.dump_to_json_file = CHash_dump_to_json_file;
 
+    self.set =CHash_set;
+
     self.newBool = newCHashBool;
     self.toBool = CHash_toBool;
+    self.set_Bool = CHash_set_Bool;
 
     self.newNumber = newCHashNumber;
     self.toNumber = CHash_toNumber;
+    self.set_Number = CHash_set_Number;
 
     self.newStackString = newCHashStackString;
     self.toStack = CHashtoStack;
