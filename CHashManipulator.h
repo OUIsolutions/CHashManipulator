@@ -1047,6 +1047,7 @@ typedef struct privateCHashError{
 
 privateCHashError * privatenewCHashError(CHashObject *args, int error_code, const char *error_menssage);
 
+CTextStack * privateCHashError_create_menssage(CHashObject *args, int error_code, const char *error_mensage);
 
 void privateCHashError_free(privateCHashError *self);
 
@@ -6636,25 +6637,27 @@ privateCHashError * privatenewCHashError(CHashObject *args, int error_code, cons
     privateCHashError  *self = (privateCHashError*) malloc(sizeof (privateCHashError));
     self->args = args;
     self->error_code = error_code;
-
-    self->error_mensage =  newCTextStack_string(error_menssage);
-
-    long args_size = CHash_get_size(self->args);
-    for(int i = 0; i < args_size; i++){
-        CHash *current = CHashArray_get(self->args,i);
-        char *key = CHashObject_get_key_of_element(current);
-        char *value = CHash_dump_to_json_string(current);
-        CTextStack * formated_key = newCTextStack_string_empty();
-        CTextStack_format(formated_key,"#%s#",key);
-        CTextStack_self_replace(self->error_mensage,formated_key->rendered_text,value);
-        CTextStack_free(formated_key);
-        free(value);
-    }
+    self->error_mensage =  privateCHashError_create_menssage(args,error_code,error_menssage);
 
     return self;
 }
 
+CTextStack * privateCHashError_create_menssage(CHashObject *args, int error_code, const char *error_mensage){
+    CTextStack  * error = newCTextStack_string(error_mensage);
 
+    long args_size = CHash_get_size(args);
+    for(int i = 0; i < args_size; i++){
+        CHash *current = CHashArray_get(args,i);
+        char *key = CHashObject_get_key_of_element(current);
+        char *value = CHash_dump_to_json_string(current);
+        CTextStack * formated_key = newCTextStack_string_empty();
+        CTextStack_format(formated_key,"#%s#",key);
+        CTextStack_self_replace(error,formated_key->rendered_text,value);
+        CTextStack_free(formated_key);
+        free(value);
+    }
+    return error;
+}
 
 
 privateCHashError * privateCHashError_get_error(CHash *self){
