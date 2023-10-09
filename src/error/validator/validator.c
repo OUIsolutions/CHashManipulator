@@ -30,6 +30,33 @@ int CHash_ensure_Number_by_index(CHash *array, long index){
     CHash  *element = CHashArray_get(array,index);
     return CHash_ensure_Number(element);
 }
+int CHash_ensure_Long(CHash *element){
+    double value = CHash_toNumber(element);
+    if(Chash_errors(element)){
+        return 1;
+    }
+
+    double rest = value - (double)(long)value;
+    if(rest != 0){
+        CHash_raise_error(
+                element,
+                CHASH_NOT_LONG,
+                "element at #path# of its an double instead of long",
+                NULL
+        );
+        return 1;
+    }
+
+    return  0;
+}
+int CHash_ensure_Long_by_key(CHash *object, const char *key){
+    CHash *element = CHashObject_get(object,key);
+    return CHash_ensure_Long(element);
+}
+int CHash_ensure_Long_by_index(CHash *array, long index){
+    CHash  *element = CHashArray_get(array,index);
+    return CHash_ensure_Long(element);
+}
 
 int CHash_ensure_min_value(CHash *element, double  min){
     double  value = CHash_toNumber(element);

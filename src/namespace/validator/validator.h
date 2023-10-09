@@ -7,6 +7,9 @@ typedef struct CHashValidatorModule {
     int (*ensure_Number_by_key)(CHash *object, const char *key);
     int (*ensure_Number_by_index)(CHash *array, long index);
 
+    int (*ensure_Long)(CHash *element);
+    int (*ensure_Long_by_key)(CHash *object, const char *key);
+    int (*ensure_Long_by_index)(CHash *array, long index);
 
     int (*ensure_min_value)(CHash *element, double  min);
     int (*ensure_min_value_by_key)(CHash *object, const char *key, double min );

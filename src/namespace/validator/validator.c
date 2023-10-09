@@ -9,6 +9,10 @@ CHashValidatorModule newCHashValidatorModule(){
     self.ensure_Number_by_key = CHash_ensure_Number_by_key;
     self.ensure_Number_by_index = CHash_ensure_Number_by_index;
 
+    self.ensure_Long = CHash_ensure_Long;
+    self.ensure_Long_by_key = CHash_ensure_Long_by_key;
+    self.ensure_Long_by_index = CHash_ensure_Long_by_index;
+
     self.ensure_min_value = CHash_ensure_min_value;
     self.ensure_min_value_by_key = CHash_ensure_min_value_by_key;
     self.ensure_min_value_by_index = CHash_ensure_min_value_by_index;

@@ -5,6 +5,11 @@ int CHash_ensure_Number(CHash *element);
 int CHash_ensure_Number_by_key(CHash *object, const char *key);
 int CHash_ensure_Number_by_index(CHash *array, long index);
 
+int CHash_ensure_Long(CHash *element);
+int CHash_ensure_Long_by_key(CHash *object, const char *key);
+int CHash_ensure_Long_by_index(CHash *array, long index);
+
+
 int CHash_ensure_min_value(CHash *element, double  min);
 int CHash_ensure_min_value_by_key(CHash *object, const char *key, double min );
 int CHash_ensure_min_value_by_index(CHash *array, long index, double min);

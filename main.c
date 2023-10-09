@@ -33,7 +33,7 @@ CHash *create (){
             ),
 
             newCHashObject(
-                    "name",hash.newString("third name"),
+                    "name",hash.newString("third                name"),
                     "age", hash.newNumber(55),
                     "height",hash.newNumber(2.4),
                     "married",hash.newBool(false),
@@ -81,14 +81,14 @@ void validate_and_format(CHash *persons_array){
         validator.ensure_min_size_by_key(person,"name",2);
 
         CHash_protected(person){
-            CHash *name = obj.get(person,"name");   
-            CTextArray *separated = CTextArray_split(hash.toString(name)," ");
-            CTextStack *formated = CTextArray_join(separated," ");
-            CTextArray_free(separated);
-            stack.self_captalize(formated);
-            hash.set_Stack(name,formated);
+            CTextStack  *name = obj.getStack(person,"name");
+            while(stack.index_of(name,"  ") != -1){
+                stack.self_replace(name,"  "," ");
+            }
+            stack.self_captalize(name);
         }
         validator.ensure_max_size_by_key(person,"name",30);
+        validator.ensure_Long_by_key(person,"age");
         validator.ensure_min_value_by_key(person, "age", 0);
         validator.ensure_max_value_by_key(person, "age", 120);
         validator.ensure_min_value_by_key(person, "height", 0.5);
