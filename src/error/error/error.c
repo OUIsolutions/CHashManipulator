@@ -85,13 +85,18 @@ bool Chash_errors(CHash *self){
 
 void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CHash *args){
 
-    if(Chash_errors(self)){return;}
+
+    if(Chash_errors(self)){
+        CHash_free(args);
+        return;
+    }
 
     CHash *formated_args = args;
 
     if(!args){
         formated_args = newCHashObjectEmpty();
     }
+
     CHashObject_set_default(formated_args,  "path", CHash_get_path(self));
     CHashObject_set_default(formated_args,"value", CHash_copy(self));
     CHashObject_set_default(formated_args,"type",newCHashString(private_Chash_convert_type(self->private_type)));

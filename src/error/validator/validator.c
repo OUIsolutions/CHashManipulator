@@ -248,6 +248,9 @@ int CHash_ensure_all_Bool(CHash *element){
 }
 
 int CHash_ensure_min_size(CHash *iterable,long min){
+    if(Chash_errors(iterable)){
+        return  1;
+    }
     long size = CHash_get_size(iterable);
     if(size < min){
         CHash_raise_error(
@@ -275,6 +278,9 @@ int CHash_ensure_min_size_by_index(CHash  *array, long index,long min){
 
 
 int CHash_ensure_size(CHash *iterable,long size){
+    if(Chash_errors(iterable)){
+        return  1;
+    }
     long iterable_size = CHash_get_size(iterable);
     if(iterable_size != size){
         CHash_raise_error(
@@ -301,6 +307,9 @@ int CHash_ensure_size_by_index(CHash  *array, long index,long size){
 }
 
 int CHash_ensure_max_size(CHash *iterable,long max){
+    if(Chash_errors(iterable)){
+        return  1;
+    }
     long size = CHash_get_size(iterable);
     if(size > max){
 
