@@ -831,6 +831,11 @@ CHash * newCHashStackString(CTextStack *element);
 
 CHash * newCHashString(const char *value);
 
+void CHash_set_String(CHash *self, const char *value);
+
+void CHash_set_Stack(CHash *self,CTextStack *element);
+
+
 
 
 CHashArray  *newCHashArrayEmpty();
@@ -1279,6 +1284,8 @@ typedef struct CHashNamespace{
 
     CHash * (*newStackString)(CTextStack *element);
     CTextStack  *(*toStack)(CHash *element);
+    void (*set_String)(CHash *self, const char *value);
+    void (*set_Stack)(CHash *self,CTextStack *element);
 
 
     CHash * (*newString)(const char *value);
@@ -5483,6 +5490,7 @@ bool CHash_equals(CHash *element1, CHash *element2){
 }
 
 void privateCHash_free_values(CHash *self){
+
     if(self->private_type == CHASH_STRING){
         CTextStack_free(self->private_value_stack);
     }
@@ -5651,6 +5659,23 @@ char * CHash_toString(CHashArray *element){
     }
 
     return element->private_value_stack->rendered_text;
+}
+void CHash_set_String(CHash *self, const char *value){
+    if(Chash_errors(self)){
+        return;
+    }
+    privateCHash_free_values(self);
+    self->private_type = CHASH_STRING;
+    self->private_value_stack = newCTextStack_string(value);
+
+}
+void CHash_set_Stack(CHash *self,CTextStack *element){
+    if(Chash_errors(self)){
+        return;
+    }
+    privateCHash_free_values(self);
+    self->private_type = CHASH_STRING;
+    self->private_value_stack = element;
 }
 
 CTextStack  *CHashtoStack(CHash *element){
@@ -7064,6 +7089,8 @@ CHashNamespace newCHashNamespace(){
 
     self.newStackString = newCHashStackString;
     self.toStack = CHashtoStack;
+    self.set_String = CHash_set_String;
+    self.set_Stack = CHash_set_Stack;
 
     self.newString = newCHashString;
     self.toString = CHash_toString;
