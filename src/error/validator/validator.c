@@ -184,6 +184,11 @@ int CHash_ensure_Object_by_index(CHash *array , long index){
 }
 
 int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys){
+
+    if(CHash_ensure_Object(object)){
+        return 1;
+    }
+
     long size = CHash_get_size(object);
     for(long i = 0; i < size; i++){
         char *current_key = CHashObject_get_key_by_index(object,i);
@@ -194,7 +199,7 @@ int CHash_ensure_only_keys(CHashObject *object, CHashStringArray *keys){
                     "key: #key# at #path#  its not inside #keys#",
                     newCHashObject(
                             "key", newCHashString(current_key),
-                            "keys",keys
+                            "keys", CHash_copy(keys)
                     )
             );
             return 1;
