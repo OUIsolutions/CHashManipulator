@@ -15,6 +15,7 @@ CHashObjectModule newCHashObjectModule(){
     self.getArray = CHashObject_getArray;
     self.getObject = CHashObject_getObject;
     self.getBool = CHashObject_getBool;
+    self.getBool_converting = CHashObject_getBool_converting;
     self.getNumber = CHashObject_getNumber;
     self.getNumber_converting = CHashObject_getNumber_converting;
     self.getString = CHashObject_getString;

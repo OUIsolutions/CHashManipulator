@@ -31,6 +31,7 @@ short  CHashObject_get_type(CHashObject *self, const char *key);
 
 CHash * CHashObject_get(CHashObject * self, const char *key);
 
+
 CHashArray * CHashObject_getArray(CHashObject * self, const char *key);
 
 CHashObject * CHashObject_getObject(CHashObject * self, const char *key);
@@ -41,6 +42,9 @@ double CHashObject_getNumber(CHashObject * self, const char *key);
 double CHashObject_getNumber_converting(CHashObject * self, const char *key);
 
 bool CHashObject_getBool(CHashObject * self, const char *key);
+
+bool CHashObject_getBool_converting(CHashObject * self, const char *key);
+
 
 char  * CHashObject_getString(CHashObject * self, const char *key);
 

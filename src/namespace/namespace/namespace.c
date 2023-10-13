@@ -15,6 +15,9 @@ CHashNamespace newCHashNamespace(){
 
     self.newBool = newCHashBool;
     self.toBool = CHash_toBool;
+    self.convert_toBool = CHash_convert_toBool;
+    self.toBool_converting = CHash_toBool_converting;
+
     self.set_Bool = CHash_set_Bool;
 
     self.newNumber = newCHashNumber;

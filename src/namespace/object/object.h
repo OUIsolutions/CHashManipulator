@@ -24,6 +24,8 @@ typedef struct CHashObjectModule{
     double (*getNumber_converting)(CHashObject * self, const char *key);
 
     bool (*getBool)(CHashObject * self, const char *key);
+    bool (*getBool_converting)(CHashObject * self, const char *key);
+
     char  * (*getString)(CHashObject * self, const char *key);
     CTextStack * (*getStack)(CHashObject * self, const char *key);
 

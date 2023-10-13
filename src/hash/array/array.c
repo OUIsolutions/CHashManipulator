@@ -259,6 +259,11 @@ bool CHashArray_getBool(CHashArrayOrObject * self, long index){
 
 }
 
+bool CHashArray_getBool_converting(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toBool_converting(element);
+}
+
 char  * CHashArray_getString(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toString(element);

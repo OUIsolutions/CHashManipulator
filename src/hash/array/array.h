@@ -60,6 +60,8 @@ double CHashArray_getNumber_converting(CHashArrayOrObject *self, long index);
 
 bool CHashArray_getBool(CHashObject * self, long index);
 
+bool CHashArray_getBool_converting(CHashObject * self, long index);
+
 char  * CHashArray_getString(CHashObject * self, long index);
 
 CTextStack  * CHashArray_getStack(CHashObject * self, long index);

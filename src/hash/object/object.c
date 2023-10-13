@@ -252,6 +252,11 @@ bool CHashObject_getBool(CHashObject * self, const char *key){
     return CHash_toBool(element);
 }
 
+bool CHashObject_getBool_converting(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toBool_converting(element);
+}
+
 char  * CHashObject_getString(CHashObject * self, const char *key){
     CHash *element = CHashObject_get(self,key);
     return CHash_toString(element);

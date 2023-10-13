@@ -16,7 +16,11 @@ typedef struct CHashNamespace{
 
     CHash * (*newBool)(bool value);
     bool (*toBool)(CHash *element);
+    int (*convert_toBool)(CHash *self);
+    bool (*toBool_converting)(CHash *self);
+
     void (*set_Bool)(CHash *self, bool value);
+
 
 
     CHash * (*newNumber)(double value);
