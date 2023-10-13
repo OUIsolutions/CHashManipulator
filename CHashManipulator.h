@@ -5584,7 +5584,7 @@ void privateCHash_free_values(CHash *self){
     }
 
     if(self->private_type == CHASH_OBJECT || self->private_type == CHASH_ARRAY){
-        long size = self->private_size;
+        long size = (long)self->private_size;
         for(int i = 0; i < size; i++){
             CHash * current = self->private_sub_elements[i];
             CHash_free(current);
@@ -5752,6 +5752,7 @@ int CHash_convert_toNumber(CHash *self){
                           "element at #path# is not convertble to number ",
                           NULL
         );
+        return 1;
     }
 
     double  value = CTextStack_parse_to_double(self->private_value_stack);
@@ -5771,8 +5772,11 @@ void CHash_set_Number(CHash *self,double  value){
     if(Chash_errors(self)){
         return;
     }
+
     privateCHash_free_values(self);
+    self->private_type = CHASH_NUMBER;
     self->private_value_double = value;
+
 }
 
 
