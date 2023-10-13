@@ -832,7 +832,13 @@ CHash * newCHashNumber(double value);
 
 bool CHash_toBool(CHash *element);
 
+int CHash_convert_toBool(CHash *self);
+
+bool CHash_toBool_converting(CHash *self);
+
+
 void CHash_set_Bool(CHash *self, bool value);
+
 
 CHash * newCHashBool(bool value);
 
@@ -1048,6 +1054,7 @@ CHash * CHash_load_from_json_file(const char *filename);
 #define  CHASH_HIGHER_THAN_MIN 407
 #define  CHASH_NOT_IN_VALID_CHARS 408
 #define  CHASH_NOT_LONG 409
+
 
 
 
@@ -5749,7 +5756,16 @@ int CHash_convert_toNumber(CHash *self){
     if(self->private_type != CHASH_STRING){
         CHash_raise_error(self,
                           CHASH_WRONG_TYPE,
-                          "element at #path# is not convertble to number ",
+                          "element at #path# is not convertible to number ",
+                          NULL
+        );
+        return 1;
+    }
+
+    if(!CTextStack_is_a_num(self->private_value_stack)){
+        CHash_raise_error(self,
+                          CHASH_WRONG_TYPE,
+                          "element at #path# is not convertible to number ",
                           NULL
         );
         return 1;
@@ -5798,6 +5814,57 @@ bool CHash_toBool(CHash *element){
     }
     return element->private_value_bool;
 }
+
+int CHash_convert_toBool(CHash *self){
+
+    if(Chash_errors(self)){
+        return 1;
+    }
+
+    if(self->private_type == CHASH_BOOL){
+        return 0;
+    }
+
+    if(self->private_type == CHASH_NUMBER){
+        CHash_set_Bool(self,(bool)self->private_value_double);
+        return 0;
+    }
+
+
+    if(self->private_type != CHASH_STRING){
+        CHash_raise_error(self,
+                          CHASH_WRONG_TYPE,
+                          "element at #path# is not convertable to number ",
+                          NULL
+        );
+        return 1;
+    }
+
+    int type  = CTextStack_typeof(self->private_value_stack);
+
+    if(type != CTEXT_BOOL){
+        CHash_raise_error(self,
+                          CHASH_WRONG_TYPE,
+                          "element at #path# is not convertible to bool ",
+                          NULL
+        );
+        return 1;
+    }
+
+    bool  value = CTextStack_parse_to_bool(self->private_value_stack);
+    CHash_set_Bool(self,value);
+    return 0;
+
+}
+
+bool CHash_toBool_converting(CHash *self){
+    if(CHash_convert_toBool(self)){
+        return -1;
+    }
+    return self->private_value_bool;
+}
+
+
 void CHash_set_Bool(CHash *self, bool value){
     if(CHash_ensure_Bool(self)){
         return;

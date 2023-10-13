@@ -18,7 +18,16 @@ int CHash_convert_toNumber(CHash *self){
     if(self->private_type != CHASH_STRING){
         CHash_raise_error(self,
                           CHASH_WRONG_TYPE,
-                          "element at #path# is not convertble to number ",
+                          "element at #path# is not convertible to number ",
+                          NULL
+        );
+        return 1;
+    }
+
+    if(!CTextStack_is_a_num(self->private_value_stack)){
+        CHash_raise_error(self,
+                          CHASH_WRONG_TYPE,
+                          "element at #path# is not convertible to number ",
                           NULL
         );
         return 1;
