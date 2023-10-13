@@ -290,7 +290,7 @@ int CHash_ensure_size(CHash *iterable,long size){
     if(iterable_size != size){
         CHash_raise_error(
                 iterable,
-                CHASH_HIGHER_THAN_MIN,
+                CHASH_NOT_SIZE,
                 "the element at #path# has diferent size than #size# ",
                 newCHashObject(
                         "size", newCHashNumber(size)
