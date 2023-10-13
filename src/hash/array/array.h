@@ -56,6 +56,8 @@ CHashObject * CHashArray_getObject(CHashObject * self, long index);
 
 double CHashArray_getNumber(CHashArrayOrObject *self, long index);
 
+double CHashArray_getNumber_converting(CHashArrayOrObject *self, long index);
+
 bool CHashArray_getBool(CHashObject * self, long index);
 
 char  * CHashArray_getString(CHashObject * self, long index);

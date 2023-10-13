@@ -24,6 +24,7 @@ CHashArrayModule newCHashArrayModule(){
     self.getString = CHashArray_getString;
     self.getStack  = CHashArray_getStack;
     self.getNumber = CHashArray_getNumber;
+    self.getNumber_converting = CHashArray_getNumber_converting;
     self.getBool = CHashArray_getBool;
     return self;
 }

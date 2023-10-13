@@ -248,6 +248,11 @@ double CHashArray_getNumber(CHashArrayOrObject * self, long index){
     return CHash_toNumber(element);
 }
 
+double CHashArray_getNumber_converting(CHashArrayOrObject *self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toNumber_converting(element);
+}
+
 bool CHashArray_getBool(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toBool(element);

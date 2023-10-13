@@ -38,6 +38,8 @@ CHashObject * CHashObject_getObject(CHashObject * self, const char *key);
 
 double CHashObject_getNumber(CHashObject * self, const char *key);
 
+double CHashObject_getNumber_converting(CHashObject * self, const char *key);
+
 bool CHashObject_getBool(CHashObject * self, const char *key);
 
 char  * CHashObject_getString(CHashObject * self, const char *key);
