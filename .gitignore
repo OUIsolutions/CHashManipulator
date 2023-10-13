@@ -13,6 +13,7 @@ artigo.md
 *.map
 *.exp
 main.c
+out_folder
 
 # Precompiled Headers
 *.gch

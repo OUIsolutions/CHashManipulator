@@ -3,6 +3,7 @@ from Build.exemple_build import create_exemples
 from os import makedirs
 from props import *
 
+from Build.full_folder_zip import zip_folder
 
 
 ct.generate_amalgamated_code(STARTER,OUTPUT)
@@ -23,3 +24,4 @@ test.start_test()
 
 create_exemples()
 ct.include_code_in_markdown('README.md',save_file=True)
+zip_folder('CHashManipulator')
