@@ -8,6 +8,33 @@ double CHash_toNumber(CHash *element){
     return element->private_value_double;
 
 }
+int CHash_convert_toNumber(CHash *self){
+    if(Chash_errors(self)){
+        return 1;
+    }
+    if(self->private_type == CHASH_NUMBER){
+        return 1;
+    }
+    if(self->private_type != CHASH_STRING){
+        CHash_raise_error(self,
+                          CHASH_WRONG_TYPE,
+                          "element at #path# is not convertble to number ",
+                          NULL
+        );
+    }
+
+    double  value = CTextStack_parse_to_double(self->private_value_stack);
+    CHash_set_Number(self,value);
+    return 0;
+}
+
+double  CHash_toNumber_converting(CHash *self){
+    if(CHash_convert_toNumber(self)){
+        return -1;
+    }
+    return self->private_value_double;
+}
+
 
 void CHash_set_Number(CHash *self,double  value){
     if(Chash_errors(self)){

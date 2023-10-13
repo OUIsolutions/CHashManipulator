@@ -20,6 +20,8 @@ CHashNamespace newCHashNamespace(){
     self.newNumber = newCHashNumber;
     self.toNumber = CHash_toNumber;
     self.set_Number = CHash_set_Number;
+    self.convert_toNumber =CHash_convert_toNumber;
+    self.toNumber_converting  =CHash_toNumber_converting;
 
     self.newStackString = newCHashStackString;
     self.toStack = CHashtoStack;

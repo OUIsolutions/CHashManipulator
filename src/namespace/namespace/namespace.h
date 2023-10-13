@@ -22,6 +22,8 @@ typedef struct CHashNamespace{
     CHash * (*newNumber)(double value);
     double  (*toNumber)(CHash *element);
     void (*set_Number)(CHash *self,double  value);
+    int (*convert_toNumber)(CHash *self);
+    double  (*toNumber_converting)(CHash *self);
 
 
     CHash * (*newStackString)(CTextStack *element);
