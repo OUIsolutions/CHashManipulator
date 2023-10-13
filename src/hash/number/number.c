@@ -13,7 +13,7 @@ int CHash_convert_toNumber(CHash *self){
         return 1;
     }
     if(self->private_type == CHASH_NUMBER){
-        return 1;
+        return 0;
     }
     if(self->private_type != CHASH_STRING){
         CHash_raise_error(self,
