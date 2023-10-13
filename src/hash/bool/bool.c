@@ -50,17 +50,19 @@ int CHash_convert_toBool(CHash *self){
 }
 
 bool CHash_toBool_converting(CHash *self){
+
     if(CHash_convert_toBool(self)){
-        return -1;
+        return false;
     }
     return self->private_value_bool;
 }
 
 
 void CHash_set_Bool(CHash *self, bool value){
-    if(CHash_ensure_Bool(self)){
+    if(Chash_errors(self)){
         return;
     }
+
     privateCHash_free_values(self);
     self->private_type = CHASH_BOOL;
     self->private_value_bool = value;
