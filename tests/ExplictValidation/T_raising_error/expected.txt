@@ -4,6 +4,7 @@ menssage: my custom error at ["name"] with "aaaa"
 args:
 {
 	"arg1":	"aaaa",
+	"reference":	"name",
 	"path":	["name"],
 	"value":	"aaaaaaaaa",
 	"type":	"string"

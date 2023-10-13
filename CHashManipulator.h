@@ -6772,8 +6772,8 @@ CHash * CHash_load_from_json_file(const char *filename){
     char *content = privateCHash_read_file(filename);
     if(!content){
         CHash *null_element = newCHashNULL();
-        CHash_raise_error(null_element,CHASH_FILE_NOT_FOUND,"file at #path# not found",
-                          newCHashObject("path", newCHashString(filename))
+        CHash_raise_error(null_element,CHASH_FILE_NOT_FOUND,"file at #filepath# not found",
+                          newCHashObject("filepath", newCHashString(filename))
         );
         return  null_element;
     }
@@ -6890,8 +6890,17 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
     if(!args){
         formated_args = newCHashObjectEmpty();
     }
+    CHashArray *path = CHash_get_path(self);
 
-    CHashObject_set_default(formated_args,  "path", CHash_get_path(self));
+    if(CHash_get_size(path) > 0){
+        CHash * last = CHashArray_get(path,-1);
+        CHashObject_set_default(formated_args,"reference",last);
+    }
+
+    CHashObject_set_default(formated_args,  "path",path);
+
+
+
     CHashObject_set_default(formated_args,"value", CHash_copy(self));
     CHashObject_set_default(formated_args,"type",newCHashString(private_Chash_convert_type(self->private_type)));
 

@@ -145,8 +145,8 @@ CHash * CHash_load_from_json_file(const char *filename){
     char *content = privateCHash_read_file(filename);
     if(!content){
         CHash *null_element = newCHashNULL();
-        CHash_raise_error(null_element,CHASH_FILE_NOT_FOUND,"file at #path# not found",
-                          newCHashObject("path", newCHashString(filename))
+        CHash_raise_error(null_element,CHASH_FILE_NOT_FOUND,"file at #filepath# not found",
+                          newCHashObject("filepath", newCHashString(filename))
         );
         return  null_element;
     }

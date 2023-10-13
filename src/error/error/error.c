@@ -99,8 +99,17 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
     if(!args){
         formated_args = newCHashObjectEmpty();
     }
+    CHashArray *path = CHash_get_path(self);
 
-    CHashObject_set_default(formated_args,  "path", CHash_get_path(self));
+    if(CHash_get_size(path) > 0){
+        CHash * last = CHashArray_get(path,-1);
+        CHashObject_set_default(formated_args,"reference",last);
+    }
+
+    CHashObject_set_default(formated_args,  "path",path);
+
+
+
     CHashObject_set_default(formated_args,"value", CHash_copy(self));
     CHashObject_set_default(formated_args,"type",newCHashString(private_Chash_convert_type(self->private_type)));
 
