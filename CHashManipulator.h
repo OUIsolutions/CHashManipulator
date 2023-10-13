@@ -5883,6 +5883,7 @@ void CHash_set_Bool(CHash *self, bool value){
         return;
     }
     privateCHash_free_values(self);
+    self->private_type = CHASH_BOOL;
     self->private_value_bool = value;
 }
 
