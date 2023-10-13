@@ -920,6 +920,8 @@ double CHashArray_getNumber_converting(CHashArrayOrObject *self, long index);
 
 bool CHashArray_getBool(CHashObject * self, long index);
 
+bool CHashArray_getBool_converting(CHashObject * self, long index);
+
 char  * CHashArray_getString(CHashObject * self, long index);
 
 CTextStack  * CHashArray_getStack(CHashObject * self, long index);
@@ -970,6 +972,7 @@ short  CHashObject_get_type(CHashObject *self, const char *key);
 
 CHash * CHashObject_get(CHashObject * self, const char *key);
 
+
 CHashArray * CHashObject_getArray(CHashObject * self, const char *key);
 
 CHashObject * CHashObject_getObject(CHashObject * self, const char *key);
@@ -980,6 +983,9 @@ double CHashObject_getNumber(CHashObject * self, const char *key);
 double CHashObject_getNumber_converting(CHashObject * self, const char *key);
 
 bool CHashObject_getBool(CHashObject * self, const char *key);
+
+bool CHashObject_getBool_converting(CHashObject * self, const char *key);
+
 
 char  * CHashObject_getString(CHashObject * self, const char *key);
 
@@ -1198,6 +1204,8 @@ typedef struct CHashObjectModule{
     double (*getNumber_converting)(CHashObject * self, const char *key);
 
     bool (*getBool)(CHashObject * self, const char *key);
+    bool (*getBool_converting)(CHashObject * self, const char *key);
+
     char  * (*getString)(CHashObject * self, const char *key);
     CTextStack * (*getStack)(CHashObject * self, const char *key);
 
@@ -1236,6 +1244,7 @@ typedef struct CHashArrayModule{
     double (*getNumber_converting)(CHashArrayOrObject *self, long index);
 
     bool (*getBool)(CHashArrayOrObject * self, long index);
+    bool (*getBool_converting)(CHashObject * self, long index);
     char  * (*getString)(CHashArrayOrObject * self, long index);
     CTextStack  * (*getStack)(CHashObject * self, long index);
 
@@ -1333,7 +1342,11 @@ typedef struct CHashNamespace{
 
     CHash * (*newBool)(bool value);
     bool (*toBool)(CHash *element);
+    int (*convert_toBool)(CHash *self);
+    bool (*toBool_converting)(CHash *self);
+
     void (*set_Bool)(CHash *self, bool value);
+
 
 
     CHash * (*newNumber)(double value);
@@ -6200,6 +6213,11 @@ bool CHashArray_getBool(CHashArrayOrObject * self, long index){
 
 }
 
+bool CHashArray_getBool_converting(CHashObject * self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toBool_converting(element);
+}
+
 char  * CHashArray_getString(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toString(element);
@@ -6545,6 +6563,11 @@ double CHashObject_getNumber_converting(CHashObject * self, const char *key){
 bool CHashObject_getBool(CHashObject * self, const char *key){
     CHash *element = CHashObject_get(self,key);
     return CHash_toBool(element);
+}
+
+bool CHashObject_getBool_converting(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toBool_converting(element);
 }
 
 char  * CHashObject_getString(CHashObject * self, const char *key){
@@ -7337,6 +7360,7 @@ CHashObjectModule newCHashObjectModule(){
     self.getArray = CHashObject_getArray;
     self.getObject = CHashObject_getObject;
     self.getBool = CHashObject_getBool;
+    self.getBool_converting = CHashObject_getBool_converting;
     self.getNumber = CHashObject_getNumber;
     self.getNumber_converting = CHashObject_getNumber_converting;
     self.getString = CHashObject_getString;
@@ -7373,6 +7397,7 @@ CHashArrayModule newCHashArrayModule(){
     self.getNumber = CHashArray_getNumber;
     self.getNumber_converting = CHashArray_getNumber_converting;
     self.getBool = CHashArray_getBool;
+    self.getBool_converting = CHashArray_getBool_converting;
     return self;
 }
 
@@ -7461,6 +7486,9 @@ CHashNamespace newCHashNamespace(){
 
     self.newBool = newCHashBool;
     self.toBool = CHash_toBool;
+    self.convert_toBool = CHash_convert_toBool;
+    self.toBool_converting = CHash_toBool_converting;
+
     self.set_Bool = CHash_set_Bool;
 
     self.newNumber = newCHashNumber;
