@@ -5770,7 +5770,11 @@ int CHash_convert_toNumber(CHash *self){
         CHash_raise_error(self,
                           CHASH_WRONG_TYPE,
                           "element at #path# is not convertible to number ",
-                          NULL
+                         newCHashObject(
+                                  "expected_type", newCHashString(
+                                  private_Chash_convert_type(CHASH_NUMBER)
+                                )
+                          )
         );
         return 1;
     }
@@ -5779,7 +5783,11 @@ int CHash_convert_toNumber(CHash *self){
         CHash_raise_error(self,
                           CHASH_WRONG_TYPE,
                           "element at #path# is not convertible to number ",
-                          NULL
+                         newCHashObject(
+                                  "expected_type", newCHashString(
+                                  private_Chash_convert_type(CHASH_NUMBER)
+                                )
+                          )
         );
         return 1;
     }
@@ -5848,7 +5856,11 @@ int CHash_convert_toBool(CHash *self){
         CHash_raise_error(self,
                           CHASH_WRONG_TYPE,
                           "element at #path# is not convertable to number ",
-                          NULL
+                         newCHashObject(
+                                  "expected_type", newCHashString(
+                                  private_Chash_convert_type(CHASH_BOOL)
+                                )
+                          )
         );
         return 1;
     }
@@ -5859,7 +5871,11 @@ int CHash_convert_toBool(CHash *self){
         CHash_raise_error(self,
                           CHASH_WRONG_TYPE,
                           "element at #path# is not convertible to bool ",
-                          NULL
+                        newCHashObject(
+                                  "expected_type", newCHashString(
+                                  private_Chash_convert_type(CHASH_BOOL)
+                                )
+                          )
         );
         return 1;
     }

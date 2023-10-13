@@ -107,9 +107,6 @@ void CHash_raise_error(CHash *self,int error_code,const char *error_menssage, CH
     }
 
     CHashObject_set_default(formated_args,  "path",path);
-
-
-
     CHashObject_set_default(formated_args,"value", CHash_copy(self));
     CHashObject_set_default(formated_args,"type",newCHashString(private_Chash_convert_type(self->private_type)));
 
