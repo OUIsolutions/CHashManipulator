@@ -816,6 +816,12 @@ CHash * newCHashNULL();
 
 double  CHash_toNumber(CHash *element);
 
+
+int CHash_convert_toNumber(CHash *self);
+
+double  CHash_toNumber_converting(CHash *self);
+
+
 void CHash_set_Number(CHash *self,double  value);
 
 
@@ -904,6 +910,8 @@ CHashObject * CHashArray_getObject(CHashObject * self, long index);
 
 double CHashArray_getNumber(CHashArrayOrObject *self, long index);
 
+double CHashArray_getNumber_converting(CHashArrayOrObject *self, long index);
+
 bool CHashArray_getBool(CHashObject * self, long index);
 
 char  * CHashArray_getString(CHashObject * self, long index);
@@ -962,6 +970,8 @@ CHashObject * CHashObject_getObject(CHashObject * self, const char *key);
 
 
 double CHashObject_getNumber(CHashObject * self, const char *key);
+
+double CHashObject_getNumber_converting(CHashObject * self, const char *key);
 
 bool CHashObject_getBool(CHashObject * self, const char *key);
 
@@ -1162,7 +1172,6 @@ typedef struct CHashObjectModule{
     void  (*set_once)(CHashObject * self, const char *key, CHash *element);
     void  (*set_default)(CHashObject * self, const char *key, CHash *element);
 
-
     void  (*remove)(CHashObject *self, const char *key);
 
     char * (*get_key_by_index)(CHashObject *self,long index);
@@ -1179,6 +1188,8 @@ typedef struct CHashObjectModule{
     CHashObject * (*getObject)(CHashObject * self, const char *key);
 
     double (*getNumber)(CHashObject * self, const char *key);
+    double (*getNumber_converting)(CHashObject * self, const char *key);
+
     bool (*getBool)(CHashObject * self, const char *key);
     char  * (*getString)(CHashObject * self, const char *key);
     CTextStack * (*getStack)(CHashObject * self, const char *key);
@@ -1215,6 +1226,8 @@ typedef struct CHashArrayModule{
     CHashObject * (*getObject)(CHashArrayOrObject * self, long index);
 
     double (*getNumber)(CHashArrayOrObject * self, long index);
+    double (*getNumber_converting)(CHashArrayOrObject *self, long index);
+
     bool (*getBool)(CHashArrayOrObject * self, long index);
     char  * (*getString)(CHashArrayOrObject * self, long index);
     CTextStack  * (*getStack)(CHashObject * self, long index);
@@ -1319,6 +1332,8 @@ typedef struct CHashNamespace{
     CHash * (*newNumber)(double value);
     double  (*toNumber)(CHash *element);
     void (*set_Number)(CHash *self,double  value);
+    int (*convert_toNumber)(CHash *self);
+    double  (*toNumber_converting)(CHash *self);
 
 
     CHash * (*newStackString)(CTextStack *element);
@@ -5724,6 +5739,33 @@ double CHash_toNumber(CHash *element){
     return element->private_value_double;
 
 }
+int CHash_convert_toNumber(CHash *self){
+    if(Chash_errors(self)){
+        return 1;
+    }
+    if(self->private_type == CHASH_NUMBER){
+        return 0;
+    }
+    if(self->private_type != CHASH_STRING){
+        CHash_raise_error(self,
+                          CHASH_WRONG_TYPE,
+                          "element at #path# is not convertble to number ",
+                          NULL
+        );
+    }
+
+    double  value = CTextStack_parse_to_double(self->private_value_stack);
+    CHash_set_Number(self,value);
+    return 0;
+}
+
+double  CHash_toNumber_converting(CHash *self){
+    if(CHash_convert_toNumber(self)){
+        return -1;
+    }
+    return self->private_value_double;
+}
+
 
 void CHash_set_Number(CHash *self,double  value){
     if(Chash_errors(self)){
@@ -6076,6 +6118,11 @@ double CHashArray_getNumber(CHashArrayOrObject * self, long index){
     return CHash_toNumber(element);
 }
 
+double CHashArray_getNumber_converting(CHashArrayOrObject *self, long index){
+    CHashObject *element = CHashArray_get(self,index);
+    return CHash_toNumber_converting(element);
+}
+
 bool CHashArray_getBool(CHashArrayOrObject * self, long index){
     CHashObject *element = CHashArray_get(self,index);
     return CHash_toBool(element);
@@ -6417,6 +6464,11 @@ CHashObject * CHashObject_getObject(CHashObject * self, const char *key){
 double CHashObject_getNumber(CHashObject * self, const char *key){
     CHash *element = CHashObject_get(self,key);
     return CHash_toNumber(element);
+}
+
+double CHashObject_getNumber_converting(CHashObject * self, const char *key){
+    CHash *element = CHashObject_get(self,key);
+    return CHash_toNumber_converting(element);
 }
 
 bool CHashObject_getBool(CHashObject * self, const char *key){
@@ -7215,6 +7267,7 @@ CHashObjectModule newCHashObjectModule(){
     self.getObject = CHashObject_getObject;
     self.getBool = CHashObject_getBool;
     self.getNumber = CHashObject_getNumber;
+    self.getNumber_converting = CHashObject_getNumber_converting;
     self.getString = CHashObject_getString;
     self.getStack = CHashObject_getStack;
 
@@ -7247,6 +7300,7 @@ CHashArrayModule newCHashArrayModule(){
     self.getString = CHashArray_getString;
     self.getStack  = CHashArray_getStack;
     self.getNumber = CHashArray_getNumber;
+    self.getNumber_converting = CHashArray_getNumber_converting;
     self.getBool = CHashArray_getBool;
     return self;
 }
@@ -7341,6 +7395,8 @@ CHashNamespace newCHashNamespace(){
     self.newNumber = newCHashNumber;
     self.toNumber = CHash_toNumber;
     self.set_Number = CHash_set_Number;
+    self.convert_toNumber =CHash_convert_toNumber;
+    self.toNumber_converting  =CHash_toNumber_converting;
 
     self.newStackString = newCHashStackString;
     self.toStack = CHashtoStack;
