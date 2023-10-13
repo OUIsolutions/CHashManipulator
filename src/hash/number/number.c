@@ -21,6 +21,7 @@ int CHash_convert_toNumber(CHash *self){
                           "element at #path# is not convertble to number ",
                           NULL
         );
+        return 1;
     }
 
     double  value = CTextStack_parse_to_double(self->private_value_stack);
@@ -40,8 +41,11 @@ void CHash_set_Number(CHash *self,double  value){
     if(Chash_errors(self)){
         return;
     }
+
     privateCHash_free_values(self);
+    self->private_type = CHASH_NUMBER;
     self->private_value_double = value;
+
 }
 
 
