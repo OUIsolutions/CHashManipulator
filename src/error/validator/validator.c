@@ -260,7 +260,7 @@ int CHash_ensure_min_size(CHash *iterable,long min){
     if(size < min){
         CHash_raise_error(
                 iterable,
-                CHASH_HIGHER_THAN_MIN,
+                CHASH_LOWER_THAN_MIN,
                 "the element at #path# its lower than #min# ",
                 newCHashObject(
                         "min", newCHashNumber(min)
