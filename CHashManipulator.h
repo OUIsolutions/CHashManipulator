@@ -1057,10 +1057,11 @@ CHash * CHash_load_from_json_file(const char *filename);
 #define  CHASH_ELEMENT_IS_NULL 405
 #define  CHASH_LOWER_NUMBER 406
 #define  CHASH_INVALID_KEY 406
-#define  CHASH_HIGHER_THAN_MIN 407
-#define  CHASH_NOT_IN_VALID_CHARS 408
-#define  CHASH_NOT_LONG 409
-#define CHASH_NOT_SIZE 410
+#define CHASH_LOWER_THAN_MIN 407
+#define  CHASH_HIGHER_THAN_MIN 408
+#define  CHASH_NOT_IN_VALID_CHARS 409
+#define  CHASH_NOT_LONG 410
+#define CHASH_NOT_SIZE 411
 
 
 
@@ -7266,7 +7267,7 @@ int CHash_ensure_min_size(CHash *iterable,long min){
     if(size < min){
         CHash_raise_error(
                 iterable,
-                CHASH_HIGHER_THAN_MIN,
+                CHASH_LOWER_THAN_MIN,
                 "the element at #path# its lower than #min# ",
                 newCHashObject(
                         "min", newCHashNumber(min)
