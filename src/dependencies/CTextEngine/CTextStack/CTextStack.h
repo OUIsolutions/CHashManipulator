@@ -13,7 +13,7 @@ typedef struct CTextStack{
     char *rendered_text;
     size_t rendered_text_alocation_size;
     size_t size;
-    
+
     char *line_breaker;
     char *separator;
     int ident_level;
@@ -24,6 +24,8 @@ struct CTextStack *newCTextStack(const char *line_breaker, const char *separator
 
 
 struct CTextStack *newCTextStack_string(const char *starter);
+
+struct CTextStack *newCTextStack_string_format(const char *format, ...);
 
 struct CTextStack *newCTextStack_string_getting_ownership(const char *starter);
 
@@ -45,6 +47,7 @@ void CTextStack_segment(struct CTextStack *self);
 void CTextStack_$open(struct CTextStack *self, const char *tag, const char *format, ...);
 
 
+
 void CTextStack_only$open(struct CTextStack *self, const char *tag, const char *format, ...);
 
 
@@ -58,6 +61,7 @@ void CTextStack_segment_format(struct CTextStack *self, const char *format, ...)
 
 
 void ctext_open(struct CTextStack *self, const char *tag);
+
 
 
 void ctext_close(struct CTextStack *self, const char *tag);

@@ -82,6 +82,8 @@ void CTextStack_$open(struct CTextStack *self, const char *tag, const char *form
     self->ident_level += 1;
 }
 
+
+
 void CTextStack_only$open(struct CTextStack *self, const char *tag, const char *format, ...){
     CTextStack_segment(self);
     CTextStack_format(self, "%c",'<');
@@ -126,7 +128,6 @@ void ctext_open(struct CTextStack *self, const char *tag){
     }
     CTextStack_$open(self, tag, NULL);
 }
-
 
 
 
