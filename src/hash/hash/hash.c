@@ -31,13 +31,20 @@ CHashArray * CHash_get_path(CHash *self){
 }
 
 bool CHash_equals(CHash *element1, CHash *element2){
-    char *element1_str = CHash_dump_to_json_string(element1);
-    char *element2_str = CHash_dump_to_json_string(element2);
+    if(!element1  && !element2){
+        return true;
+    }
+    if(element1 && element2){
+        char *element1_str = CHash_dump_to_json_string(element1);
+        char *element2_str = CHash_dump_to_json_string(element2);
 
-    bool equal = strcmp(element1_str,element2_str) == 0;
-    free(element1_str);
-    free(element2_str);
-    return equal;
+        bool equal = strcmp(element1_str,element2_str) == 0;
+        free(element1_str);
+        free(element2_str);
+        return equal;
+    }
+    return  false;
+
 }
 
 void privateCHash_free_values(CHash *self){
@@ -161,7 +168,7 @@ CHash * CHash_copy(CHash *self){
             CHash  * current = CHashArray_get(self,i);
             CHash *copy = CHash_copy(current);
 
-            CHashObject_set(new_element, current->private_key, copy);
+            CHashObject_set_many(new_element, current->private_key, copy);
         }
         return new_element;
     }

@@ -6,10 +6,17 @@ CHashObject* privatenewCHashObject(void * sentinel, ...);
 
 CHashObject  * newCHashObjectEmpty();
 
-void  CHashObject_set_once(CHashObject * self, const char *key, CHash *element);
+void  CHashObject_set_any(CHashObject * self, const char *key, CHash *element);
+void  CHashObject_set_long(CHashObject * self, const char *key, long value);
+void  CHashObject_set_double(CHashObject * self, const char *key, double value);
+void  CHashObject_set_bool(CHashObject * self, const char *key, bool value);
+void  CHashObject_set_string(CHashObject * self, const char *key, const char *value);
+void  CHashObject_set_Stack(CHashObject * self, const char *key,CTextStack *stack_value);
+
+
 
 void  privateCHashObject_set(CHashObject *self , ...);
-#define  CHashObject_set(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
+#define  CHashObject_set_many(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 
 void  CHashObject_set_default(CHashObject * self, const char *key, CHash *element);
 

@@ -3,8 +3,20 @@
 CHashArrayModule newCHashArrayModule(){
     CHashArrayModule self = {0};
     self.newArrayEmpty = newCHashArrayEmpty;
-    self.append_once = CHashArray_append_once;
+    self.append_any = CHashArray_append_any;
+    self.append_double =CHashArray_append_double;
+    self.append_long = CHashArray_append_long;
+    self.append_bool = CHashArray_append_bool;
+    self.append_string = CHashArray_append_string;
+    self.append_stack =CHashArray_append_stack;
+
     self.set = CHashArray_set;
+    self.set_double = CHashArray_set_double;
+    self.set_long =CHashArray_set_long;
+    self.set_bool =CHashArray_set_bool;
+    self.set_string = CHashArray_set_string;
+    self.set_stack = CHashArray_set_stack;
+
     self.remove = CHashArray_remove;
     self.get = CHashArray_get;
     self.foreach = CHashArray_foreach;

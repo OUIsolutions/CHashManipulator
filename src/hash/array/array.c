@@ -21,7 +21,7 @@ CHashArray * privatenewCHashArray(void *sentinel, ...){
         }
         
         CHash * current_element = (CHash*)current;
-        CHashArray_append_once(self, current_element);
+        CHashArray_append_any(self, current_element);
     }
     va_end(args);
     return self;
@@ -39,13 +39,13 @@ CHashArray * privatenewCHashStringArray(void *sentinel, ...){
         if(!current){
             break;
         }
-        CHashArray_append_once(self, newCHashString(current));
+        CHashArray_append_any(self, newCHashString(current));
     }
     va_end(args);
     return self;
 }
 
-void CHashArray_append_once(CHashArray *self, CHash *element){
+void CHashArray_append_any(CHashArray *self, CHash *element){
 
     if(CHash_ensure_Array(self)){
         return ;
@@ -65,6 +65,27 @@ void CHashArray_append_once(CHashArray *self, CHash *element){
 
 
 }
+
+void CHashArray_append_long(CHashArray *self, long element){
+    CHashArray_append_any(self, newCHashNumber((double)element));
+}
+void CHashArray_append_double(CHashArray *self, double element){
+    CHashArray_append_any(self, newCHashNumber(element));
+
+}
+void CHashArray_append_bool(CHashArray *self, bool element){
+    CHashArray_append_any(self, newCHashBool(element));
+
+}
+void CHashArray_append_string(CHashArray *self, const char *element){
+    CHashArray_append_any(self, newCHashString(element));
+}
+
+void CHashArray_append_stack(CHashArray *self, CTextStack *element){
+    CHashArray_append_any(self, newCHashStackString(element));
+}
+
+
 void privateCHashArray_append(CHashArray *self, ...){
 
     if(CHash_ensure_Array(self)){
@@ -79,7 +100,7 @@ void privateCHashArray_append(CHashArray *self, ...){
             break;
         }
         CHash * current_element = (CHash*)current;
-        CHashArray_append_once(self, current_element);
+        CHashArray_append_any(self, current_element);
     }
     va_end(args);
 
@@ -101,6 +122,23 @@ void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element){
 
     self->private_sub_elements[formated_index] = new_element;
 
+}
+void  CHashArray_set_long(CHashArrayOrObject *self, long index,long value){
+    CHashArray_set(self,index, newCHashNumber((double)value));
+}
+void  CHashArray_set_double(CHashArrayOrObject *self, long index,double value){
+    CHashArray_set(self,index, newCHashNumber(value));
+
+}
+void  CHashArray_set_bool(CHashArrayOrObject *self, long index,bool value){
+    CHashArray_set(self,index, newCHashBool(value));
+
+}
+void  CHashArray_set_string(CHashArrayOrObject *self, long index,const char *value){
+    CHashArray_set(self,index, newCHashString(value));
+}
+void  CHashArray_set_stack(CHashArrayOrObject *self, long index,CTextStack *value){
+    CHashArray_set(self,index, newCHashStackString(value));
 }
 
 

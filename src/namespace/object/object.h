@@ -2,7 +2,14 @@
 typedef struct CHashObjectModule{
 
     CHashObject  * (*newObjectEmpty)();
-    void  (*set_once)(CHashObject * self, const char *key, CHash *element);
+    void  (*set_any)(CHashObject * self, const char *key, CHash *element);
+    void  (*set_long)(CHashObject * self, const char *key, long value);
+    void  (*set_double)(CHashObject * self, const char *key, double value);
+    void  (*set_bool)(CHashObject * self, const char *key, bool value);
+    void  (*set_string)(CHashObject * self, const char *key, const char *value);
+    void  (*set_Stack)(CHashObject * self, const char *key,CTextStack *stack_value);
+
+
     void  (*set_default)(CHashObject * self, const char *key, CHash *element);
 
     void  (*remove)(CHashObject *self, const char *key);

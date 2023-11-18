@@ -425,7 +425,7 @@ int main(){
         return 1;
     }
 
-    CHashObject_set(profile,
+    CHashObject_set_many(profile,
         "age", hash.newNumber(18),
         "maried", hash.newBool(false)
     );

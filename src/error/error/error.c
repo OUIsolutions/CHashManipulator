@@ -131,8 +131,8 @@ void CHash_raise_error_by_key(CHash *self,const char *key, int error_code,const 
         formated_args = newCHashObjectEmpty();
     }
     CHashArray *path = CHash_get_path(self);
-    CHashArray_append_once(path, newCHashString(key));
-    CHashObject_set_once(formated_args,"path",path);
+    CHashArray_append_any(path, newCHashString(key));
+    CHashObject_set_any(formated_args, "path", path);
     CHash_raise_error(self,error_code,error_menssage,formated_args);
 }
 
@@ -146,8 +146,8 @@ void CHash_raise_error_by_index(CHash *self,long index, int error_code,const cha
         formated_args = newCHashObjectEmpty();
     }
     CHashArray *path = CHash_get_path(self);
-    CHashArray_append_once(path, newCHashNumber((double)index));
-    CHashObject_set_once(formated_args,"path",path);
+    CHashArray_append_any(path, newCHashNumber((double) index));
+    CHashObject_set_any(formated_args, "path", path);
     CHash_raise_error(self,error_code,error_menssage,formated_args);
 }
 

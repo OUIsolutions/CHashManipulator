@@ -3,7 +3,13 @@
 CHashObjectModule newCHashObjectModule(){
     CHashObjectModule self = {0};
     self.newObjectEmpty = newCHashObjectEmpty;
-    self.set_once = CHashObject_set_once;
+    self.set_any = CHashObject_set_any;
+    self.set_long = CHashObject_set_long;
+    self.set_double = CHashObject_set_double;
+    self.set_bool = CHashObject_set_bool;
+    self.set_string = CHashObject_set_string;
+    self.set_Stack = CHashObject_set_Stack;
+
     self.set_default = CHashObject_set_default;
     self.remove= CHashObject_remove;
 

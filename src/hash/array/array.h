@@ -10,7 +10,14 @@ CHashArray * privatenewCHashArray(void *sentinel, ...);
 
 CHashArray * privatenewCHashStringArray(void *sentinel, ...);
 #define  newCHashStringArray(...)privatenewCHashStringArray(NULL,__VA_ARGS__,NULL)
-void CHashArray_append_once(CHashArray *self, CHash *element);
+void CHashArray_append_any(CHashArray *self, CHash *element);
+
+void CHashArray_append_long(CHashArray *self, long element);
+void CHashArray_append_double(CHashArray *self, double element);
+void CHashArray_append_bool(CHashArray *self, bool element);
+void CHashArray_append_string(CHashArray *self, const char *element);
+void CHashArray_append_stack(CHashArray *self, CTextStack *element);
+
 
 
 void privateCHashArray_append(CHashArray *self, ...);
@@ -20,6 +27,13 @@ void privateCHashArray_append(CHashArray *self, ...);
 void CHashArray_switch(CHashArray *self, long index ,long target_index);
 
 void  CHashArray_set(CHashArrayOrObject *self, long index,CHash *element);
+void  CHashArray_set_long(CHashArrayOrObject *self, long index,long value);
+void  CHashArray_set_double(CHashArrayOrObject *self, long index,double value);
+void  CHashArray_set_bool(CHashArrayOrObject *self, long index,bool value);
+void  CHashArray_set_string(CHashArrayOrObject *self, long index,const char *value);
+void  CHashArray_set_stack(CHashArrayOrObject *self, long index,CTextStack *value);
+
+
 
 
 void  CHashArray_remove(CHashArrayOrObject *self, long index);

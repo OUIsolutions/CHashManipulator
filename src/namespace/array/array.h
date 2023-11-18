@@ -3,9 +3,22 @@
 typedef struct CHashArrayModule{
 
     CHashArray  *(*newArrayEmpty)();
-    void (*append_once)(CHashArray *self, CHash *element);
+    void (*append_any)(CHashArray *self, CHash *element);
+    void (*append_long)(CHashArray *self, long element);
+    void (*append_double)(CHashArray *self, double element);
+    void (*append_bool)(CHashArray *self, bool element);
+    void (*append_string)(CHashArray *self, const char *element);
+    void (*append_stack)(CHashArray *self, CTextStack *element);
+
 
     void  (*set)(CHashArrayOrObject *self, long index,CHash *element);
+    void  (*set_long)(CHashArrayOrObject *self, long index,long value);
+    void  (*set_double)(CHashArrayOrObject *self, long index,double value);
+    void  (*set_bool)(CHashArrayOrObject *self, long index,bool value);
+    void  (*set_string)(CHashArrayOrObject *self, long index,const char *value);
+    void  (*set_stack)(CHashArrayOrObject *self, long index,CTextStack *value);
+
+
     void  (*remove)(CHashArrayOrObject *self, long index);
     CHash * (*get)(CHashArrayOrObject *self, long position);
     long (*find)(CHashArray *self, CHash *element);
