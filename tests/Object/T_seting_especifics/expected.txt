@@ -1,0 +1,7 @@
+ 
+{
+	"age":	10,
+	"name":	"Mateus",
+	"maried":	false,
+	"height":	1.85
+}
