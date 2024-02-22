@@ -335,6 +335,7 @@ CJSON_PUBLIC(void) cJSON_free(void *object);
 #endif
 
 
+#undef cJSON__h
 #endif
 #ifndef CTEXTENGINE_H
 

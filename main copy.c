@@ -1,4 +1,4 @@
-#include "src/one.h"
+#include "src/one.c"
 
 CHashNamespace hash;
 CHashObjectModule  obj;

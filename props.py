@@ -12,7 +12,7 @@ RECONSTRUCT = False
 
 #-----------------------------Lib---------------------------------------------------
 # Its the starter point of your lib
-STARTER = 'src/one.h'
+STARTER = 'src/one.c'
 #is the final name of your lib
 OUTPUT = 'CHashManipulator.h'
 #These its the name of the output zip of your lib

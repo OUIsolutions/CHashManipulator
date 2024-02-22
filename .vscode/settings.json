@@ -10,5 +10,10 @@
         "array": "c",
         "initializer_list": "c",
         "utility": "c"
+    },
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#531A1C",
+        "titleBar.activeBackground": "#742527",
+        "titleBar.activeForeground": "#FEFBFB"
     }
 }
