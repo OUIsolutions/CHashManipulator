@@ -1,5 +1,10 @@
-#include "release/CHashManipulatorOne.c"
+# Implicit Validation - Missing Element Example
 
+This example demonstrates how CHash handles missing elements in an object during implicit validation.
+
+## Code
+```c
+#include "CHashManipulatorOne.c"
 
 CHashNamespace hash;
 CHashObjectModule  obj;
@@ -7,7 +12,21 @@ CHashArrayModule  array;
 CHashValidatorModule  validator;
 
 CHash *create (){
-    return  hash.newString("aaaaaaaaa");
+
+    return newCHashArray(
+        
+        newCHashObject(
+                "name",hash.newString("mateus"),
+                "age", hash.newNumber(26),
+                "height",hash.newNumber(1.69),
+                "married",hash.newBool(true)
+        ),
+        newCHashObject(
+                "name",hash.newString("second name"),
+                "age", hash.newNumber(42),
+                "height",hash.newNumber(18.4)
+        )
+    );
 }
 
 int main(){
@@ -46,3 +65,10 @@ int main(){
 
     hash.free(element);
 }
+```
+
+## Explanation
+
+In this example, we create an array of objects where one object is missing the 'married' attribute. When iterating over the array, CHash's implicit validation will detect this missing element and raise an error. The error message will be printed if any errors are detected after the iteration.
+
+This example shows how CHash ensures data integrity by automatically detecting and reporting missing elements during operations.

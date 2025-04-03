@@ -1,5 +1,10 @@
-#include "release/CHashManipulatorOne.c"
+# Implicit Validation - Null Example
 
+This example demonstrates how CHash handles null values during implicit validation.
+
+## Code
+```c
+#include "CHashManipulatorOne.c"
 
 CHashNamespace hash;
 CHashObjectModule  obj;
@@ -7,7 +12,7 @@ CHashArrayModule  array;
 CHashValidatorModule  validator;
 
 CHash *create (){
-    return  hash.newString("aaaaaaaaa");
+    return NULL;
 }
 
 int main(){
@@ -46,3 +51,10 @@ int main(){
 
     hash.free(element);
 }
+```
+
+## Explanation
+
+In this example, the `create()` function returns `NULL`, which is an invalid value for an array. When attempting to iterate over this null value, CHash's implicit validation will detect this and raise an error. The error message will be printed if any errors are detected after the iteration.
+
+This example illustrates how CHash ensures data integrity by automatically detecting and reporting null values during operations.

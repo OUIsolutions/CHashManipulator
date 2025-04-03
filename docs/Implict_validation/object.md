@@ -1,5 +1,10 @@
-#include "release/CHashManipulatorOne.c"
+# Implicit Validation - Object Example
 
+This example demonstrates how CHash handles objects during implicit validation.
+
+## Code
+```c
+#include "CHashManipulatorOne.c"
 
 CHashNamespace hash;
 CHashObjectModule  obj;
@@ -7,7 +12,13 @@ CHashArrayModule  array;
 CHashValidatorModule  validator;
 
 CHash *create (){
-    return  hash.newString("aaaaaaaaa");
+    return  
+    newCHashObject(
+                "name",hash.newString("mateus"),
+                "age", hash.newNumber(26),
+                "height",hash.newNumber(1.69),
+                "married",hash.newBool(true)
+        );
 }
 
 int main(){
@@ -46,3 +57,10 @@ int main(){
 
     hash.free(element);
 }
+```
+
+## Explanation
+
+In this example, we create a single object representing a person with attributes like name, age, height, and marital status. The `create()` function returns this object, which is then treated as an array with one element. The object's attributes are accessed and printed safely within a `CHash_protected` block. If any errors occur during this process, they are caught and printed using `CHash_catch`.
+
+This example showcases how CHash's implicit validation works with objects, ensuring that the types of data being accessed or manipulated are correct without explicit validation checks.

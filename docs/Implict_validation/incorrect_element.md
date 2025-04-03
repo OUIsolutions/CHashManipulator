@@ -1,5 +1,10 @@
-#include "release/CHashManipulatorOne.c"
+# Implicit Validation - Incorrect Element Example
 
+This example demonstrates how CHash handles incorrect elements in an array during implicit validation.
+
+## Code
+```c
+#include "CHashManipulatorOne.c"
 
 CHashNamespace hash;
 CHashObjectModule  obj;
@@ -7,7 +12,24 @@ CHashArrayModule  array;
 CHashValidatorModule  validator;
 
 CHash *create (){
-    return  hash.newString("aaaaaaaaa");
+
+    return newCHashArray(
+        
+        newCHashObject(
+                "name",hash.newString("mateus"),
+                "age", hash.newNumber(26),
+                "height",hash.newNumber(1.69),
+                "married",hash.newBool(true)
+        ),
+        newCHashObject(
+                "name",hash.newString("second name"),
+                "age", hash.newNumber(42),
+                "height",hash.newNumber(18.4),
+                "married",hash.newBool(true)
+        ),
+
+        newCHashString("aaa")
+    );
 }
 
 int main(){
@@ -46,3 +68,10 @@ int main(){
 
     hash.free(element);
 }
+```
+
+## Explanation
+
+In this example, we introduce an incorrect element into the array by including a string (`newCHashString("aaa")`) instead of an object. When iterating over the array, CHash's implicit validation will detect this mismatch and raise an error. The error message will be printed if any errors are detected after the iteration.
+
+This example illustrates how CHash ensures data integrity by automatically detecting and reporting incorrect elements during operations.

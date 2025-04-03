@@ -1,5 +1,10 @@
-#include "release/CHashManipulatorOne.c"
+# Implicit Validation - String Example
 
+This example demonstrates how CHash handles strings during implicit validation.
+
+## Code
+```c
+#include "CHashManipulatorOne.c"
 
 CHashNamespace hash;
 CHashObjectModule  obj;
@@ -46,3 +51,10 @@ int main(){
 
     hash.free(element);
 }
+```
+
+## Explanation
+
+In this example, the `create()` function returns a string instead of an array or object. When attempting to iterate over this string as if it were an array, CHash's implicit validation will detect this mismatch and raise an error. The error message will be printed if any errors are detected after the iteration.
+
+This example illustrates how CHash ensures data integrity by automatically detecting and reporting incorrect types during operations.
