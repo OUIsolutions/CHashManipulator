@@ -11,6 +11,7 @@ char * CHash_toString(CHashArray *element){
 
     return element->private_value_stack->rendered_text;
 }
+
 void CHash_set_String(CHash *self, const char *value){
     if(Chash_errors(self)){
         return;
@@ -20,6 +21,7 @@ void CHash_set_String(CHash *self, const char *value){
     self->private_value_stack = newCTextStack_string(value);
 
 }
+
 void CHash_set_Stack(CHash *self,CTextStack *element){
     if(Chash_errors(self)){
         return;
