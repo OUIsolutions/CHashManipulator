@@ -1,3 +1,6 @@
+# Project Summary
+
+CHashManipulator is a C single file library designed for data manipulation and validation. It provides functionalities for creating and manipulating arrays and objects, handling JSON data, and performing explicit validations. The library is lightweight, and aims to ensure data integrity through its validation mechanisms.
 
 # Releases
 
@@ -33,7 +36,6 @@ int main() {
     hash.free(person);
     return 0;
 }
-
 ```
 
 # Documentation
