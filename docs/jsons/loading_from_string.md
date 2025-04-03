@@ -1,5 +1,9 @@
-#include "release/CHashManipulatorOne.c"
+# Loading JSON from String
 
+To load a JSON string into a CHash object, use the `load_from_json_string` function. Here's an example:
+
+```c
+#include "CHashManipulatorOne.c"
 
 CHashNamespace hash;
 
@@ -18,3 +22,6 @@ int main(){
 
     hash.free(element);
 }
+```
+
+This code loads a JSON string into a CHash object, prints it if successful, or prints an error message if there's an issue.
