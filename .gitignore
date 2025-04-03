@@ -26,7 +26,9 @@ release
 *.la
 src/imports/
 *.lo
+.TreinAiCache
 
+TreinAiContext
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so
