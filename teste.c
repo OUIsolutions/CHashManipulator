@@ -1,4 +1,4 @@
-#include "src/one.c"
+#include "release/CHashManipulatorOne.c"
 
 CHashNamespace hash;
 CHashObjectModule  obj;
