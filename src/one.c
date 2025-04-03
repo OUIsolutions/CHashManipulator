@@ -24,8 +24,8 @@ SOFTWARE.
 
 #ifndef CHashManipulator
 #define CHashManipulator
-#include "declaration.h"
-#include "definition.h"
+
+#include "imports/imports.fdefine.h"
 
 #endif //LibName
 

@@ -17,12 +17,14 @@ out_folder
 
 # Precompiled Headers
 *.gch
+dependencies
 *.pch
-
+release
 # Libraries
 *.lib
 *.a
 *.la
+src/imports/
 *.lo
 
 # Shared objects (inc. Windows DLLs)
