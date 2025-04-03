@@ -2,7 +2,7 @@
 //DONT MODIFY THIS COMMENT
 //this import is computationally generated
 //mannaged by SilverChain: https://github.com/OUIsolutions/SilverChain
-#include "../../imports/imports.types.h"
+#include "../../imports/imports.typesH.h"
 //silver_chain_scope_end
 
 int private_chash_check_type(CHash *element, unsigned short  expected_type);
