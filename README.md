@@ -1,4 +1,13 @@
-## Basic Example
+# Releases
+
+| Item | Description |
+|------|-------------|
+|[CHashManipulatorOne.c](https://github.com/OUIsolutions/CHashManipulator/releases/download/0.2.0/CHashManipulatorOne.c)| CHashManipulato One file |
+|[CHashManipulator.c](https://github.com/OUIsolutions/CHashManipulator/releases/download/0.2.0/CHashManipulator.c)| Definition|
+|[CHashManipulator.h](https://github.com/OUIsolutions/CHashManipulator/releases/download/0.2.0/CHashManipulator.h)| Header|
+|[CHashManipulator.zip](https://github.com/OUIsolutions/CHashManipulator/releases/download/0.2.0/CHashManipulator.zip)| Full Folder that can be included with **src/one.c**|
+
+# Basic Example
 
 ```c
 #include "CHashManipulatorOne.c"
@@ -26,6 +35,7 @@ int main() {
 
 ```
 
+# Documentation
 | Item | Description |
 |------|-------------|
 | [build_and_install.md](/docs/build_and_install.md) | Instructions for installing and compiling the library on Linux, Windows, and building from scratch on Darwin. |
