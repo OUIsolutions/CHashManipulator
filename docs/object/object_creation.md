@@ -1,6 +1,80 @@
 ## Creating an Object
 
-To create an object, use the `newCHashObject` function. Here's an example:
+Creating an object is a fundamental operation in programming. In our library, you can use the `newCHashObject` function to create an object with key-value pairs. Let's dive into how this works with a detailed example.
+
+### Example: Creating an Object with Key-Value Pairs
+
+Here's a step-by-step guide on how to create an object:
+
+1. **Include the Necessary Header**: Start by including the `CHashManipulatorOne.c` header file which contains the necessary definitions for our library.
+
+   ```c
+   #include "CHashManipulatorOne.c"
+   ```
+
+2. **Initialize the Namespace and Modules**: We need to initialize the `CHashNamespace` and its modules like `object` and `array`.
+
+   ```c
+   CHashNamespace hash = newCHashNamespace();
+   CHashObjectModule obj = hash.object;
+   CHashArrayModule array = hash.array;
+   ```
+
+3. **Create an Object**: Use the `newCHashObject` function to create an object with key-value pairs. In this example, we're creating an object with keys for name, age, height, and marital status.
+
+   ```c
+   CHashObject *create() {
+       return newCHashObject(
+           "name", hash.newString("aaa"),
+           "age", hash.newNumber(26),
+           "height", hash.newNumber(20),
+           "married", hash.newBool(true)
+       );
+   }
+   ```
+
+4. **Access Object Properties**: Use the appropriate getter functions to access the properties of the object. In this example, we're accessing the name as a string, age as a number, height as a number, and marital status as a boolean.
+
+   ```c
+   int main() {
+       CHashArray *profile = create();
+
+       char *name = obj.getString(profile, "name");
+       long age = obj.getNumber(profile, "age");
+       double height = obj.getNumber(profile, "height");
+       bool married = obj.getBool(profile, "married");
+   ```
+
+5. **Print the Object Properties**: Use `CHash_protected` to safely print the properties of the object.
+
+   ```c
+       CHash_protected(profile) {
+           printf("name: %s\n", name);
+           printf("age %ld\n", age);
+           printf("height %lf\n", height);
+           printf("married %s\n", married ? "true" : "false");
+       }
+   ```
+
+6. **Check for Errors**: Use `CHash_catch` to handle any errors that might occur during the operation.
+
+   ```c
+       CHash_catch(profile) {
+           char *message = hash.get_error_message(profile);
+           printf("%s", message);
+       }
+   ```
+
+7. **Free the Memory**: Don't forget to free the memory allocated for the object to prevent memory leaks.
+
+   ```c
+       hash.free(profile);
+   }
+   ```
+
+### Full Code Example
+
+Here's the complete code example that demonstrates how to create an object:
 
 ```c
 #include "CHashManipulatorOne.c"
@@ -44,3 +118,5 @@ int main() {
     hash.free(profile);
 }
 ```
+
+By following these steps, you can easily create an object using our library. Remember to always check for errors and manage memory properly to ensure your program runs smoothly.
