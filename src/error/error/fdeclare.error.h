@@ -1,11 +1,5 @@
 
 
-typedef struct privateCHashError{
-    CHash *args;
-    int error_code;
-    CTextStack * error_mensage;
-}privateCHashError;
-
 privateCHashError * privatenewCHashError(CHashObject *args, int error_code, const char *error_menssage);
 
 CTextStack * privateCHashError_create_menssage(CHashObject *args, int error_code, const char *error_mensage);
