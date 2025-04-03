@@ -1,0 +1,1 @@
+#define CHASH_END NULL
