@@ -1,7 +1,7 @@
 //
 // Created by mateusmoutinho on 06/10/23.
 //
-#include "CHashManipulator.h"
+#include "CHashManipulatorOne.c"
 
 CHashNamespace hash;
 CHashObjectModule  obj;

@@ -1,5 +1,5 @@
 
-#include "CHashManipulator.h"
+#include "CHashManipulatorOne.c"
 
 
 CHashNamespace hash;
