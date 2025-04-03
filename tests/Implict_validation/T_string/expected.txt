@@ -1,2 +1,0 @@
- 
-element at [] is "string" instead of array or object  

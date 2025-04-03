@@ -1,5 +1,0 @@
- 
-name: aaa
-age: 26.000000
-height: 20.000000
-maried: true

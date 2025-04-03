@@ -1,3 +1,0 @@
- 
-element its NULL , (impossíble to get error menssage)
-
