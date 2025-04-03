@@ -4,7 +4,6 @@ To save a CHash object to a JSON file, use the `dump_to_json_file` function. Her
 
 ```c
 #include "CHashManipulatorOne.c"
-
 CHashNamespace hash;
 
 int main(){
@@ -14,7 +13,7 @@ int main(){
         "name",hash.newString("Mateus"),
         "age",hash.newNumber(26)
     );
-    hash.dump_to_json_file(element,"side_effect/out.json");
+    hash.dump_to_json_file(element,"out.json");
 
     hash.free(element);
 }

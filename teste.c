@@ -1,20 +1,14 @@
 #include "release/CHashManipulatorOne.c"
-
-
 CHashNamespace hash;
 
 int main(){
     hash = newCHashNamespace();
 
-    CHash *element = hash.load_from_json_strimg("{\"name\":\"Mateus\",\"age\":26}");
-    
-    CHash_protected(element){
-        hash.print(element);
-    }
-
-    CHash_catch(element){
-        printf("%s",hash.get_error_menssage(element));
-    }
+    CHash *element = newCHashObject(
+        "name",hash.newString("Mateus"),
+        "age",hash.newNumber(26)
+    );
+    hash.dump_to_json_file(element,"out.json");
 
     hash.free(element);
 }
