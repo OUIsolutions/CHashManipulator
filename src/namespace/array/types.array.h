@@ -45,5 +45,3 @@ typedef struct CHashArrayModule{
     CTextStack  * (*getStack)(CHashObject * self, long index);
 
 }CHashArrayModule;
-
-CHashArrayModule newCHashArrayModule();

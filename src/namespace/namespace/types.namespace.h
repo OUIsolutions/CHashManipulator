@@ -65,4 +65,3 @@ typedef struct CHashNamespace{
     CHashValidatorModule validator;
 }CHashNamespace;
 
-CHashNamespace newCHashNamespace();

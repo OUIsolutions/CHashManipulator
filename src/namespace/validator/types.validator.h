@@ -67,4 +67,3 @@ typedef struct CHashValidatorModule {
 
 }CHashValidatorModule;
 
-CHashValidatorModule newCHashValidatorModule();

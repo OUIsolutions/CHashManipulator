@@ -40,4 +40,3 @@ typedef struct CHashObjectModule{
 
 }CHashObjectModule;
 
-CHashObjectModule newCHashObjectModule();

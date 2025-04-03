@@ -1,0 +1,2 @@
+
+CHashObjectModule newCHashObjectModule();

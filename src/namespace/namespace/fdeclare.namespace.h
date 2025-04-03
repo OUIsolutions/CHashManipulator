@@ -1,0 +1,3 @@
+
+
+CHashNamespace newCHashNamespace();
