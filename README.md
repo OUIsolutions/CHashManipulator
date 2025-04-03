@@ -70,3 +70,4 @@ int main() {
 | [loading_from_file.md](/docs/jsons/loading_from_file.md) | Example of loading JSON from a file. |
 | [loading_from_string.md](/docs/jsons/loading_from_string.md) | Example of loading JSON from a string. |
 | [handling_errors.md](/docs/jsons/handling_errors.md) | Example of handling JSON errors. |
+|[dependencies.md](/docs/dependencies.md)| List of dependencies for the library. |
