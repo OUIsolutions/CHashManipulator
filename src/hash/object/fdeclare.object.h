@@ -15,6 +15,8 @@ void  CHashObject_set_Stack(CHashObject * self, const char *key,CTextStack *stac
 
 
 
+
+
 void  privateCHashObject_set(CHashObject *self , ...);
 #define  CHashObject_set_many(self,...)privateCHashObject_set(self,__VA_ARGS__,NULL)
 

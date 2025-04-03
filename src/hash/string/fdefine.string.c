@@ -53,3 +53,5 @@ CHash * newCHashString(const char *value){
     self->private_value_stack = newCTextStack_string(value);
     return self;
 }
+
+

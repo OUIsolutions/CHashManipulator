@@ -289,3 +289,6 @@ CTextStack * CHashObject_getStack(CHashObject * self, const char *key){
     return CHashtoStack(element);
 }
 
+
+
+

@@ -11,3 +11,5 @@ CHash * newCHashString(const char *value);
 void CHash_set_String(CHash *self, const char *value);
 
 void CHash_set_Stack(CHash *self,CTextStack *element);
+
+
